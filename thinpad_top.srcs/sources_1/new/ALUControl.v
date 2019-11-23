@@ -22,6 +22,7 @@ module ALUControl(ALUOp, Funct, ALUCtl, Sign);
 			6'b00_0000: aluFunct <= aluSLL;// 00_0000是 <= aluSLL操作的类型
 			6'b00_0010: aluFunct <= aluSRL;
 			6'b00_0011: aluFunct <= aluSRA;
+			6'b00_0110: aluFunct <= aluSRL;
 			6'b00_1011: aluFunct <= aluMOV;
 			6'b00_0110: aluFunct <= aluSRL;
 			6'b10_0000: aluFunct <= aluADD;
@@ -31,8 +32,6 @@ module ALUControl(ALUOp, Funct, ALUCtl, Sign);
 			6'b10_0100: aluFunct <= aluAND;
 			6'b10_0101: aluFunct <= aluOR;
 			6'b10_0110: aluFunct <= aluXOR;
-			6'b10_1010: aluFunct <= aluSLT;
-			6'b10_1011: aluFunct <= aluSLT;
 
 			default: aluFunct <= aluADD;
 		endcase

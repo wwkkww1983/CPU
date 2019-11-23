@@ -171,19 +171,19 @@ wire [3:0] ID_ALUOp, EX_ALUOp;
 wire [31:0] PC_next, IF_PC;//
 reg [31:0] PC = 32'h00000000;//PC这个是下一条指令地址?
 
-reg [3:0] cnt = 0;
+reg [3:0] count = 0;
 reg clk = 0;
 
-reg reset;
+wire reset;
 
 assign reset = reset_btn;
 
 always @(posedge clk_11M0592)
     begin
-        cnt <= cnt + 1;
-        if (cnt == 10) begin
+        count <= count + 1;
+        if (count == 10) begin
             clk <= ~clk;//(1/10)分频
-            cnt <= 0;
+            count <= 0;
         end
     end
 
@@ -205,7 +205,7 @@ always @(posedge reset or posedge clk)//不reset的话,就继续
 	end else begin
 		PC <= IF_PC;
     end
-end
+
 
 wire [31:0] IF_PC_4, ID_PC_4, EX_PC_4, MEM_PC_4, WB_PC_4;
 assign IF_PC_4[30:0] = PC[30:0] +3'd4;
@@ -223,8 +223,7 @@ wire [31:0] IF_Instruction, ID_Instruction, EX_Instruction;
         ((EX_Instruction[20:16] == ID_Instruction[25:21]) |
         (EX_Instruction[20:16] == ID_Instruction[20:16]));// 数据冲突需要stall一个周期
     IF_ID IF_ID(.reset(reset), .clk(clk), .Flush( Flush_IF || Flush_IF_and_ID), .Stall(Stall),
-         .IF_PC(IF_PC), .IF_PC_plus_4(IF_PC_4), .IF_Instruction(IF_Instruction), .ID_Instruction(ID_Instruction), 
-         .ID_PC_Plus_4(ID_PC_4));
+         .IF_PC(IF_PC), .IF_PC_plus_4(IF_PC_4), .IF_Instruction(IF_Instruction), .ID_Instruction(ID_Instruction), .ID_PC_plus_4(ID_PC_4));
 
     Control control1(.Instruction(ID_Instruction), .PC_31(ID_PC_4[31]),
 		.PCSrc(ID_PCSrc), .RegDst(ID_RegDst), .RegWrite(ID_RegWrite), 
@@ -236,7 +235,7 @@ wire [31:0] IF_Instruction, ID_Instruction, EX_Instruction;
     wire [31:0] MEM_Data2, MEM_Data3;
 
     wire [4:0] EX_Registerw, MEM_Registerw, WB_Registerw;
-    RegisterFile reg( .reset(reset), .clk(clk), .RegWrite(WB_RegWrite), .Read_register1(ID_Instruction[25:21]), 
+    RegisterFile register( .reset(reset), .clk(clk), .RegWrite(WB_RegWrite), .Read_register1(ID_Instruction[25:21]), 
         .Read_register2(ID_Instruction[20:16]), .Write_register(WB_Registerw), 
         .Write_data(ID_Data3), .Read_data1(ID_Data1), .Read_data2(ID_Data2), .DoRead(ID_PCSrc == 3'b010));
 
@@ -284,11 +283,11 @@ wire [31:0] IF_Instruction, ID_Instruction, EX_Instruction;
     wire MovNoWrite = ( MOV & ALU_in2 == 32'h00000000 );//是MOVN况且还不用MOV
 
     EX_MEM EX_MEM(reset, clk, EX_MemRead, EX_MemWrite, EX_RegWrite, EX_MemtoReg, EX_Registerw, EX_ALU_out, EX_Data2, EX_PC_4, 
-        MEM_MemRead, MEM_MemWrite, MEM_RegWrite, MEM_MemtoReg, MEM_Registerw, MEM_ALU_out, MEM_Data2, MEM_PC_4, MovNoWrite);    
+        MEM_MemRead, MEM_MemWrite, MEM_RegWrite, MEM_MemtoReg, MEM_Registerw, MEM_ALU_out, MEM_Data2, MEM_PC_4);    
     
     wire [31:0] MEM_ReadData, WB_ReadData;
 
-    DataMemory DataMemory(.reset(reset), .clk(clk), .ce(ce), .Address(MEM_ALU_out),.Write_data(MEM_Data2),.Read_data(MEM_ReadData)
+    DataMemory DataMemory(.reset(reset), .ce(ce), .Address(MEM_ALU_out),.Write_data(MEM_Data2),.Read_data(MEM_ReadData),
         .Op(EX_Instruction[31:26]), .MemRead(MEM_MemRead), .MemWrite(MEM_MemWrite), .ext_ram_data(ext_ram_data),
         .ext_ram_addr(ext_ram_addr), .ext_ram_ce_n(ext_ram_ce_n), .ext_ram_oe_n(ext_ram_oe_n), .ext_ram_we_n(ext_ram_we_n)
     );

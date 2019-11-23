@@ -1,4 +1,5 @@
-module Control(input [31:0] Instruction,
+module Control(
+    input [31:0] Instruction,
     input PC_31,
 	output [2:0] PCSrc, 
     output [1:0] RegDst, 
@@ -13,7 +14,6 @@ module Control(input [31:0] Instruction,
     output [3:0] ALUOp,
     output MOV,
     output Exception);
-    //exception异常 irq中断
     wire [5:0] OpCode, Function;
     assign OpCode = Instruction[31:26];//后5位
     assign Function = Instruction[5:0];//最后的
@@ -58,7 +58,7 @@ module Control(input [31:0] Instruction,
     assign MemRead = ( OpCode == 6'h23 || OpCode==6'h20 )? 1:0;
     assign MemWrite = ( OpCode == 6'h2b || OpCode == 6'h28 )? 1:0;
 
-    assign MemtoReg[1:0] = ( OpCode == 6'h03 | IRQ | Exception )?2'b10:
+    assign MemtoReg[1:0] = ( OpCode == 6'h03 | Exception )?2'b10:
         ( OpCode == 6'h23 | OpCode == 6'h20 )? 2'b01: 2'b00;
 
     assign ALUSrc1 = ( OpCode == 6'h00 & ( Function == 6'h00 | 

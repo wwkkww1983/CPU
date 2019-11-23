@@ -37,7 +37,7 @@ module Inst_Mem(
 
         end else begin
             
-            inner_ram_data <= 32'bz;
+            innerram_data <= 32'bz;
             baseram_ce_reg <= 1'b0;//低有效,开始读
             baseram_we_reg <= 1'b1;//
             baseram_oe_reg <= 1'b0;//
