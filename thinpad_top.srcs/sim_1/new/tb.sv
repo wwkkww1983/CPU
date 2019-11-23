@@ -56,7 +56,7 @@ initial begin
     //在这里可以自定义测试输入序列，例如：
     dip_sw = 32'h2;
     touch_btn = 0;
-    for (integer i = 0; i < 20; i = i+1) begin
+    for (int i = 0; i < 20; i = i+1) begin
         #100; //等待100ns
         clock_btn = 1; //按下手工时钟按钮
         #100; //等待100ns
@@ -157,20 +157,20 @@ sram_model ext2(/*autoinst*/
             .LB_n(ext_ram_be_n[2]),
             .UB_n(ext_ram_be_n[3]));
 // Flash 仿真模型
-x28fxxxp30 #(.FILENAME_MEM(FLASH_INIT_FILE)) flash(
-    .A(flash_a[1+:22]), 
-    .DQ(flash_d), 
-    .W_N(flash_we_n),    // Write Enable 
-    .G_N(flash_oe_n),    // Output Enable
-    .E_N(flash_ce_n),    // Chip Enable
-    .L_N(1'b0),    // Latch Enable
-    .K(1'b0),      // Clock
-    .WP_N(flash_vpen),   // Write Protect
-    .RP_N(flash_rp_n),   // Reset/Power-Down
-    .VDD('d3300), 
-    .VDDQ('d3300), 
-    .VPP('d1800), 
-    .Info(1'b1));
+// x28fxxxp30 #(.FILENAME_MEM(FLASH_INIT_FILE)) flash(
+//     .A(flash_a[1+:22]), 
+//     .DQ(flash_d), 
+//     .W_N(flash_we_n),    // Write Enable 
+//     .G_N(flash_oe_n),    // Output Enable
+//     .E_N(flash_ce_n),    // Chip Enable
+//     .L_N(1'b0),    // Latch Enable
+//     .K(1'b0),      // Clock
+//     .WP_N(flash_vpen),   // Write Protect
+//     .RP_N(flash_rp_n),   // Reset/Power-Down
+//     .VDD('d3300), 
+//     .VDDQ('d3300), 
+//     .VPP('d1800), 
+//     .Info(1'b1));
 
 initial begin 
     wait(flash_byte_n == 1'b0);
@@ -193,7 +193,7 @@ initial begin
         $fclose(n_File_ID);
     end
     $display("BaseRAM Init Size(words): %d",n_Init_Size);
-    for (integer i = 0; i < n_Init_Size; i++) begin
+    for (int i = 0; i < n_Init_Size; i++) begin
         base1.mem_array0[i] = tmp_array[i][24+:8];
         base1.mem_array1[i] = tmp_array[i][16+:8];
         base2.mem_array0[i] = tmp_array[i][8+:8];
@@ -215,7 +215,7 @@ initial begin
         $fclose(n_File_ID);
     end
     $display("ExtRAM Init Size(words): %d",n_Init_Size);
-    for (integer i = 0; i < n_Init_Size; i++) begin
+    for (int i = 0; i < n_Init_Size; i++) begin
         ext1.mem_array0[i] = tmp_array[i][24+:8];
         ext1.mem_array1[i] = tmp_array[i][16+:8];
         ext2.mem_array0[i] = tmp_array[i][8+:8];

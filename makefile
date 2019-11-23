@@ -1,6 +1,6 @@
 SRC_DIR := thinpad_top.srcs/sources_1/new
 SIM_DIR := thinpad_top.srcs/sim_1/new
-SRCS     := $(wildcard ${SRC_DIR}/*.sv)
+SRCS     := $(wildcard ${SRC_DIR}/*.v)
 SIM_SRCS := $(wildcard ${SIM_DIR}/*.v) $(wildcard ${SIM_DIR}/*.sv)
 
 thinpad_top.vcd: thinpad_top.vvp 
