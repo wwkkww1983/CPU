@@ -62,12 +62,13 @@ module Control(
         ( OpCode == 6'h23 | OpCode == 6'h20 )? 2'b01: 2'b00;
 
     assign ALUSrc1 = ( OpCode == 6'h00 & ( Function == 6'h00 | 
-        Function == 6'h03 | Function == 6'h02 ))?1:0;
+        Function == 6'h03 | Function == 6'h02 ))? 1:0;
     assign ALUSrc2 = ( OpCode == 6'h09 | OpCode == 6'h0c | OpCode == 6'h20 |
             OpCode == 6'h23 | OpCode == 6'h0d | OpCode == 6'h28 | OpCode == 6'h0f |
-            OpCode == 6'h2b | OpCode == 6'h0e )?1:0;
+            OpCode == 6'h2b | OpCode == 6'h0e )? 1:0;
             
-    assign ExtOp = ( OpCode == 6'h0c | OpCode == 6'h0d |OpCode == 6'h0e)?0: 1;//是否0扩展unsigned
+    assign ExtOp = ( OpCode == 6'h0c | OpCode == 6'h0d |OpCode == 6'h0e | OpCode == 6'h04 | 
+        OpCode == 6'h07 | OpCode == 6'h05 )?0: 1;//是否0扩展unsigned
 
     assign LuOp = ( OpCode == 6'h0f )? 1: 0;
 

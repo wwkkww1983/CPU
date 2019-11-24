@@ -6,7 +6,16 @@ module RegisterFile(reset, clk, RegWrite, Read_register1, Read_register2, Write_
 	output [31:0] Read_data1, Read_data2;
 	
 	reg [31:0] RF_data[31:1];
-	
+
+    wire [31:0] Show_data[31:1];
+    
+    genvar j;
+    
+generate
+    for(j = 1; j < 32; j = j + 1)
+        assign Show_data[j] = RF_data[j];
+endgenerate	
+
 	assign Read_data1 = (Read_register1 != 5'b00000 & DoRead )? RF_data[Read_register1]: 32'h00000000 ;
 	assign Read_data2 = (Read_register2 != 5'b00000 & DoRead )? RF_data[Read_register2]: 32'h00000000 ;
 	
