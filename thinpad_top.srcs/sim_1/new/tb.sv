@@ -56,6 +56,10 @@ initial begin
     $dumpvars(0,tb);
 end
 
+initial begin
+    #10000 $finish;
+end
+
 initial begin 
     //在这里可以自定义测试输入序列，例如：
     dip_sw = 32'h2;

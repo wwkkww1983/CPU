@@ -20,7 +20,7 @@ module Inst_Mem(
     reg [31:0] inst_reg = 32'b0;
     
     assign baseram_data = innerram_data;
-    assign baseram_addr = {Address[19:2],2'b00};
+    assign baseram_addr = {2'b00, Address[19:2]};
     assign baseram_ce = baseram_ce_reg;
     assign baseram_oe = baseram_oe_reg;
     assign baseram_we = baseram_we_reg;

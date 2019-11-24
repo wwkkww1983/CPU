@@ -176,7 +176,6 @@ reg clk = 0;
 wire reset;
 
 assign reset = reset_btn;
-assign PC_next[31:0] = 32'h80000004;
 assign Stall = 0;
 
 always @(posedge clk_11M0592)
