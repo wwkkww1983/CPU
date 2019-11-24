@@ -13,11 +13,11 @@ module thinpad_top(
     output wire[7:0]  dpy1,       //数码管高位信号，包括小数点，输出1点亮
 
     //CPLD串口控制器信号
-    output wire uart_rdn,         //读串口信号，低有效
-    output wire uart_wrn,         //写串口信号，低有效
-    input wire uart_dataready,    //串口数据准备好
-    input wire uart_tbre,         //发送数据标志
-    input wire uart_tsre,         //数据发送完毕标志
+    //output wire uart_rdn,         //读串口信号，低有效
+    //output wire uart_wrn,         //写串口信号，低有效
+    //input wire uart_dataready,    //串口数据准备好
+    //input wire uart_tbre,         //发送数据标志
+    //input wire uart_tsre,         //数据发送完毕标志
 
     //BaseRAM信号
     inout wire[31:0] base_ram_data,  //BaseRAM数据，低8位与CPLD串口控制器共享
@@ -140,25 +140,22 @@ reg[15:0] led_bits;
 assign leds = led_bits;
 
 integer state, cnt;
-reg my_uart_rdn;
-reg my_uart_wrn;
-reg my_base_ram_ce_n;      //BaseRAM片选，低有效
-reg my_base_ram_oe_n;       //BaseRAM读使能，低有效
-reg my_base_ram_we_n;  
-assign uart_rdn = my_uart_rdn;
-assign uart_wrn = my_uart_wrn;
-assign base_ram_ce_n = my_base_ram_ce_n;//
-assign base_ram_oe_n = my_base_ram_oe_n;
-assign base_ram_we_n = my_base_ram_we_n;
-reg base_ram_data_z;
-reg[31:0] my_ram_data;
-assign base_ram_data = my_ram_data;
-reg[19:0] my_ram_addr;
-assign base_ram_addr = my_ram_addr;
+//reg my_uart_rdn;
+//reg my_uart_wrn;
+// reg my_base_ram_ce_n;      //BaseRAM片选，低有效
+// reg my_base_ram_oe_n;       //BaseRAM读使能，低有效
+// reg my_base_ram_we_n;  
+//assign uart_rdn = my_uart_rdn;
+//assign uart_wrn = my_uart_wrn;
+// assign base_ram_ce_n = my_base_ram_ce_n;//
+// assign base_ram_oe_n = my_base_ram_oe_n;
+// assign base_ram_we_n = my_base_ram_we_n;
+// reg base_ram_data_z;
+
 reg[19:0] addr;
 reg[7:0] data;
 
-wire Exception, Branch, Stall, Flush_IF, Flush_IF_and_ID;
+wire Exception, Branch, Flush_IF, Flush_IF_and_ID;
 wire ExtOp, LuOp, MOV;
 wire ID_MemRead, EX_MemRead, MEM_MemRead;
 wire ID_MemWrite, EX_MemWrite, MEM_MemWrite;
@@ -168,8 +165,10 @@ wire [2:0] ID_PCSrc, EX_PCSrc;
 wire [1:0] ID_RegDst, EX_RegDst;
 wire [1:0] ID_MemtoReg, EX_MemtoReg, MEM_MemtoReg, WB_MemtoReg;
 wire [3:0] ID_ALUOp, EX_ALUOp;
-wire [31:0] PC_next, IF_PC;//
-reg [31:0] PC = 32'h00000000;//PC这个是下一条指令地址?
+wire [31:0] PC_next;//
+wire [31:0] IF_PC;
+reg [31:0] PC = 32'h80000000;//PC这个是下一条指令地址?
+wire Stall = 0;
 
 reg [3:0] count = 0;
 reg clk = 0;
@@ -177,6 +176,8 @@ reg clk = 0;
 wire reset;
 
 assign reset = reset_btn;
+assign PC_next[31:0] = 32'h80000004;
+assign Stall = 0;
 
 always @(posedge clk_11M0592)
     begin
@@ -187,11 +188,12 @@ always @(posedge clk_11M0592)
         end
     end
 
+
 assign IF_PC = Stall? PC: PC_next;//如果是stall就是PC,是PC_NEXT
 
-reg ce;
+reg ce = 0;
 
-always @(posedge clk) begin
+always @(*) begin
     if(reset) begin
         ce <= 1'b0;
     end else begin
@@ -201,7 +203,7 @@ end
 
 always @(posedge reset or posedge clk)//不reset的话,就继续
     if (reset) begin
-		PC <= 32'h00000000;//reset则回到最开始的位置
+		PC <= 32'h80000000;//reset则回到最开始的位置
 	end else begin
 		PC <= IF_PC;
     end
@@ -212,7 +214,7 @@ assign IF_PC_4[30:0] = PC[30:0] +3'd4;
 assign IF_PC_4[31] = PC[31];
 wire [31:0] IF_Instruction, ID_Instruction, EX_Instruction;
     
-    Inst_Mem Inst_Mem(.ce(ce), .Address(PC),.Instruction(IF_Instruction),.baseram_data(base_ram_data),
+    Inst_Mem Inst_Mem(.ce(ce), .clk(clk), .Address(PC),.Instruction(IF_Instruction),.baseram_data(base_ram_data),
         .baseram_addr(base_ram_addr),.baseram_ce(base_ram_ce_n),.baseram_oe(base_ram_oe_n),.baseram_we(base_ram_we_n)
     );
 
@@ -318,7 +320,7 @@ wire [31:0] IF_Instruction, ID_Instruction, EX_Instruction;
         (ForwardB == 2'b10)? MEM_Data3: 
         (ForwardB == 2'b11)? ID_Data3: ID_Data2;//ForwardB是冒险的地方在哪儿
 
-//直连串口接收发送演示，从直连串口收到的数据再发送出去
+/*直连串口接收发送演示，从直连串口收到的数据再发送出去
 wire [7:0] ext_uart_rx;
 reg  [7:0] ext_uart_buffer, ext_uart_tx;
 wire ext_uart_ready, ext_uart_clear, ext_uart_busy;
@@ -373,7 +375,7 @@ vga #(12, 800, 856, 976, 1040, 600, 637, 643, 666, 1, 1) vga800x600at75 (
     .hsync(video_hsync),
     .vsync(video_vsync),
     .data_enable(video_de)
-);
+);*/
 /* =========== Demo code end =========== */
 
 endmodule

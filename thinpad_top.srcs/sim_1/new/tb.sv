@@ -39,23 +39,30 @@ wire flash_oe_n;         //Flash读使能信号，低有效
 wire flash_we_n;         //Flash写使能信号，低有效
 wire flash_byte_n;       //Flash 8bit模式选择，低有效。在使用flash的16位模式时请设为1
 
-wire uart_rdn;           //读串口信号，低有效
-wire uart_wrn;           //写串口信号，低有效
-wire uart_dataready;     //串口数据准备好
-wire uart_tbre;          //发送数据标志
-wire uart_tsre;          //数据发送完毕标志
-
+//wire uart_rdn;           //读串口信号，低有效
+//wire uart_wrn;           //写串口信号，低有效
+//wire uart_dataready;     //串口数据准备好
+//wire uart_tbre;          //发送数据标志
+//wire uart_tsre;          //数据发送完毕标志
 //Windows需要注意路径分隔符的转义，例如"D:\\foo\\bar.bin"
-parameter BASE_RAM_INIT_FILE = "/tmp/main.bin"; //BaseRAM初始化文件，请修改为实际的绝对路径
+parameter BASE_RAM_INIT_FILE = "//home/ericsam413/Desktop/mips32lab/example_asm/fib.bin"; //BaseRAM初始化文件，请修改为实际的绝对路径
 parameter EXT_RAM_INIT_FILE = "/tmp/eram.bin";    //ExtRAM初始化文件，请修改为实际的绝对路径
 parameter FLASH_INIT_FILE = "/tmp/kernel.elf";    //Flash初始化文件，请修改为实际的绝对路径
 
 assign rxd = 1'b1; //idle state
 
+initial begin
+    $dumpfile("thinpad.vcd");
+    $dumpvars(0,tb);
+end
+
 initial begin 
     //在这里可以自定义测试输入序列，例如：
     dip_sw = 32'h2;
     touch_btn = 0;
+    reset_btn = 1;
+    #1;
+    reset_btn = 0;
     for (int i = 0; i < 20; i = i+1) begin
         #100; //等待100ns
         clock_btn = 1; //按下手工时钟按钮
@@ -63,9 +70,9 @@ initial begin
         clock_btn = 0; //松开手工时钟按钮
     end
     // 模拟PC通过串口发送字符
-    cpld.pc_send_byte(8'h32);
-    #10000;
-    cpld.pc_send_byte(8'h33);
+   // cpld.pc_send_byte(8'h32);
+    // #10000;
+    // cpld.pc_send_byte(8'h33);
 end
 
 // 待测试用户设计
@@ -81,11 +88,11 @@ thinpad_top dut(
     .dpy0(dpy0),
     .txd(txd),
     .rxd(rxd),
-    .uart_rdn(uart_rdn),
-    .uart_wrn(uart_wrn),
-    .uart_dataready(uart_dataready),
-    .uart_tbre(uart_tbre),
-    .uart_tsre(uart_tsre),
+    //.uart_rdn(uart_rdn),
+    //.uart_wrn(uart_wrn),
+    //.uart_dataready(uart_dataready),
+    //.uart_tbre(uart_tbre),
+    //.uart_tsre(uart_tsre),
     .base_ram_data(base_ram_data),
     .base_ram_addr(base_ram_addr),
     .base_ram_ce_n(base_ram_ce_n),
@@ -113,7 +120,7 @@ clock osc(
     .clk_50M    (clk_50M)
 );
 // CPLD 串口仿真模型
-cpld_model cpld(
+/*cpld_model cpld(
     .clk_uart(clk_11M0592),
     .uart_rdn(uart_rdn),
     .uart_wrn(uart_wrn),
@@ -121,7 +128,7 @@ cpld_model cpld(
     .uart_tbre(uart_tbre),
     .uart_tsre(uart_tsre),
     .data(base_ram_data[7:0])
-);
+);*/
 // BaseRAM 仿真模型
 sram_model base1(/*autoinst*/
             .DataIO(base_ram_data[15:0]),

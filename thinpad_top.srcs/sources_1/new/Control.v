@@ -31,7 +31,7 @@ module Control(
                         OpCode == 6'h20 | OpCode == 6'h0f |
                         OpCode == 6'h23 | OpCode == 6'h0d |
                         OpCode == 6'h28 | OpCode == 6'h2b |
-                        OpCode == 6'h0e | OpCode == 6'h05 );
+                        OpCode == 6'h0e | OpCode == 6'h05 );// 
 
     assign PCSrc[2:0]=Exception? 3'b101:
             ( OpCode == 6'h04 | OpCode == 6'h05 | OpCode == 6'h07 &Instruction[20:16] == 5'b00 )?
