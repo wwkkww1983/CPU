@@ -238,10 +238,10 @@ wire [31:0] IF_Instruction, ID_Instruction, EX_Instruction;
     wire [4:0] EX_Registerw, MEM_Registerw, WB_Registerw;
     RegisterFile register( .reset(reset), .clk(clk), .RegWrite(WB_RegWrite), .Read_register1(ID_Instruction[25:21]), 
         .Read_register2(ID_Instruction[20:16]), .Write_register(WB_Registerw), 
-        .Write_data(ID_Data3), .Read_data1(ID_Data1), .Read_data2(ID_Data2), .DoRead(ID_PCSrc == 3'b010));
+        .Write_data(ID_Data3), .Read_data1(ID_Data1), .Read_data2(ID_Data2), .DoRead(ID_PCSrc == 3'b000));
 
     wire [31:0] Ext_out;
-    assign Ext_out = {ExtOp? {16{ID_Instruction[15]}}: 16'h0000, ID_Instruction[15:0]};
+    assign Ext_out = {ExtOp? 16'h0000 : {16{ID_Instruction[15]}}, ID_Instruction[15:0]};
 
     wire [31:0] ID_LU_out, EX_LU_out;// lui 处理
 	assign ID_LU_out = LuOp? {ID_Instruction[15:0], 16'h0000}: Ext_out;// 扩展后15位
