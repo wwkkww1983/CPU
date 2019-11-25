@@ -47,7 +47,6 @@ module Inst_Mem(
             inst_reg <= 32'h00000000;
         end else begin
             inst_reg = baseram_data;    
-
         end 
     end
 

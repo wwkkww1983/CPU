@@ -23,84 +23,76 @@ module DataMemory( reset, ce, Address, Write_data, Read_data, Op, MemRead, MemWr
     reg [31:0] inner_ram_data = 32'b0;
     
     assign ext_ram_data = inner_ram_data;
-    assign ext_ram_addr = {Address[19:2],2'b00};
+    assign ext_ram_addr = {2'b00,Address[19:2]};
     assign ext_ram_ce_n = ext_ram_ce_n_reg;
     assign ext_ram_oe_n = ext_ram_oe_n_reg;
     assign ext_ram_we_n = ext_ram_we_n_reg;
 
-    always @(*)
+    always @(*) begin
         if(ce == 1'b0) begin
-            ext_ram_ce_n_reg <= 1'b0;
-            ext_ram_we_n_reg <= 1'b0;
-            ext_ram_oe_n_reg <= 1'b0;
+            inner_ram_data <= 32'b0;
+            ext_ram_ce_n_reg <= 1'b1;
+            ext_ram_we_n_reg <= 1'b1;
+            ext_ram_oe_n_reg <= 1'b1;
         end else begin
             if( MemRead ) begin
                 inner_ram_data <= 32'bz;
-                ext_ram_ce_n_reg <= 1'b1;
-                ext_ram_we_n_reg <= 1'b0;
-                ext_ram_oe_n_reg <= 1'b1;
-            end else begin
-                inner_ram_data <= 32'bz;
-                case (Op)
-                    6'b101000 : begin //
-                        if(Address[1:0]==2'b00) begin
-                            inner_ram_data[31:24] = Write_data[7:0];
-                        end else if(Address[1:0]==2'b01) begin
-                            inner_ram_data[23:16] = Write_data[7:0];
-                        end else if(Address[1:0]== 2'b10) begin
-                            inner_ram_data[15:8] = Write_data[7:0];
-                        end else if(Address[1:0]== 2'b11) begin
-                            inner_ram_data[7:0] = Write_data[7:0];
-                        end
-                    end
-                    6'b101011: begin
-                        inner_ram_data[31:24] = Write_data[7:0];
-                        inner_ram_data[23:16] = Write_data[15:8];
-                        inner_ram_data[15:8] = Write_data[23:16];
-                        inner_ram_data[7:0] = Write_data[31:24];
-                    end
-                    default: begin
-                    end
-                endcase
-                ext_ram_ce_n_reg <= 1'b1;
+                ext_ram_ce_n_reg <= 1'b0;
                 ext_ram_we_n_reg <= 1'b1;
                 ext_ram_oe_n_reg <= 1'b0;
+            end else if( MemWrite ) begin
+                inner_ram_data <= 32'bz;
+                ext_ram_ce_n_reg <= 1'b0;
+                ext_ram_we_n_reg <= 1'b0;
+                ext_ram_oe_n_reg <= 1'b1;
             end
         end
+    end
 
-    always @(*)
+    always @(*) begin
         if (reset == 1'b1 || ce == 1'b0 ) begin
             Read_data <= 32'h00000000;
+        end else if( MemRead ) begin
+            case (Op)
+                6'b100000: begin//LB
+                    if(Address[1:0] == 2'b11) begin
+                        Read_data <= {{24{ext_ram_data[31]}}, ext_ram_data[31:24]};
+                    end else if(Address[1:0]== 2'b10) begin
+                        Read_data <= {{24{ext_ram_data[23]}}, ext_ram_data[23:16]};
+                    end else if(Address[1:0] == 2'b01) begin
+                        Read_data <= {{24{ext_ram_data[15]}}, ext_ram_data[15:8]};
+                    end else begin
+                        Read_data <= {{24{ext_ram_data[7]}},ext_ram_data[7:0]};
+                    end
+                end
+                6'b001111: begin//LUI
+                    Read_data <= {ext_ram_data[15:0],16'h0000};
+                end
+                6'b100011: begin
+                    Read_data <= ext_ram_data;
+                end
+                default: Read_data <= 32'h00000000;
+            endcase
+        end else begin
+            case (Op)
+                6'b101000 : begin
+                    if(Address[1:0]==2'b11) begin
+                        inner_ram_data[31:24] <= Write_data[7:0];
+                    end else if(Address[1:0]==2'b10) begin
+                        inner_ram_data[23:16] <= Write_data[7:0];
+                    end else if(Address[1:0]== 2'b01) begin
+                        inner_ram_data[15:8] <= Write_data[7:0];
+                    end else begin
+                        inner_ram_data[7:0] <= Write_data[7:0];
+                    end
+                end
+                6'b101011: begin
+                    inner_ram_data = Write_data;
+                end
+            endcase
+            //Read_data <= 32'bz;
         end
-        else begin
-            if( MemRead ) begin
-                case (Op)
-                    6'b100000: begin//LB
-                        if(Address[1:0] == 2'b00) begin
-                            Read_data <= {{24{ext_ram_data[31]}}, ext_ram_data[31:24]};
-                        end else if(Address[1:0]== 2'b01) begin
-                            Read_data <= {{24{ext_ram_data[23]}}, ext_ram_data[23:16]};
-                        end else if(Address[1:0] == 2'b10) begin
-                            Read_data <= {{24{ext_ram_data[15]}}, ext_ram_data[15:8]};
-                        end else begin
-                            Read_data <= {{24{ext_ram_data[7]}},ext_ram_data[7:0]};
-                        end
-                    end
-                    6'b001111: begin//LUI
-                        Read_data <= {ext_ram_data[7:0],ext_ram_data[15:8],16'h0000};
-                    end
-                    6'b100011: begin
-                        Read_data[31:24] <= ext_ram_data[7:0];
-                        Read_data[23:16] <= ext_ram_data[15:8];
-                        Read_data[15:8] <= ext_ram_data[23:16];
-                        Read_data[7:0] <= ext_ram_data[31:24];
-                    end
-                    default: Read_data <= 32'h00000000;
-                endcase
-            end else
-                Read_data <= 32'bz;
-            end
-
+    end
 endmodule
 
 

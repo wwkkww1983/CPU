@@ -1,5 +1,5 @@
 
-GCCPREFIX:=mips-mti-elf-
+GCCPREFIX:=mips-linux-gnu-
 
 override CFLAGS	+= -fno-builtin -nostdlib  -nostdinc -g  -EL -G0 -Wformat
 override LDFLAGS	+= -nostdlib -EL -n -G0
@@ -33,3 +33,5 @@ all: $(BINS)
 
 %.o: %.s
 	$(CC) $(CFLAGS) -x assembler-with-cpp -g -c -o $@ $^
+
+

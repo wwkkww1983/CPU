@@ -13,7 +13,8 @@ module Control(
     output LuOp,
     output [3:0] ALUOp,
     output MOV,
-    output Exception);
+    output Exception,
+    output DoRead);
     wire [5:0] OpCode, Function;
     assign OpCode = Instruction[31:26];//后5位
     assign Function = Instruction[5:0];//最后的
@@ -79,5 +80,8 @@ module Control(
     assign ALUOp[3] = OpCode[0];
 
     assign MOV = ( OpCode == 6'h00 & Function == 6'h0b )? 1: 0;//是否是movn指令
+
+    assign DoRead = (OpCode == 6'h02 | OpCode == 6'h03
+        | OpCode == 6'h20 | OpCode == 6'h0f )? 0:1;
 
 endmodule
