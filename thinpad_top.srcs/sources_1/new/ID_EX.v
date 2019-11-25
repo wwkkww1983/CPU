@@ -1,10 +1,10 @@
 module ID_EX(reset, clk, Stall, Flush_IF_and_ID, 
     ID_PCSrc, ID_ALUOp, ID_Instruction, IF_PC, ID_PC_plus_4, ID_LU_out, ID_Databus1, ID_Databus2, 
-    ID_ALUSrc1, ID_ALUSrc2, ID_MemRead, ID_MemWrite, ID_MemtoReg, ID_RegWrite, ID_RegDst, 
+    ID_ALUSrc1, ID_ALUSrc2, ID_MemRead, ID_MemWrite, ID_MemtoReg, ID_RegWrite, ID_RegDst, MovNoWrite_ID,
     EX_PCSrc, EX_ALUOp, EX_Instruction, EX_PC_plus_4, EX_LU_out, EX_Databus1, EX_Databus2, 
-    EX_ALUSrc1, EX_ALUSrc2, EX_MemRead, EX_MemWrite, EX_MemtoReg, EX_RegWrite, EX_RegDst);
-    input reset, clk, Stall, Flush_IF_and_ID, ID_ALUSrc1, ID_ALUSrc2, ID_MemRead, ID_MemWrite, ID_RegWrite;//这些是要写进去的
-    output reg EX_ALUSrc1, EX_ALUSrc2, EX_MemRead, EX_MemWrite, EX_RegWrite;
+    EX_ALUSrc1, EX_ALUSrc2, EX_MemRead, EX_MemWrite, EX_MemtoReg, EX_RegWrite, EX_RegDst, MovNoWrite_EX);
+    input reset, clk, Stall, Flush_IF_and_ID, ID_ALUSrc1, ID_ALUSrc2, ID_MemRead, ID_MemWrite, ID_RegWrite, MovNoWrite_ID;//这些是要写进去的
+    output reg EX_ALUSrc1, EX_ALUSrc2, EX_MemRead, EX_MemWrite, EX_RegWrite, MovNoWrite_EX;
     input [1:0] ID_MemtoReg, ID_RegDst;
     output reg [1:0] EX_MemtoReg, EX_RegDst;
     input [2:0] ID_PCSrc;
@@ -29,7 +29,8 @@ module ID_EX(reset, clk, Stall, Flush_IF_and_ID,
             EX_Databus2 <= 32'b0;
             EX_LU_out <= 32'b0;// LU_out是用来做对外的
             EX_Instruction <= 32'h00000000;
-            EX_PC_plus_4 <= 32'h80000008;//这个呢...+4下一条是下个地方的
+            EX_PC_plus_4 <= 32'h80000008;//这个呢...+4下一条是下个地方的            Mov
+            MovNoWrite_EX <= 0;
         end
         else if (Stall | Flush_IF_and_ID) begin
             EX_ALUSrc1 <= ID_ALUSrc1;//Stall或者Flush的话,那么Ex的就是ID的
@@ -37,6 +38,7 @@ module ID_EX(reset, clk, Stall, Flush_IF_and_ID,
             EX_MemRead <= 0;//不读
             EX_MemWrite <= 0;//不写
             EX_RegWrite <= 0;//RegWrite这个阶段也不写
+            MovNoWrite_EX <= MovNoWrite_ID;
             EX_MemtoReg <= ID_MemtoReg;//ID_MemtoReg
             EX_RegDst <= ID_RegDst;
             EX_PCSrc <= ID_PCSrc;
@@ -62,6 +64,7 @@ module ID_EX(reset, clk, Stall, Flush_IF_and_ID,
             EX_LU_out <= ID_LU_out;
             EX_Instruction <= ID_Instruction;
             EX_PC_plus_4 <= ID_PC_plus_4;
+            MovNoWrite_EX <= MovNoWrite_ID;
         end
 
 endmodule

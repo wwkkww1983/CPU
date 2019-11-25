@@ -12,7 +12,6 @@ module Control(
     output ExtOp,
     output LuOp,
     output [3:0] ALUOp,
-    output MOV,
     output Exception,
     output DoRead);
     wire [5:0] OpCode, Function;
@@ -54,7 +53,7 @@ module Control(
             OpCode == 6'h20 | OpCode == 6'h0f |
             OpCode == 6'h23 | OpCode == 6'h0d |
             OpCode == 6'h28 | OpCode == 6'h0e )? 2'b01:
-            ( OpCode == 6'h03)? 2'b10: 2'b00;
+            ( OpCode == 6'h03 )? 2'b10: 2'b00;
 
     assign MemRead = ( OpCode == 6'h23 || OpCode==6'h20 )? 1:0;
     assign MemWrite = ( OpCode == 6'h2b || OpCode == 6'h28 )? 1:0;
@@ -78,8 +77,6 @@ module Control(
         (OpCode == 6'h0c)? 3'b010:(OpCode == 6'h0d)? 3'b011: 3'b000;// 010是and,011是xor,001是sub100是
     
     assign ALUOp[3] = OpCode[0];
-
-    assign MOV = ( OpCode == 6'h00 & Function == 6'h0b )? 1: 0;//是否是movn指令
 
     assign DoRead = (OpCode == 6'h02 | OpCode == 6'h03
         | OpCode == 6'h20 | OpCode == 6'h0f )? 0:1;

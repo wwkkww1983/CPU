@@ -1,7 +1,7 @@
-module MEM_WB(reset, clk, MEM_RegWrite, MEM_MemtoReg, MEM_Write_register, MEM_ALU_out, MEM_ReadData, MEM_PC_plus_4, 
-    WB_RegWrite, WB_MemtoReg, WB_Write_register, WB_ALU_out, WB_ReadData, WB_PC_plus_4);
-    input reset, clk, MEM_RegWrite;
-    output reg WB_RegWrite;
+module MEM_WB(reset, clk, MEM_RegWrite, MEM_MemtoReg, MEM_Write_register, MEM_ALU_out, MEM_ReadData, MEM_PC_plus_4, MovNoWrite_MEM,
+    WB_RegWrite, WB_MemtoReg, WB_Write_register, WB_ALU_out, WB_ReadData, WB_PC_plus_4, MovNoWrite_WB);
+    input reset, clk, MEM_RegWrite, MovNoWrite_MEM;
+    output reg WB_RegWrite, MovNoWrite_WB;
     input [1:0] MEM_MemtoReg;
     output reg [1:0] WB_MemtoReg;
     input [4:0] MEM_Write_register;
@@ -17,14 +17,16 @@ module MEM_WB(reset, clk, MEM_RegWrite, MEM_MemtoReg, MEM_Write_register, MEM_AL
             WB_ALU_out <= 32'b0;
             WB_ReadData <= 32'b0;
             WB_PC_plus_4 <= 32'b0;
+            MovNoWrite_WB <= 0;
         end
         else begin//都按照原来的
-            WB_RegWrite <= MEM_RegWrite;
+            WB_RegWrite <= MovNoWrite_MEM ? 0: MEM_RegWrite;
             WB_MemtoReg <= MEM_MemtoReg;
             WB_Write_register <= MEM_Write_register;
             WB_ALU_out <= MEM_ALU_out;
             WB_ReadData <= MEM_ReadData;
             WB_PC_plus_4 <= MEM_PC_plus_4;
+            MovNoWrite_WB <= MovNoWrite_MEM;
         end
 
 endmodule

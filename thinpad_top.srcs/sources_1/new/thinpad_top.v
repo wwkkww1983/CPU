@@ -153,7 +153,7 @@ reg[19:0] addr;
 reg[7:0] data;
 
 wire Exception, Branch, Flush_IF, Flush_IF_and_ID;
-wire ExtOp, LuOp, MOV;
+wire ExtOp, LuOp;
 wire ID_MemRead, EX_MemRead, MEM_MemRead;
 wire ID_MemWrite, EX_MemWrite, MEM_MemWrite;
 wire ID_RegWrite, EX_RegWrite, MEM_RegWrite, WB_RegWrite;
@@ -227,7 +227,7 @@ wire [31:0] IF_Instruction, ID_Instruction, EX_Instruction ,MEM_Instruction;
     Control control1(.Instruction(ID_Instruction), .PC_31(ID_PC_4[31]),
 		.PCSrc(ID_PCSrc), .RegDst(ID_RegDst), .RegWrite(ID_RegWrite), 
 		.MemRead(ID_MemRead), .MemWrite(ID_MemWrite), .MemtoReg(ID_MemtoReg),
-		.ALUSrc1(ID_ALUSrc1), .ALUSrc2(ID_ALUSrc2), .ExtOp(ExtOp), .LuOp(LuOp), .ALUOp(ID_ALUOp), .MOV(MOV), .Exception(Exception),
+		.ALUSrc1(ID_ALUSrc1), .ALUSrc2(ID_ALUSrc2), .ExtOp(ExtOp), .LuOp(LuOp), .ALUOp(ID_ALUOp), .Exception(Exception),
         .DoRead(DoRead));
 
     wire [31:0] ID_Data1, ID_Data2, ID_Data3;
@@ -248,11 +248,15 @@ wire [31:0] IF_Instruction, ID_Instruction, EX_Instruction ,MEM_Instruction;
     wire [31:0] Jump_target;
 	assign Jump_target = {ID_PC_4[31:28], ID_Instruction[25:0], 2'b00};//这个是在jump到的地方合起来的
 
+    wire MovNoWrite_ID, MovNoWrite_EX, MovNoWrite_MEM, MovNoWrite_WB;
+
+    assign MovNoWrite_ID = (ID_Instruction[31:26] == 6'h00 & ID_Instruction[5:0] == 6'h0b & EX_Data2w == 32'h00000000 );
+
     ID_EX ID_EX(reset, clk, Stall, Flush_IF_and_ID,
         ID_PCSrc, ID_ALUOp, ID_Instruction,IF_PC,  ID_PC_4 ,ID_LU_out, EX_Data1w, EX_Data2w,
-        ID_ALUSrc1, ID_ALUSrc2, ID_MemRead,ID_MemWrite, ID_MemtoReg, ID_RegWrite, ID_RegDst, 
+        ID_ALUSrc1, ID_ALUSrc2, ID_MemRead,ID_MemWrite, ID_MemtoReg, ID_RegWrite, ID_RegDst, MovNoWrite_ID,
         EX_PCSrc, EX_ALUOp, EX_Instruction, EX_PC_4, EX_LU_out, EX_Data1, EX_Data2, 
-        EX_ALUSrc1, EX_ALUSrc2, EX_MemRead, EX_MemWrite, EX_MemtoReg, EX_RegWrite, EX_RegDst);
+        EX_ALUSrc1, EX_ALUSrc2, EX_MemRead, EX_MemWrite, EX_MemtoReg, EX_RegWrite, EX_RegDst, MovNoWrite_EX);
 
     wire [4:0] ALUToken;
     wire Signed;
@@ -260,7 +264,7 @@ wire [31:0] IF_Instruction, ID_Instruction, EX_Instruction ,MEM_Instruction;
 
     wire[31:0] ALU_in1, ALU_in2, EX_ALU_out, MEM_ALU_out, WB_ALU_out;
 
-    assign ALU_in1 = EX_ALUSrc1 ?{27'h00000, EX_Instruction[10:6]}: MOV? 32'h00000000 : EX_Data1;
+    assign ALU_in1 = EX_ALUSrc1 ?{27'h00000, EX_Instruction[10:6]}: EX_Data1;
     assign ALU_in2 = EX_ALUSrc2? EX_LU_out: EX_Data2;
     ALU alu(.in1(ALU_in1), .in2(ALU_in2), .ALUCtl(ALUToken), .Sign(Signed), .OpCode(EX_Instruction[31:26]), .out(EX_ALU_out), .Branch(Branch));
 
@@ -279,11 +283,8 @@ wire [31:0] IF_Instruction, ID_Instruction, EX_Instruction ,MEM_Instruction;
         (EX_RegDst == 2'b01)? EX_Instruction[20:16]:
         (EX_RegDst == 2'b10)? 5'd31:
         (EX_RegDst == 2'b11)? 5'd26: 5'd26;//要得到写的内容!
-
-    wire MovNoWrite = ( MOV & ALU_in2 == 32'h00000000 );//是MOVN况且还不用MOV
-
-    EX_MEM EX_MEM(reset, clk, EX_Instruction, EX_MemRead, EX_MemWrite, EX_RegWrite, EX_MemtoReg, EX_Registerw, EX_ALU_out, EX_Data2, EX_PC_4, 
-        MEM_MemRead, MEM_MemWrite, MEM_Instruction, MEM_RegWrite, MEM_MemtoReg, MEM_Registerw, MEM_ALU_out, MEM_Data2, MEM_PC_4);    
+    EX_MEM EX_MEM(reset, clk, EX_Instruction, EX_MemRead, EX_MemWrite, EX_RegWrite, EX_MemtoReg, EX_Registerw, EX_ALU_out, EX_Data2, EX_PC_4,MovNoWrite_EX, 
+        MEM_MemRead, MEM_MemWrite, MEM_Instruction, MEM_RegWrite, MEM_MemtoReg, MEM_Registerw, MEM_ALU_out, MEM_Data2, MEM_PC_4, MovNoWrite_MEM);    
     
     wire [31:0] MEM_ReadData, WB_ReadData;
 
@@ -292,8 +293,11 @@ wire [31:0] IF_Instruction, ID_Instruction, EX_Instruction ,MEM_Instruction;
         .ext_ram_addr(ext_ram_addr), .ext_ram_ce_n(ext_ram_ce_n), .ext_ram_oe_n(ext_ram_oe_n), .ext_ram_we_n(ext_ram_we_n)
     );
 
-    MEM_WB MEM_WB(reset, clk, MEM_RegWrite, MEM_MemtoReg, MEM_Registerw, MEM_ALU_out, MEM_ReadData, MEM_PC_4, 
-        WB_RegWrite, WB_MemtoReg, WB_Registerw, WB_ALU_out, WB_ReadData, WB_PC_4);
+    wire MovNoWrite;
+    assign MovNoWrite = (MEM_Instruction[31:26] == 6'h00 & MEM_Instruction[5:0] == 6'h0b & MEM_Data2 == 32'h00000000 );
+
+    MEM_WB MEM_WB(reset, clk, MEM_RegWrite, MEM_MemtoReg, MEM_Registerw, MEM_ALU_out, MEM_ReadData, MEM_PC_4, MovNoWrite_MEM,
+        WB_RegWrite, WB_MemtoReg, WB_Registerw, WB_ALU_out, WB_ReadData, WB_PC_4, MovNoWrite_WB);
 
     assign ID_Data3 = (WB_MemtoReg == 2'b00)? WB_ALU_out: (WB_MemtoReg == 2'b01)? WB_ReadData: {1'b0, WB_PC_4[30:0]};//注意循环内存!
     assign EX_Data3 = (EX_MemtoReg == 2'b00)? EX_ALU_out: {1'b0, EX_PC_4[30:0]};
@@ -301,13 +305,13 @@ wire [31:0] IF_Instruction, ID_Instruction, EX_Instruction ,MEM_Instruction;
 
     wire [1:0] ForwardA, ForwardB;//按照ppt上的算法处理冒险
 
-    assign ForwardA = (~(MovNoWrite) & EX_RegWrite & (EX_Registerw != 0 ) & (EX_Registerw == ID_Instruction[25:21]))? 2'b01:
-                    (MEM_RegWrite & (MEM_Registerw != 0) & (MEM_Registerw == ID_Instruction[25:21]))? 2'b10:
-                    (WB_RegWrite & (WB_Registerw != 0) & (WB_Registerw == ID_Instruction[25:21]))? 2'b11: 2'b00;
+    assign ForwardA = (~(MovNoWrite_EX) & EX_RegWrite & (EX_Registerw != 0 ) & (EX_Registerw == ID_Instruction[25:21]))? 2'b01:
+                    (~(MovNoWrite_MEM) & MEM_RegWrite & (MEM_Registerw != 0) & (MEM_Registerw == ID_Instruction[25:21]))? 2'b10:
+                    (~(MovNoWrite_WB) & WB_RegWrite & (WB_Registerw != 0) & (WB_Registerw == ID_Instruction[25:21]))? 2'b11: 2'b00;
 
-    assign ForwardB = ( ~(MovNoWrite) & EX_RegWrite & (EX_Registerw != 0) & (EX_Registerw == ID_Instruction[20:16]))? 2'b01:
-                    (MEM_RegWrite &(MEM_Registerw != 0 )& (MEM_Registerw == ID_Instruction[20:16]))? 2'b10:
-                    (WB_RegWrite & (WB_Registerw != 0) & (MEM_Registerw == ID_Instruction[20:16]))? 2'b11: 2'b00;
+    assign ForwardB = ( ~(MovNoWrite_EX) & EX_RegWrite & (EX_Registerw != 0) & (EX_Registerw == ID_Instruction[20:16]))? 2'b01:
+                    ( ~(MovNoWrite_MEM) & MEM_RegWrite &(MEM_Registerw != 0 )& (MEM_Registerw == ID_Instruction[20:16]))? 2'b10:
+                    (~(MovNoWrite_WB) & WB_RegWrite & (WB_Registerw != 0) & (WB_Registerw == ID_Instruction[20:16]))? 2'b11: 2'b00;
 
     assign EX_Data1w = 
         (ForwardA == 2'b01)? EX_Data3: 
