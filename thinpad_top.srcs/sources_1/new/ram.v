@@ -141,19 +141,20 @@ always @ (*) begin
                         base_ram_ce_n_reg <= 1'b0;
                         if(mem_we) begin
                             inner_ram_data <= 32'bz;
+                            //base_ram_be_n_reg <= 4'b0000;
                             case (Op)
                                 6'b101000 : begin
                                     if(mem_addr[1:0]==2'b11) begin
-                                        base_ram_be_n_reg <= 4'b0111;
+                                        base_ram_be_n_reg <= 4'b1110;
                                         inner_ram_data[31:24] <= mem_data_i[7:0];
                                     end else if(mem_addr[1:0]==2'b10) begin
-                                        base_ram_be_n_reg <= 4'b1011;
+                                        base_ram_be_n_reg <= 4'b1101;
                                         inner_ram_data[23:16] <= mem_data_i[7:0];
                                     end else if(mem_addr[1:0]== 2'b01) begin
-                                        base_ram_be_n_reg <= 4'b1101;
+                                        base_ram_be_n_reg <= 4'b1011;
                                         inner_ram_data[15:8] <= mem_data_i[7:0];
                                     end else begin
-                                        base_ram_be_n_reg <= 4'b1110;
+                                        base_ram_be_n_reg <= 4'b0111;
                                         inner_ram_data[7:0] <= mem_data_i[7:0];
                                     end
                                 end
@@ -175,19 +176,20 @@ always @ (*) begin
                         ext_ram_ce_n_reg <= 1'b0;
                         if(mem_we) begin
                             inner_ram_data <= 32'bz;
+                            //ext_ram_be_n_reg <= 4'b0000;
                             case (Op)
                                 6'b101000 : begin
                                     if(mem_addr[1:0]==2'b11) begin
-                                        ext_ram_be_n_reg <= 4'b0111;
+                                        ext_ram_be_n_reg <= 4'b1110;
                                         inner_ram_data[31:24] <= mem_data_i[7:0];
                                     end else if(mem_addr[1:0]==2'b10) begin
-                                        ext_ram_be_n_reg <= 4'b1011;
+                                        ext_ram_be_n_reg <= 4'b1101;
                                         inner_ram_data[23:16] <= mem_data_i[7:0];
                                     end else if(mem_addr[1:0]== 2'b01) begin
-                                        ext_ram_be_n_reg <= 4'b1101;
+                                        ext_ram_be_n_reg <= 4'b1011;
                                         inner_ram_data[15:8] <= mem_data_i[7:0];
                                     end else begin
-                                        ext_ram_be_n_reg <= 4'b1110;
+                                        ext_ram_be_n_reg <= 4'b0111;
                                         inner_ram_data[7:0] <= mem_data_i[7:0];
                                     end
                                 end

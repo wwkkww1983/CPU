@@ -319,7 +319,7 @@ wire [31:0] IF_Instruction, ID_Instruction, EX_Instruction ,MEM_Instruction;
         .base_chosen_inst(base_ram_inst), .ext_chosen_inst(ext_ram_inst), .base_chosen_mem(base_ram_mem), .ext_chosen_mem(ext_ram_mem),
         .RW(rw));*/
 
-    ram ram( .rst(reset), .inst_ce(ce), .inst_addr(PC), .inst(IF_Instruction), .mem_ce(MEM_MemRead | MEM_MemWrite), .mem_we(MEM_MemWrite),
+    ram ram( .rst(reset), .inst_ce(ce), .inst_addr(PC), .inst(IF_Instruction), .mem_ce( MEM_MemRead | MEM_MemWrite ), .mem_we(MEM_MemWrite),
         .mem_addr(MEM_ALU_out), .mem_data_i(MEM_Data2), .mem_data_o(MEM_ReadData), .base_ram_data(base_ram_data), .base_ram_addr(base_ram_addr),
         .base_ram_be_n(base_ram_be_n), .base_ram_ce_n(base_ram_ce_n), .base_ram_oe_n(base_ram_oe_n), .base_ram_we_n(base_ram_we_n), 
         .ext_ram_data(ext_ram_data), .ext_ram_addr(ext_ram_addr), .ext_ram_be_n(ext_ram_be_n), .ext_ram_ce_n(ext_ram_ce_n), 
