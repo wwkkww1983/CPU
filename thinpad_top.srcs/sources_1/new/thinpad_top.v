@@ -212,16 +212,16 @@ assign IF_PC_4[30:0] = PC[30:0] +3'd4;
 assign IF_PC_4[31] = PC[31];
 wire [31:0] IF_Instruction, ID_Instruction, EX_Instruction ,MEM_Instruction;
     
-    Inst_Mem Inst_Mem(.ce(ce), .clk(clk), .Address(PC),.Instruction(IF_Instruction),.baseram_data(base_ram_data),
-        .baseram_addr(base_ram_addr),.baseram_ce(base_ram_ce_n),.baseram_oe(base_ram_oe_n),.baseram_we(base_ram_we_n)
-    );
+    // Inst_Mem Inst_Mem(.ce(ce), .clk(clk), .Address(PC),.Instruction(IF_Instruction),.baseram_data(base_ram_data),
+    //     .baseram_addr(base_ram_addr),.baseram_ce(base_ram_ce_n),.baseram_oe(base_ram_oe_n),.baseram_we(base_ram_we_n)
+    // );
 
     assign Flush_IF = (ID_PCSrc == 3'b010) | (ID_PCSrc == 3'b011);// j类和r
     assign Flush_IF_and_ID = Branch & ( EX_PCSrc == 3'b001 );// 刷新清零,下一条读进来的指令
 
-    assign Stall = EX_MemRead &
+    assign Stall = (EX_MemRead &
         ((EX_Instruction[20:16] == ID_Instruction[25:21]) |
-        (EX_Instruction[20:16] == ID_Instruction[20:16]));// 数据冲突需要stall一个周期
+        (EX_Instruction[20:16] == ID_Instruction[20:16]))) | BaseRamConflict;// 数据冲突需要stall一个周期
     IF_ID IF_ID(.reset(reset), .clk(clk), .Flush( Flush_IF || Flush_IF_and_ID), .Stall(Stall),
          .IF_PC(IF_PC), .IF_PC_plus_4(IF_PC_4), .IF_Instruction(IF_Instruction), .ID_Instruction(ID_Instruction), .ID_PC_plus_4(ID_PC_4));
 
@@ -289,10 +289,17 @@ wire [31:0] IF_Instruction, ID_Instruction, EX_Instruction ,MEM_Instruction;
     
     wire [31:0] MEM_ReadData, WB_ReadData;
 
-    DataMemory DataMemory(.reset(reset), .ce(MEM_MemRead | MEM_MemWrite), .Address(MEM_ALU_out),.Write_data(MEM_Data2),.Read_data(MEM_ReadData),
-        .Op(MEM_Instruction[31:26]), .MemRead(MEM_MemRead), .MemWrite(MEM_MemWrite), .ext_ram_data(ext_ram_data),
-        .ext_ram_addr(ext_ram_addr), .ext_ram_ce_n(ext_ram_ce_n), .ext_ram_oe_n(ext_ram_oe_n), .ext_ram_we_n(ext_ram_we_n)
-    );
+    wire BaseRamConflict;
+    assign BaseRamConflict = (MEM_MemRead | MEM_MemWrite) & (MEM_ALU_out >= 32'h80000000 && MEM_ALU_out < 32'h80400000);
+
+    // DataMemory DataMemory(.reset(reset), .ce(MEM_MemRead | MEM_MemWrite), .Address(MEM_ALU_out),.Write_data(MEM_Data2),.Read_data(MEM_ReadData),
+    //     .Op(MEM_Instruction[31:26]), .MemRead(MEM_MemRead), .MemWrite(MEM_MemWrite), .ext_ram_data(ext_ram_data),
+    //     .ext_ram_addr(ext_ram_addr), .ext_ram_ce_n(ext_ram_ce_n), .ext_ram_oe_n(ext_ram_oe_n), .ext_ram_we_n(ext_ram_we_n)
+    // );
+
+    Bus Bus(.clk(clk), .rst(reset), .inst_ce(Stall), .inst_addr(PC), .inst(IF_Instruction), .mem_ce(~(MEM_MemRead | MEM_MemWrite)), .mem_we(MEM_MemWrite), .mem_addr(MEM_ALU_out),
+    .mem_in_data(MEM_Data2), .mem_out_data(MEM_ReadData), .base_ram_data(base_ram_data), .base_ram_addr(base_ram_addr), .base_ram_ce_n(base_ram_ce_n), .base_ram_oe_n(base_ram_oe_n), 
+    .base_ram_we_n(base_ram_we_n), .ext_ram_data(ext_ram_data), .ext_ram_addr(ext_ram_addr), .ext_ram_ce_n(ext_ram_ce_n), .ext_ram_oe_n(ext_ram_oe_n), .ext_ram_we_n(ext_ram_we_n));
 
     wire MovNoWrite;
     assign MovNoWrite = (MEM_Instruction[31:26] == 6'h00 & MEM_Instruction[5:0] == 6'h0b & MEM_Data2 == 32'h00000000 );
