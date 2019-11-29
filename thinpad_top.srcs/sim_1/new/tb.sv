@@ -1,4 +1,3 @@
-`timescale 1ns / 1ps
 module tb;
 
 wire clk_50M, clk_11M0592;
@@ -45,8 +44,8 @@ wire flash_byte_n;       //Flash 8bit模式选择，低有效。在使用flash�
 //wire uart_tbre;          //发送数据标志
 //wire uart_tsre;          //数据发送完毕标志
 //Windows需要注意路径分隔符的转义，例如"D:\\foo\\bar.bin"
-parameter BASE_RAM_INIT_FILE = "/home/ericsam413/Desktop/dev2/gendata/fib.bin"; //BaseRAM初始化文件，请修改为实际的绝对路径
-parameter EXT_RAM_INIT_FILE = "/home/ericsam413/Desktop/dev2/txt2bin/data.bin";    //ExtRAM初始化文件，请修改为实际的绝对路径
+parameter BASE_RAM_INIT_FILE = "/home/ericsam413/Desktop/dev1/gendata/fib.bin"; //BaseRAM初始化文件，请修改为实际的绝对路径
+parameter EXT_RAM_INIT_FILE = "/home/ericsam413/Desktop/dev1/txt2bin/data.bin";    //ExtRAM初始化文件，请修改为实际的绝对路径
 parameter FLASH_INIT_FILE = "/tmp/kernel.elf";    //Flash初始化文件，请修改为实际的绝对路径
 
 assign rxd = 1'b1; //idle state
@@ -158,7 +157,7 @@ sram_model ext1(/*autoinst*/
             .CE_n(ext_ram_ce_n),
             .WE_n(ext_ram_we_n),
             .LB_n(ext_ram_be_n[0]),
-            .UB_n(ext_ram_be_n[1]));
+            .UB_n(ext_ram_be_n[1]));// LB是什么，UB是什么
 sram_model ext2(/*autoinst*/
             .DataIO(ext_ram_data[31:16]),
             .Address(ext_ram_addr[19:0]),
