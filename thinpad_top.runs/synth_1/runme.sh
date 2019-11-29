@@ -20,7 +20,7 @@ else
 fi
 export LD_LIBRARY_PATH
 
-HD_PWD='/home/ericsam413/Desktop/cod19grp33-dev/thinpad_top.runs/synth_1'
+HD_PWD='/home/ericsam413/Desktop/dev2/thinpad_top.runs/synth_1'
 cd "$HD_PWD"
 
 HD_LOG=runme.log
