@@ -188,9 +188,10 @@ always @(posedge clk_11M0592)
 
 assign IF_PC = Stall? PC: PC_next;//如果是stall就是PC,是PC_NEXT
 
-reg ce = 0;
 
-always @(*) begin
+reg ce = 0;
+// assign ce = ~reset;
+always @(reset_btn) begin
     if(reset) begin
         ce <= 1'b0;
     end else begin
