@@ -44,14 +44,14 @@ wire flash_byte_n;       //Flash 8bit模式选择，低有效。在使用flash�
 //wire uart_tbre;          //发送数据标志
 //wire uart_tsre;          //数据发送完毕标志
 //Windows需要注意路径分隔符的转义，例如"D:\\foo\\bar.bin"
-parameter BASE_RAM_INIT_FILE = "/home/ericsam413/Desktop/dev1/gendata/kernel.bin"; //BaseRAM初始化文件，请修改为实际的绝对路径
-parameter EXT_RAM_INIT_FILE = "/home/ericsam413/Desktop/dev1/txt2bin/data.bin";    //ExtRAM初始化文件，请修改为实际的绝对路径
+parameter BASE_RAM_INIT_FILE = "F:\\cod\\CPU\\gendata\\kernel.bin"; //BaseRAM初始化文件，请修改为实际的绝对路径
+parameter EXT_RAM_INIT_FILE = "F:\\cod\\CPU\\txt2bin\\data.bin";    //ExtRAM初始化文件，请修改为实际的绝对路径
 parameter FLASH_INIT_FILE = "/tmp/kernel.elf";    //Flash初始化文件，请修改为实际的绝对路径
 
 assign rxd = 1'b1; //idle state
 
 initial begin
-    $dumpfile("thinpad.vcd");
+    $dumpfile("thinpad_top.vcd");
     $dumpvars(0,tb);
 end
 
@@ -80,7 +80,7 @@ end
 
 // 待测试用户设计
 
-wire reset, ce;
+wire reset, ce, clk;
 wire [31:0] IF_Instruction;
 wire [31:0] MEM_Instruction;
 wire MEM_MemRead, MEM_MemWrite;
@@ -88,21 +88,31 @@ wire [31:0] MEM_ALU_out;
 wire [31:0] MEM_Data2;
 wire [31:0] PC;
 wire [31:0] MEM_ReadData;
-wire [31:0] MEM_Instruction;
 wire Stall;
 
-reg reset_reg, ce_reg;
+reg reset_reg, ce_reg, clk_reg;
 reg [31:0] IF_Instruction_reg;
 reg [31:0] MEM_Instruction_reg;
 reg MEM_MemRead_reg, MEM_MemWrite_reg;
 reg [31:0] MEM_ALU_out_reg;
 reg [31:0] MEM_Data2_reg;
 reg [31:0] PC_reg;
-reg [31:0] MEM_ReadData_reg;
-reg [31:0] MEM_Instruction_reg;
 reg Stall_reg;
 
-ram ram(.clk(clock_btn), .rst(reset), .inst_ce(ce), .inst_addr(PC), .inst(IF_Instruction), .mem_ce( MEM_MemRead | MEM_MemWrite ), .mem_we(MEM_MemWrite),
+assign reset = reset_reg;
+assign clk = clk_reg;
+assign ce = ce_reg;
+assign IF_Instruction = IF_Instruction_reg;
+assign MEM_Instruction = MEM_Instruction_reg;
+assign MEM_MemRead = MEM_MemRead_reg;
+assign MEM_MemWrite = MEM_MemWrite_reg;
+assign MEM_ALU_out = MEM_ALU_out_reg;
+assign MEM_Data2 = MEM_Data2_reg;
+assign PC = PC_reg;
+assign Stall = Stall_reg;
+
+
+ram ram(.clk(clk_reg), .rst(reset), .inst_ce(ce), .inst_addr(PC), .inst(IF_Instruction), .mem_ce( MEM_MemRead | MEM_MemWrite ), .mem_we(MEM_MemWrite),
         .mem_addr(MEM_ALU_out), .mem_data_i(MEM_Data2), .mem_data_o(MEM_ReadData), .base_ram_data(base_ram_data), .base_ram_addr(base_ram_addr),
         .base_ram_be_n(base_ram_be_n), .base_ram_ce_n(base_ram_ce_n), .base_ram_oe_n(base_ram_oe_n), .base_ram_we_n(base_ram_we_n), 
         .ext_ram_data(ext_ram_data), .ext_ram_addr(ext_ram_addr), .ext_ram_be_n(ext_ram_be_n), .ext_ram_ce_n(ext_ram_ce_n), 
@@ -111,60 +121,28 @@ ram ram(.clk(clock_btn), .rst(reset), .inst_ce(ce), .inst_addr(PC), .inst(IF_Ins
 
 initial begin 
     //在这里可以自定义测试输入序列，例如：
-    dip_sw = 32'h2;
-    touch_btn = 0;
-    reset_btn = 1;
+    reset_reg = 1;
     #1;
-    reset_btn = 0;
+    reset_reg = 0;
     for (int i = 0; i < 20; i = i+1) begin
         #100; //等待100ns
-        clock_btn = 1; //按下手工时钟按钮
+        clk_reg <= 1; //按下手工时钟按钮
+        ce_reg <= 1'b0;
+        MEM_MemRead_reg <= 1'b0;
+        MEM_MemWrite_reg <= 1'b1;
+        MEM_ALU_out_reg <= 32'h80000001;
+        MEM_Data2_reg <= 32'h80000008;
+        MEM_Instruction_reg <= 32'b10100010100010100010100010100010;
+        Stall_reg <= 1'b1;
         #100; //等待100ns
-        clock_btn = 0; //松开手工时钟按钮
+        clk_reg <= 0; //松开手工时钟按钮
     end
     // 模拟PC通过串口发送字符
    // cpld.pc_send_byte(8'h32);
     // #10000;
     // cpld.pc_send_byte(8'h33);
 end
-// thinpad_top dut(
-//     .clk_50M(clk_50M),
-//     .clk_11M0592(clk_11M0592),
-//     .clock_btn(clock_btn),
-//     .reset_btn(reset_btn),
-//     .touch_btn(touch_btn),
-//     .dip_sw(dip_sw),
-//     .leds(leds),
-//     .dpy1(dpy1),
-//     .dpy0(dpy0),
-//     .txd(txd),
-//     .rxd(rxd),
-//     //.uart_rdn(uart_rdn),
-//     //.uart_wrn(uart_wrn),
-//     //.uart_dataready(uart_dataready),
-//     //.uart_tbre(uart_tbre),
-//     //.uart_tsre(uart_tsre),
-//     .base_ram_data(base_ram_data),
-//     .base_ram_addr(base_ram_addr),
-//     .base_ram_ce_n(base_ram_ce_n),
-//     .base_ram_oe_n(base_ram_oe_n),
-//     .base_ram_we_n(base_ram_we_n),
-//     .base_ram_be_n(base_ram_be_n),
-//     .ext_ram_data(ext_ram_data),
-//     .ext_ram_addr(ext_ram_addr),
-//     .ext_ram_ce_n(ext_ram_ce_n),
-//     .ext_ram_oe_n(ext_ram_oe_n),
-//     .ext_ram_we_n(ext_ram_we_n),
-//     .ext_ram_be_n(ext_ram_be_n),
-//     .flash_d(flash_d),
-//     .flash_a(flash_a),
-//     .flash_rp_n(flash_rp_n),
-//     .flash_vpen(flash_vpen),
-//     .flash_oe_n(flash_oe_n),
-//     .flash_ce_n(flash_ce_n),
-//     .flash_byte_n(flash_byte_n),
-//     .flash_we_n(flash_we_n)
-// );
+
 // 时钟源
 clock osc(
     .clk_11M0592(clk_11M0592),
