@@ -13,11 +13,11 @@ module thinpad_top(
     output wire[7:0]  dpy1,       //数码管高位信号，包括小数点，输出1点亮
 
     //CPLD串口控制器信号
-    //output wire uart_rdn,         //读串口信号，低有效
-    //output wire uart_wrn,         //写串口信号，低有效
-    //input wire uart_dataready,    //串口数据准备好
-    //input wire uart_tbre,         //发送数据标志
-    //input wire uart_tsre,         //数据发送完毕标志
+    output wire uart_rdn,         //读串口信号，低有效
+    output wire uart_wrn,         //写串口信号，低有效
+    input wire uart_dataready,    //串口数据准备好
+    input wire uart_tbre,         //发送数据标志
+    input wire uart_tsre,         //数据发送完毕标志
 
     //BaseRAM信号
     inout wire[31:0] base_ram_data,  //BaseRAM数据，低8位与CPLD串口控制器共享
@@ -323,7 +323,8 @@ wire [31:0] IF_Instruction, ID_Instruction, EX_Instruction ,MEM_Instruction;
         .mem_addr(MEM_ALU_out), .mem_data_i(MEM_Data2), .mem_data_o(MEM_ReadData), .base_ram_data(base_ram_data), .base_ram_addr(base_ram_addr),
         .base_ram_be_n(base_ram_be_n), .base_ram_ce_n(base_ram_ce_n), .base_ram_oe_n(base_ram_oe_n), .base_ram_we_n(base_ram_we_n), 
         .ext_ram_data(ext_ram_data), .ext_ram_addr(ext_ram_addr), .ext_ram_be_n(ext_ram_be_n), .ext_ram_ce_n(ext_ram_ce_n), 
-        .ext_ram_oe_n(ext_ram_oe_n), .ext_ram_we_n(ext_ram_we_n), .Op(MEM_Instruction[31:26]), .stall(Stall));
+        .ext_ram_oe_n(ext_ram_oe_n), .ext_ram_we_n(ext_ram_we_n), .Op(MEM_Instruction[31:26]), .stall(Stall),
+        .uart_rdn(uart_rdn), .uart_wrn(uart_wrn), .uart_dataready(uart_dataready), .uart_tbre(uart_tbre), .uart_tsre(uart_tsre));
 
 /*直连串口接收发送演示，从直连串口收到的数据再发送出去
 wire [7:0] ext_uart_rx;

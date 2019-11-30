@@ -1,5 +1,5 @@
 module ram(
-    //input wire                 clk,
+    input wire                 clk,
     input wire                 rst,
 
     // inst
@@ -32,13 +32,13 @@ module ram(
 
     input wire[5:0]            Op,
 
-    input wire                 stall
+    input wire                 stall,
     
-   /* output wire uart_rdn,         
-    output wire uart_wrn,         
-    input wire uart_dataready,    
-    input wire uart_tbre,         
-    input wire uart_tsre         */
+    output wire                uart_rdn,         
+    output wire                uart_wrn,         
+    input wire                 uart_dataready,    
+    input wire                 uart_tbre,         
+    input wire                 uart_tsre         
 );
 
     // regs for always assign
@@ -60,14 +60,14 @@ module ram(
     //reg inst_mem_sel; // true is inst, false is mem
     wire[31:0] read_from_ram_data;
     
-    //reg uart_read_or_write; // true for read, false for write
-    //reg uart_rdn_reg;
-    //reg uart_wrn_reg;
-    //reg uart_reading_flag; // true means is reading, false means is not reading
-    //wire uart_writable;
-    //assign uart_rdn = uart_rdn_reg;
-    //assign uart_wrn = uart_wrn_reg;
-    //assign uart_writable = (uart_tbre == 1'b1 && uart_tsre == 1'b1) ? 1'b1 : 1'b0;
+    reg uart_read_or_write; // true for read, false for write
+    reg uart_rdn_reg;
+    reg uart_wrn_reg;
+    reg uart_reading_flag; // true means is reading, false means is not reading
+    wire uart_writable;
+    assign uart_rdn = uart_rdn_reg;
+    assign uart_wrn = uart_wrn_reg;
+    assign uart_writable = (uart_tbre == 1'b1 && uart_tsre == 1'b1) ? 1'b1 : 1'b0;
     
     assign base_ram_data = (write_flag && base_ext_sel) ? inner_ram_data : 32'bz;  // assign according to write_flag!!!
     assign base_ram_addr = (inst_ce == 1'b1 && stall == 0) ? inst_addr[21:2] : mem_addr[21:2];//如果是的话，那么先看21:2，或者是
@@ -106,7 +106,9 @@ module ram(
 
 always @ (*) begin
         if (rst == 1'b1) begin //如果reset的话
-        
+            uart_wrn_reg <= 1'b1;
+            uart_rdn_reg <= 1'b1;
+
             base_ram_ce_n_reg <= 1'b1;
             base_ram_oe_n_reg <= 1'b1;
             base_ram_we_n_reg <= 1'b1;
@@ -121,7 +123,9 @@ always @ (*) begin
             write_flag <= 1'b0;
         
         end else begin
-        
+            uart_wrn_reg <= 1'b1;
+            uart_rdn_reg <= 1'b1;
+
             base_ram_ce_n_reg <= 1'b1;
             base_ram_we_n_reg <= 1'b1;
             base_ram_oe_n_reg <= 1'b1;
@@ -136,25 +140,34 @@ always @ (*) begin
             write_flag <= 1'b0;
 
             if (mem_ce == 1'b1) begin                                        
-                                                                    // mem
+                if (mem_addr == 32'hbfd003f8 || mem_addr == 32'hbfd003fc) begin
+                    if (mem_we && mem_addr == 32'hbfd003f8) begin                  // uart + sb write to SerialData
+                        write_flag <= 1'b1;
+                        inner_ram_data <= {24'b0, mem_data_i[7:0]};
+                        uart_wrn_reg <= clk;//1'b0;
+                    end else begin                                                  // uart + lb (read)
+                        if (mem_addr == 32'hbfd003f8) begin                         // read from SerialData
+                            uart_rdn_reg <= clk;//1'b0;
+                        end
+                    end
+                end else begin
                     if (base_ext_sel) begin                                         // mem + base
                         base_ram_ce_n_reg <= 1'b0;
                         if(mem_we) begin
                             inner_ram_data <= 32'bz;
-                            //base_ram_be_n_reg <= 4'b0000;
                             case (Op)
                                 6'b101000 : begin
                                     if(mem_addr[1:0]==2'b11) begin
-                                        base_ram_be_n_reg <= 4'b1110;
+                                        base_ram_be_n_reg <= 4'b0111;
                                         inner_ram_data[31:24] <= mem_data_i[7:0];
                                     end else if(mem_addr[1:0]==2'b10) begin
-                                        base_ram_be_n_reg <= 4'b1101;
+                                        base_ram_be_n_reg <= 4'b1011;
                                         inner_ram_data[23:16] <= mem_data_i[7:0];
                                     end else if(mem_addr[1:0]== 2'b01) begin
-                                        base_ram_be_n_reg <= 4'b1011;
+                                        base_ram_be_n_reg <= 4'b1101;
                                         inner_ram_data[15:8] <= mem_data_i[7:0];
                                     end else begin
-                                        base_ram_be_n_reg <= 4'b0111;
+                                        base_ram_be_n_reg <= 4'b1110;
                                         inner_ram_data[7:0] <= mem_data_i[7:0];
                                     end
                                 end
@@ -176,20 +189,19 @@ always @ (*) begin
                         ext_ram_ce_n_reg <= 1'b0;
                         if(mem_we) begin
                             inner_ram_data <= 32'bz;
-                            //ext_ram_be_n_reg <= 4'b0000;
                             case (Op)
                                 6'b101000 : begin
                                     if(mem_addr[1:0]==2'b11) begin
-                                        ext_ram_be_n_reg <= 4'b1110;
+                                        ext_ram_be_n_reg <= 4'b0111;
                                         inner_ram_data[31:24] <= mem_data_i[7:0];
                                     end else if(mem_addr[1:0]==2'b10) begin
-                                        ext_ram_be_n_reg <= 4'b1101;
+                                        ext_ram_be_n_reg <= 4'b1011;
                                         inner_ram_data[23:16] <= mem_data_i[7:0];
                                     end else if(mem_addr[1:0]== 2'b01) begin
-                                        ext_ram_be_n_reg <= 4'b1011;
+                                        ext_ram_be_n_reg <= 4'b1101;
                                         inner_ram_data[15:8] <= mem_data_i[7:0];
                                     end else begin
-                                        ext_ram_be_n_reg <= 4'b0111;
+                                        ext_ram_be_n_reg <= 4'b1110;
                                         inner_ram_data[7:0] <= mem_data_i[7:0];
                                     end
                                 end
@@ -207,9 +219,11 @@ always @ (*) begin
                             ext_ram_we_n_reg <= 1'b1;
                             write_flag <= 1'b0;
                         end
+                    end
                 end
-
             end else if (inst_ce == 1'b1) begin  // inst
+                uart_wrn_reg <= 1'b1;
+                uart_rdn_reg <= 1'b1;
                 write_flag = 1'b0;
                 if (base_ext_sel) begin                 // inst + base
                     base_ram_be_n_reg <= 4'b0000;
@@ -248,6 +262,10 @@ always @ (*) begin
 always @* begin
         if (rst == 1'b1 || mem_ce == 1'b0) begin
             mem_data_o <= 32'b0;
+        end else if (mem_ce == 1'b0 && mem_addr == 32'hbfd003fc && mem_we == 1'b0) begin // Serial Status
+            mem_data_o <= {30'b0, uart_dataready, uart_writable};
+        end else if (mem_ce == 1'b0 && mem_addr == 32'hbfd003f8 && mem_we == 1'b0) begin // Serial Data
+            mem_data_o <= {24'b0, base_ram_data[7:0]};
         end else if(mem_we == 1'b0) begin // read
             case (Op)
                 6'b100000: begin//LB
