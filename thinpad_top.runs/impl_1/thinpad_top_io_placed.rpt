@@ -1,7 +1,7 @@
 Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
 -------------------------------------------------------------------------------------------------
 | Tool Version              : Vivado v.2018.3 (win64) Build 2405991 Thu Dec  6 23:38:27 MST 2018
-| Date                      : Sat Nov 30 04:37:12 2019
+| Date                      : Sat Nov 30 17:00:41 2019
 | Host                      : DESKTOP-DUGUKAP running 64-bit major release  (build 9200)
 | Command                   : report_io -file thinpad_top_io_placed.rpt
 | Design                    : thinpad_top

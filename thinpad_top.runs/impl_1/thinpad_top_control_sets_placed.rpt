@@ -1,7 +1,7 @@
 Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
 ----------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2018.3 (win64) Build 2405991 Thu Dec  6 23:38:27 MST 2018
-| Date         : Sat Nov 30 04:37:13 2019
+| Date         : Sat Nov 30 17:00:41 2019
 | Host         : DESKTOP-DUGUKAP running 64-bit major release  (build 9200)
 | Command      : report_control_sets -verbose -file thinpad_top_control_sets_placed.rpt
 | Design       : thinpad_top
@@ -23,8 +23,8 @@ Table of Contents
 +----------------------------------------------------------+-------+
 |                          Status                          | Count |
 +----------------------------------------------------------+-------+
-| Number of unique control sets                            |    36 |
-| Unused register locations in slices containing registers |    20 |
+| Number of unique control sets                            |    35 |
+| Unused register locations in slices containing registers |    15 |
 +----------------------------------------------------------+-------+
 
 
@@ -35,7 +35,6 @@ Table of Contents
 | Fanout | Control Sets |
 +--------+--------------+
 |      1 |            1 |
-|      4 |            1 |
 |    16+ |           34 |
 +--------+--------------+
 
@@ -47,10 +46,10 @@ Table of Contents
 | Clock Enable | Synchronous Set/Reset | Asynchronous Set/Reset | Total Registers | Total Slices |
 +--------------+-----------------------+------------------------+-----------------+--------------+
 | No           | No                    | No                     |               1 |            1 |
-| No           | No                    | Yes                    |             388 |          138 |
-| No           | Yes                   | No                     |               4 |            1 |
+| No           | No                    | Yes                    |             389 |          129 |
+| No           | Yes                   | No                     |               0 |            0 |
 | Yes          | No                    | No                     |               0 |            0 |
-| Yes          | No                    | Yes                    |            1091 |          455 |
+| Yes          | No                    | Yes                    |            1091 |          526 |
 | Yes          | Yes                   | No                     |               0 |            0 |
 +--------------+-----------------------+------------------------+-----------------+--------------+
 
@@ -62,41 +61,40 @@ Table of Contents
 |      Clock Signal      |           Enable Signal          | Set/Reset Signal | Slice Load Count | Bel Load Count |
 +------------------------+----------------------------------+------------------+------------------+----------------+
 |  clk_11M0592_IBUF_BUFG |                                  |                  |                1 |              1 |
-|  clk_11M0592_IBUF_BUFG |                                  | count[3]_i_1_n_0 |                1 |              4 |
-|  clk_BUFG              | ID_EX/EX_MemRead_reg_0           | reset_btn_IBUF   |               15 |             31 |
-|  clk_BUFG              | MEM_WB/WB_RegWrite_reg_15[0]     | reset_btn_IBUF   |               19 |             32 |
-|  clk_BUFG              | MEM_WB/E[0]                      | reset_btn_IBUF   |               19 |             32 |
-|  clk_BUFG              | MEM_WB/WB_RegWrite_reg_17[0]     | reset_btn_IBUF   |                9 |             32 |
-|  clk_BUFG              | MEM_WB/WB_RegWrite_reg_16[0]     | reset_btn_IBUF   |               10 |             32 |
-|  clk_BUFG              | MEM_WB/WB_RegWrite_reg_1[0]      | reset_btn_IBUF   |               16 |             32 |
-|  clk_BUFG              | MEM_WB/WB_RegWrite_reg_14[0]     | reset_btn_IBUF   |               11 |             32 |
-|  clk_BUFG              | MEM_WB/WB_RegWrite_reg_22[0]     | reset_btn_IBUF   |               11 |             32 |
-|  clk_BUFG              | MEM_WB/WB_RegWrite_reg_26[0]     | reset_btn_IBUF   |                8 |             32 |
-|  clk_BUFG              | MEM_WB/WB_RegWrite_reg_11[0]     | reset_btn_IBUF   |               15 |             32 |
-|  clk_BUFG              | MEM_WB/WB_RegWrite_reg_13[0]     | reset_btn_IBUF   |               13 |             32 |
-|  clk_BUFG              | MEM_WB/WB_RegWrite_reg_24[0]     | reset_btn_IBUF   |               10 |             32 |
-|  clk_BUFG              | MEM_WB/WB_RegWrite_reg_27[0]     | reset_btn_IBUF   |               10 |             32 |
-|  clk_BUFG              | MEM_WB/WB_RegWrite_reg_28[0]     | reset_btn_IBUF   |                9 |             32 |
-|  clk_BUFG              | MEM_WB/WB_RegWrite_reg_3[0]      | reset_btn_IBUF   |               15 |             32 |
-|  clk_BUFG              | MEM_WB/WB_RegWrite_reg_4[0]      | reset_btn_IBUF   |               16 |             32 |
-|  clk_BUFG              | MEM_WB/WB_RegWrite_reg_20[0]     | reset_btn_IBUF   |                9 |             32 |
-|  clk_BUFG              | MEM_WB/WB_RegWrite_reg_8[0]      | reset_btn_IBUF   |               13 |             32 |
-|  clk_BUFG              | MEM_WB/WB_RegWrite_reg_7[0]      | reset_btn_IBUF   |                7 |             32 |
-|  clk_BUFG              | MEM_WB/WB_RegWrite_reg_25[0]     | reset_btn_IBUF   |                7 |             32 |
-|  clk_BUFG              | MEM_WB/WB_RegWrite_reg_18[0]     | reset_btn_IBUF   |                9 |             32 |
-|  clk_BUFG              | MEM_WB/WB_RegWrite_reg_2[0]      | reset_btn_IBUF   |               18 |             32 |
-|  clk_BUFG              | MEM_WB/WB_RegWrite_reg_19[0]     | reset_btn_IBUF   |               30 |             32 |
-|  clk_BUFG              | MEM_WB/WB_RegWrite_reg_21[0]     | reset_btn_IBUF   |               12 |             32 |
-|  clk_BUFG              | MEM_WB/WB_RegWrite_reg_6[0]      | reset_btn_IBUF   |                6 |             32 |
-|  clk_BUFG              | MEM_WB/WB_RegWrite_reg_9[0]      | reset_btn_IBUF   |               10 |             32 |
+|  clk_BUFG              | ID_EX/EX_MemRead_reg_0           | reset_btn_IBUF   |               13 |             31 |
+|  clk_BUFG              | MEM_WB/E[0]                      | reset_btn_IBUF   |               20 |             32 |
+|  clk_BUFG              | MEM_WB/WB_RegWrite_reg_22[0]     | reset_btn_IBUF   |                9 |             32 |
+|  clk_BUFG              | MEM_WB/WB_RegWrite_reg_14[0]     | reset_btn_IBUF   |                9 |             32 |
+|  clk_BUFG              | MEM_WB/WB_RegWrite_reg_23[0]     | reset_btn_IBUF   |               28 |             32 |
+|  clk_BUFG              | MEM_WB/WB_RegWrite_reg_5[0]      | reset_btn_IBUF   |               21 |             32 |
+|  clk_BUFG              | MEM_WB/WB_RegWrite_reg_28[0]     | reset_btn_IBUF   |               14 |             32 |
+|  clk_BUFG              | MEM_WB/WB_RegWrite_reg_8[0]      | reset_btn_IBUF   |               21 |             32 |
+|  clk_BUFG              | MEM_WB/WB_RegWrite_reg_17[0]     | reset_btn_IBUF   |                7 |             32 |
+|  clk_BUFG              | MEM_WB/WB_RegWrite_reg_29[0]     | reset_btn_IBUF   |               13 |             32 |
+|  clk_BUFG              | MEM_WB/WB_RegWrite_reg_25[0]     | reset_btn_IBUF   |               10 |             32 |
 |  clk_BUFG              | MEM_WB/WB_RegWrite_reg_0[0]      | reset_btn_IBUF   |               26 |             32 |
-|  clk_BUFG              | MEM_WB/WB_RegWrite_reg_10[0]     | reset_btn_IBUF   |               10 |             32 |
-|  clk_BUFG              | MEM_WB/WB_RegWrite_reg_12[0]     | reset_btn_IBUF   |               11 |             32 |
-|  clk_BUFG              | MEM_WB/WB_RegWrite_reg_29[0]     | reset_btn_IBUF   |               12 |             32 |
-|  clk_BUFG              | MEM_WB/WB_RegWrite_reg_23[0]     | reset_btn_IBUF   |               22 |             32 |
-|  clk_BUFG              | MEM_WB/WB_RegWrite_reg_5[0]      | reset_btn_IBUF   |               11 |             32 |
-|  clk_BUFG              | IF_ID/ID_Instruction[31]_i_1_n_0 | reset_btn_IBUF   |               36 |             68 |
-|  clk_BUFG              |                                  | reset_btn_IBUF   |              138 |            388 |
+|  clk_BUFG              | MEM_WB/WB_RegWrite_reg_16[0]     | reset_btn_IBUF   |                8 |             32 |
+|  clk_BUFG              | MEM_WB/WB_RegWrite_reg_27[0]     | reset_btn_IBUF   |               15 |             32 |
+|  clk_BUFG              | MEM_WB/WB_RegWrite_reg_4[0]      | reset_btn_IBUF   |               13 |             32 |
+|  clk_BUFG              | MEM_WB/WB_RegWrite_reg_2[0]      | reset_btn_IBUF   |               22 |             32 |
+|  clk_BUFG              | MEM_WB/WB_RegWrite_reg_12[0]     | reset_btn_IBUF   |               13 |             32 |
+|  clk_BUFG              | MEM_WB/WB_RegWrite_reg_15[0]     | reset_btn_IBUF   |               23 |             32 |
+|  clk_BUFG              | MEM_WB/WB_RegWrite_reg_6[0]      | reset_btn_IBUF   |               14 |             32 |
+|  clk_BUFG              | MEM_WB/WB_RegWrite_reg_11[0]     | reset_btn_IBUF   |               18 |             32 |
+|  clk_BUFG              | MEM_WB/WB_RegWrite_reg_9[0]      | reset_btn_IBUF   |               13 |             32 |
+|  clk_BUFG              | MEM_WB/WB_RegWrite_reg_19[0]     | reset_btn_IBUF   |               26 |             32 |
+|  clk_BUFG              | MEM_WB/WB_RegWrite_reg_21[0]     | reset_btn_IBUF   |                8 |             32 |
+|  clk_BUFG              | MEM_WB/WB_RegWrite_reg_10[0]     | reset_btn_IBUF   |               17 |             32 |
+|  clk_BUFG              | MEM_WB/WB_RegWrite_reg_3[0]      | reset_btn_IBUF   |               12 |             32 |
+|  clk_BUFG              | MEM_WB/WB_RegWrite_reg_1[0]      | reset_btn_IBUF   |               21 |             32 |
+|  clk_BUFG              | MEM_WB/WB_RegWrite_reg_24[0]     | reset_btn_IBUF   |               14 |             32 |
+|  clk_BUFG              | MEM_WB/WB_RegWrite_reg_7[0]      | reset_btn_IBUF   |               10 |             32 |
+|  clk_BUFG              | MEM_WB/WB_RegWrite_reg_18[0]     | reset_btn_IBUF   |               10 |             32 |
+|  clk_BUFG              | MEM_WB/WB_RegWrite_reg_13[0]     | reset_btn_IBUF   |               12 |             32 |
+|  clk_BUFG              | MEM_WB/WB_RegWrite_reg_26[0]     | reset_btn_IBUF   |               12 |             32 |
+|  clk_BUFG              | MEM_WB/WB_RegWrite_reg_20[0]     | reset_btn_IBUF   |               15 |             32 |
+|  clk_BUFG              | IF_ID/ID_Instruction[31]_i_1_n_0 | reset_btn_IBUF   |               39 |             68 |
+|  clk_BUFG              |                                  | reset_btn_IBUF   |              129 |            389 |
 +------------------------+----------------------------------+------------------+------------------+----------------+
 
 

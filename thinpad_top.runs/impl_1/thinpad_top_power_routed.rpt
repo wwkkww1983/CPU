@@ -1,7 +1,7 @@
 Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
 -------------------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version     : Vivado v.2018.3 (win64) Build 2405991 Thu Dec  6 23:38:27 MST 2018
-| Date             : Sat Nov 30 04:38:10 2019
+| Date             : Sat Nov 30 17:01:31 2019
 | Host             : DESKTOP-DUGUKAP running 64-bit major release  (build 9200)
 | Command          : report_power -file thinpad_top_power_routed.rpt -pb thinpad_top_power_summary_routed.pb -rpx thinpad_top_power_routed.rpx
 | Design           : thinpad_top
@@ -30,10 +30,10 @@ Table of Contents
 ----------
 
 +--------------------------+--------------+
-| Total On-Chip Power (W)  | 0.132        |
+| Total On-Chip Power (W)  | 0.133        |
 | Design Power Budget (W)  | Unspecified* |
 | Power Budget Margin (W)  | NA           |
-| Dynamic (W)              | 0.035        |
+| Dynamic (W)              | 0.036        |
 | Device Static (W)        | 0.097        |
 | Effective TJA (C/W)      | 2.6          |
 | Max Ambient (C)          | 99.7         |
@@ -53,17 +53,17 @@ Table of Contents
 | On-Chip        | Power (W) | Used     | Available | Utilization (%) |
 +----------------+-----------+----------+-----------+-----------------+
 | Clocks         |    <0.001 |        4 |       --- |             --- |
-| Slice Logic    |    <0.001 |     3833 |       --- |             --- |
-|   LUT as Logic |    <0.001 |     1907 |     63400 |            3.01 |
-|   Register     |    <0.001 |     1484 |    126800 |            1.17 |
+| Slice Logic    |    <0.001 |     3794 |       --- |             --- |
+|   LUT as Logic |    <0.001 |     1873 |     63400 |            2.95 |
+|   Register     |    <0.001 |     1481 |    126800 |            1.17 |
 |   CARRY4       |    <0.001 |       40 |     15850 |            0.25 |
 |   BUFG         |    <0.001 |        1 |        32 |            3.13 |
 |   F7/F8 Muxes  |    <0.001 |      192 |     63400 |            0.30 |
-|   Others       |     0.000 |        6 |       --- |             --- |
-| Signals        |     0.001 |     3299 |       --- |             --- |
-| I/O            |     0.034 |      207 |       300 |           69.00 |
+|   Others       |     0.000 |        7 |       --- |             --- |
+| Signals        |     0.001 |     3294 |       --- |             --- |
+| I/O            |     0.035 |      207 |       300 |           69.00 |
 | Static Power   |     0.097 |          |           |                 |
-| Total          |     0.132 |          |           |                 |
+| Total          |     0.133 |          |           |                 |
 +----------------+-----------+----------+-----------+-----------------+
 
 
@@ -142,8 +142,7 @@ Table of Contents
 +-------------+-----------+
 | Name        | Power (W) |
 +-------------+-----------+
-| thinpad_top |     0.035 |
-|   ID_EX     |     0.001 |
+| thinpad_top |     0.036 |
 +-------------+-----------+
 
 
