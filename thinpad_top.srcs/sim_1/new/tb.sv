@@ -79,51 +79,99 @@ initial begin
 end
 
 // 待测试用户设计
-thinpad_top dut(
-    .clk_50M(clk_50M),
-    .clk_11M0592(clk_11M0592),
-    .clock_btn(clock_btn),
-    .reset_btn(reset_btn),
-    .touch_btn(touch_btn),
-    .dip_sw(dip_sw),
-    .leds(leds),
-    .dpy1(dpy1),
-    .dpy0(dpy0),
-    .txd(txd),
-    .rxd(rxd),
-    //.uart_rdn(uart_rdn),
-    //.uart_wrn(uart_wrn),
-    //.uart_dataready(uart_dataready),
-    //.uart_tbre(uart_tbre),
-    //.uart_tsre(uart_tsre),
-    .base_ram_data(base_ram_data),
-    .base_ram_addr(base_ram_addr),
-    .base_ram_ce_n(base_ram_ce_n),
-    .base_ram_oe_n(base_ram_oe_n),
-    .base_ram_we_n(base_ram_we_n),
-    .base_ram_be_n(base_ram_be_n),
-    .ext_ram_data(ext_ram_data),
-    .ext_ram_addr(ext_ram_addr),
-    .ext_ram_ce_n(ext_ram_ce_n),
-    .ext_ram_oe_n(ext_ram_oe_n),
-    .ext_ram_we_n(ext_ram_we_n),
-    .ext_ram_be_n(ext_ram_be_n),
-    .flash_d(flash_d),
-    .flash_a(flash_a),
-    .flash_rp_n(flash_rp_n),
-    .flash_vpen(flash_vpen),
-    .flash_oe_n(flash_oe_n),
-    .flash_ce_n(flash_ce_n),
-    .flash_byte_n(flash_byte_n),
-    .flash_we_n(flash_we_n)
-);
+
+wire reset, ce;
+wire [31:0] IF_Instruction;
+wire [31:0] MEM_Instruction;
+wire MEM_MemRead, MEM_MemWrite;
+wire [31:0] MEM_ALU_out;
+wire [31:0] MEM_Data2;
+wire [31:0] PC;
+wire [31:0] MEM_ReadData;
+wire [31:0] MEM_Instruction;
+wire Stall;
+
+reg reset_reg, ce_reg;
+reg [31:0] IF_Instruction_reg;
+reg [31:0] MEM_Instruction_reg;
+reg MEM_MemRead_reg, MEM_MemWrite_reg;
+reg [31:0] MEM_ALU_out_reg;
+reg [31:0] MEM_Data2_reg;
+reg [31:0] PC_reg;
+reg [31:0] MEM_ReadData_reg;
+reg [31:0] MEM_Instruction_reg;
+reg Stall_reg;
+
+ram ram(.clk(clock_btn), .rst(reset), .inst_ce(ce), .inst_addr(PC), .inst(IF_Instruction), .mem_ce( MEM_MemRead | MEM_MemWrite ), .mem_we(MEM_MemWrite),
+        .mem_addr(MEM_ALU_out), .mem_data_i(MEM_Data2), .mem_data_o(MEM_ReadData), .base_ram_data(base_ram_data), .base_ram_addr(base_ram_addr),
+        .base_ram_be_n(base_ram_be_n), .base_ram_ce_n(base_ram_ce_n), .base_ram_oe_n(base_ram_oe_n), .base_ram_we_n(base_ram_we_n), 
+        .ext_ram_data(ext_ram_data), .ext_ram_addr(ext_ram_addr), .ext_ram_be_n(ext_ram_be_n), .ext_ram_ce_n(ext_ram_ce_n), 
+        .ext_ram_oe_n(ext_ram_oe_n), .ext_ram_we_n(ext_ram_we_n), .Op(MEM_Instruction[31:26]), .stall(Stall),
+        .uart_rdn(uart_rdn), .uart_wrn(uart_wrn), .uart_dataready(uart_dataready), .uart_tbre(uart_tbre), .uart_tsre(uart_tsre));
+
+initial begin 
+    //在这里可以自定义测试输入序列，例如：
+    dip_sw = 32'h2;
+    touch_btn = 0;
+    reset_btn = 1;
+    #1;
+    reset_btn = 0;
+    for (int i = 0; i < 20; i = i+1) begin
+        #100; //等待100ns
+        clock_btn = 1; //按下手工时钟按钮
+        #100; //等待100ns
+        clock_btn = 0; //松开手工时钟按钮
+    end
+    // 模拟PC通过串口发送字符
+   // cpld.pc_send_byte(8'h32);
+    // #10000;
+    // cpld.pc_send_byte(8'h33);
+end
+// thinpad_top dut(
+//     .clk_50M(clk_50M),
+//     .clk_11M0592(clk_11M0592),
+//     .clock_btn(clock_btn),
+//     .reset_btn(reset_btn),
+//     .touch_btn(touch_btn),
+//     .dip_sw(dip_sw),
+//     .leds(leds),
+//     .dpy1(dpy1),
+//     .dpy0(dpy0),
+//     .txd(txd),
+//     .rxd(rxd),
+//     //.uart_rdn(uart_rdn),
+//     //.uart_wrn(uart_wrn),
+//     //.uart_dataready(uart_dataready),
+//     //.uart_tbre(uart_tbre),
+//     //.uart_tsre(uart_tsre),
+//     .base_ram_data(base_ram_data),
+//     .base_ram_addr(base_ram_addr),
+//     .base_ram_ce_n(base_ram_ce_n),
+//     .base_ram_oe_n(base_ram_oe_n),
+//     .base_ram_we_n(base_ram_we_n),
+//     .base_ram_be_n(base_ram_be_n),
+//     .ext_ram_data(ext_ram_data),
+//     .ext_ram_addr(ext_ram_addr),
+//     .ext_ram_ce_n(ext_ram_ce_n),
+//     .ext_ram_oe_n(ext_ram_oe_n),
+//     .ext_ram_we_n(ext_ram_we_n),
+//     .ext_ram_be_n(ext_ram_be_n),
+//     .flash_d(flash_d),
+//     .flash_a(flash_a),
+//     .flash_rp_n(flash_rp_n),
+//     .flash_vpen(flash_vpen),
+//     .flash_oe_n(flash_oe_n),
+//     .flash_ce_n(flash_ce_n),
+//     .flash_byte_n(flash_byte_n),
+//     .flash_we_n(flash_we_n)
+// );
 // 时钟源
 clock osc(
     .clk_11M0592(clk_11M0592),
     .clk_50M    (clk_50M)
 );
 // CPLD 串口仿真模型
-/*cpld_model cpld(
+cpld_model cpld(
     .clk_uart(clk_11M0592),
     .uart_rdn(uart_rdn),
     .uart_wrn(uart_wrn),
@@ -131,7 +179,7 @@ clock osc(
     .uart_tbre(uart_tbre),
     .uart_tsre(uart_tsre),
     .data(base_ram_data[7:0])
-);*/
+);
 // BaseRAM 仿真模型
 sram_model base1(/*autoinst*/
             .DataIO(base_ram_data[15:0]),
