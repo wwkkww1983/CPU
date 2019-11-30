@@ -1,21 +1,22 @@
-module ID_EX(reset, clk, Stall, Flush_IF_and_ID, 
-    ID_PCSrc, ID_ALUOp, ID_Instruction, IF_PC, ID_PC_plus_4, ID_LU_out, ID_Databus1, ID_Databus2, 
-    ID_ALUSrc1, ID_ALUSrc2, ID_MemRead, ID_MemWrite, ID_MemtoReg, ID_RegWrite, ID_RegDst, MovNoWrite_ID,
-    EX_PCSrc, EX_ALUOp, EX_Instruction, EX_PC_plus_4, EX_LU_out, EX_Databus1, EX_Databus2, 
-    EX_ALUSrc1, EX_ALUSrc2, EX_MemRead, EX_MemWrite, EX_MemtoReg, EX_RegWrite, EX_RegDst, MovNoWrite_EX);
+module ID_EX(reset, clk, Stall, Flush_IF_and_ID, LastFlush,
+        ID_PCSrc, ID_ALUOp, ID_Instruction, ID_PC_plus_4 ,ID_LU_out, ID_Databus1, ID_Databus2, 
+        ID_ALUSrc1, ID_ALUSrc2, ID_MemRead, ID_MemWrite, ID_MemtoReg, ID_RegWrite, ID_RegDst, MovNoWrite_ID,
+        EX_PCSrc, EX_ALUOp, EX_Instruction, EX_PC_plus_4, EX_LU_out,EX_Databus1, EX_Databus2, 
+        EX_ALUSrc1, EX_ALUSrc2, EX_MemRead, EX_MemWrite, EX_MemtoReg, EX_RegWrite, EX_RegDst, MovNoWrite_EX);
     input reset, clk, Stall, Flush_IF_and_ID, ID_ALUSrc1, ID_ALUSrc2, ID_MemRead, ID_MemWrite, ID_RegWrite, MovNoWrite_ID;//这些是要写进去的
-    output reg EX_ALUSrc1, EX_ALUSrc2, EX_MemRead, EX_MemWrite, EX_RegWrite, MovNoWrite_EX;
+    output reg EX_ALUSrc1, EX_ALUSrc2, EX_MemRead, EX_MemWrite, EX_RegWrite, MovNoWrite_EX, LastFlush;
     input [1:0] ID_MemtoReg, ID_RegDst;
     output reg [1:0] EX_MemtoReg, EX_RegDst;
     input [2:0] ID_PCSrc;
     output reg [2:0] EX_PCSrc;
     input [3:0] ID_ALUOp;
     output reg [3:0] EX_ALUOp;
-    input [31:0] ID_Instruction, ID_Databus1, ID_Databus2, ID_PC_plus_4, ID_LU_out, IF_PC;
+    input [31:0] ID_Instruction, ID_Databus1, ID_Databus2, ID_PC_plus_4, ID_LU_out;
     output reg [31:0] EX_Instruction, EX_Databus1, EX_Databus2, EX_PC_plus_4, EX_LU_out;
 
     always @(posedge reset or posedge clk)
         if (reset) begin
+            LastFlush <= 0;
             EX_ALUSrc1 <= 0;//Ex_ALUSrc1是用来确定alu执行第一个参数的
             EX_ALUSrc2 <= 0;//Ex_ALUSrc2是用确定第二个参数的
             EX_MemRead <= 0;
@@ -35,6 +36,7 @@ module ID_EX(reset, clk, Stall, Flush_IF_and_ID,
         else if (Stall | Flush_IF_and_ID) begin
             EX_ALUSrc1 <= ID_ALUSrc1;//Stall或者Flush的话,那么Ex的就是ID的
             EX_ALUSrc2 <= ID_ALUSrc2;//
+            LastFlush <= Flush_IF_and_ID;
             EX_MemRead <= 0;//不读
             EX_MemWrite <= 0;//不写
             EX_RegWrite <= 0;//RegWrite这个阶段也不写
@@ -47,11 +49,12 @@ module ID_EX(reset, clk, Stall, Flush_IF_and_ID,
             EX_Databus2 <= ID_Databus2;
             EX_LU_out <= ID_LU_out;//EX_LU_out就是ID_LU_out
             EX_Instruction <= ID_Instruction;//ID_Instruction
-            EX_PC_plus_4 <= IF_PC;// 
+            EX_PC_plus_4 <= ID_PC_plus_4;
         end
         else begin
             EX_ALUSrc1 <= ID_ALUSrc1;//ID_ALUSrc1
             EX_ALUSrc2 <= ID_ALUSrc2;//没有任何问题
+            LastFlush <= 0;
             EX_MemRead <= ID_MemRead;//ID中间出来的,原封不动
             EX_MemWrite <= ID_MemWrite;
             EX_RegWrite <= ID_RegWrite;

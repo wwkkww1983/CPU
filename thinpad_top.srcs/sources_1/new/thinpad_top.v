@@ -18,7 +18,7 @@ module thinpad_top(
     input wire uart_dataready,    //串口数据准备好
     input wire uart_tbre,         //发送数据标志
     input wire uart_tsre,         //数据发送完毕标志
-
+    
     //BaseRAM信号
     inout wire[31:0] base_ram_data,  //BaseRAM数据，低8位与CPLD串口控制器共享
     output wire[19:0] base_ram_addr, //BaseRAM地址
@@ -178,11 +178,7 @@ assign reset = reset_btn;
 
 always @(posedge clk_11M0592)
     begin
-        count <= count + 1;
-        if (count == 10) begin
-            clk <= ~clk;//(1/10)分频
-            count <= 0;
-        end
+        clk <= ~clk;
     end
 
 
@@ -210,9 +206,10 @@ wire [31:0] IF_PC_4, ID_PC_4, EX_PC_4, MEM_PC_4, WB_PC_4;
 assign IF_PC_4[30:0] = PC[30:0] +3'd4;
 assign IF_PC_4[31] = PC[31];
 wire [31:0] IF_Instruction, ID_Instruction, EX_Instruction ,MEM_Instruction;
+reg LastFlush;
 
-    assign Flush_IF = (ID_PCSrc == 3'b010) | (ID_PCSrc == 3'b011);// j类和r
-    assign Flush_IF_and_ID = Branch & ( EX_PCSrc == 3'b001 );// 刷新清零,下一条读进来的指令
+    assign Flush_IF = (ID_PCSrc == 3'b010) | (ID_PCSrc == 3'b011) ;// j类和r
+    assign Flush_IF_and_ID = Branch & ( EX_PCSrc == 3'b001 ) & (~LastFlush);// 刷新清零,下一条读进来的指令刷新清零
 
     assign Stall = EX_MemRead &
         ((EX_Instruction[20:16] == ID_Instruction[25:21]) |
@@ -250,8 +247,8 @@ wire [31:0] IF_Instruction, ID_Instruction, EX_Instruction ,MEM_Instruction;
 
     assign MovNoWrite_ID = (ID_Instruction[31:26] == 6'h00 & ID_Instruction[5:0] == 6'h0b & EX_Data2w == 32'h00000000 );
 
-    ID_EX ID_EX(reset, clk, Stall, Flush_IF_and_ID,
-        ID_PCSrc, ID_ALUOp, ID_Instruction, IF_PC, ID_PC_4 ,ID_LU_out, EX_Data1w, EX_Data2w,
+    ID_EX ID_EX(reset, clk, Stall, Flush_IF_and_ID, LastFlush,
+        ID_PCSrc, ID_ALUOp, ID_Instruction, ID_PC_4 ,ID_LU_out, EX_Data1w, EX_Data2w,
         ID_ALUSrc1, ID_ALUSrc2, ID_MemRead, ID_MemWrite, ID_MemtoReg, ID_RegWrite, ID_RegDst, MovNoWrite_ID,
         EX_PCSrc, EX_ALUOp, EX_Instruction, EX_PC_4, EX_LU_out, EX_Data1, EX_Data2, 
         EX_ALUSrc1, EX_ALUSrc2, EX_MemRead, EX_MemWrite, EX_MemtoReg, EX_RegWrite, EX_RegDst, MovNoWrite_EX);
