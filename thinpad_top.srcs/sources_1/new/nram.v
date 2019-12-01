@@ -130,7 +130,7 @@ always @(negedge clk, posedge rst) begin
     end 
 end
 
-wire write_data;
+wire [31:0] write_data;
 wire ext_sel;
 wire [31:0] addr;
 
