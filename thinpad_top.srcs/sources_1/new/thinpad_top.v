@@ -206,14 +206,15 @@ wire [31:0] IF_PC_4, ID_PC_4, EX_PC_4, MEM_PC_4, WB_PC_4;
 assign IF_PC_4[30:0] = PC[30:0] +3'd4;
 assign IF_PC_4[31] = PC[31];
 wire [31:0] IF_Instruction, ID_Instruction, EX_Instruction ,MEM_Instruction;
-reg LastFlush;
+wire LastFlush;
+reg stals = 0;
 
     assign Flush_IF = (ID_PCSrc == 3'b010) | (ID_PCSrc == 3'b011) ;// j类和r
     assign Flush_IF_and_ID = Branch & ( EX_PCSrc == 3'b001 ) & (~LastFlush);// 刷新清零,下一条读进来的指令刷新清零
 
-    assign Stall = EX_MemRead &
+    assign Stall = (EX_MemRead &
         ((EX_Instruction[20:16] == ID_Instruction[25:21]) |
-        (EX_Instruction[20:16] == ID_Instruction[20:16])) | (MEM_MemRead | MEM_MemWrite) | (ID_MemRead & EX_MemWrite) |(ID_MemWrite & EX_MemWrite)
+        (EX_Instruction[20:16] == ID_Instruction[20:16]))) | (MEM_MemRead | MEM_MemWrite) | (ID_MemRead & EX_MemWrite) |(ID_MemWrite & EX_MemWrite) | (stals)
         ;// 数据冲突需要stall一个周期
 
     IF_ID IF_ID(.reset(reset), .clk(clk), .Flush( Flush_IF || Flush_IF_and_ID), .Stall(Stall),
@@ -316,12 +317,75 @@ reg LastFlush;
         .base_chosen_inst(base_ram_inst), .ext_chosen_inst(ext_ram_inst), .base_chosen_mem(base_ram_mem), .ext_chosen_mem(ext_ram_mem),
         .RW(rw));*/
 
-    ram ram( .rst(reset), .inst_ce(ce), .inst_addr(PC), .inst(IF_Instruction), .mem_ce( MEM_MemRead | MEM_MemWrite ), .mem_we(MEM_MemWrite),
-        .mem_addr(MEM_ALU_out), .mem_data_i(MEM_Data2), .mem_data_o(MEM_ReadData), .base_ram_data(base_ram_data), .base_ram_addr(base_ram_addr),
+    /*wire [3:0] sel;
+
+    assign sel = (MEM_Instruction[31:26] != 6'b101000) ? 4'b1111: 
+        (MEM_ALU_out[1:0] == 2'b11)? 4'b1000: 
+        (MEM_ALU_out[1:0] == 2'b10)? 4'b0100:
+        (MEM_ALU_out[1:0] == 2'b01)? 4'b0010: 4'b0001;*/
+wire [31:0] MEM_DataS,  mem_addr;
+
+reg [31:0] Last_ReadData, Last_ALU_out, Last_Data2;
+
+always @(posedge clk) begin
+      Last_ReadData <= MEM_ReadData;
+      Last_ALU_out <= MEM_ALU_out;
+      Last_Data2 <= MEM_Data2;
+      if(MEM_Instruction[31:26] == 6'b101000 & MEM_MemWrite ) begin
+           stals = 1;
+      end else begin
+           stals = 0;
+      end
+end
+
+wire mem_ce, mem_we;
+
+assign mem_ce = stals? 1: MEM_MemRead | MEM_MemWrite;
+
+assign mem_we = stals? 1: (MEM_Instruction[31:26] == 6'b101000)? 0: MEM_MemWrite;
+
+assign mem_addr = (stals == 0)? MEM_ALU_out : Last_ALU_out;//上一轮是否已经stals了
+
+reg clk2;
+reg clk3;
+
+always @(posedge clk or negedge clk ) begin
+    if( clk == 1 )begin
+        clk2 <= 0;
+    end else begin
+        clk2 <= 1;
+    end
+    
+end
+
+always @(posedge clk2 or negedge clk2 ) begin
+    if( clk2 == 1)begin 
+        clk3 <= 0;
+    end else begin
+        clk3 <= 1;
+    end
+end
+assign MEM_DataS = 
+       (stals == 0)? MEM_Data2:
+       (mem_addr[1:0] == 2'b00)?{Last_ReadData[31:8],Last_Data2[7:0]}:
+       (mem_addr[1:0] == 2'b01)?{Last_ReadData[31:15],Last_Data2[7:0],Last_ReadData[7:0]}:
+       (mem_addr[1:0] == 2'b10)?{Last_ReadData[31:24],Last_Data2[7:0],Last_ReadData[15:0]}:
+       {MEM_Data2[7:0],Last_ReadData[23:0]};//把sb放在这里处理
+
+    ram ram( .clk(clk3), .rst(reset), .inst_ce(ce), .inst_addr(PC), .inst( IF_Instruction ), .mem_ce( mem_ce ), .mem_we( mem_we ),
+        .mem_addr(mem_addr), .mem_data_i(MEM_DataS), .mem_data_o( MEM_ReadData ), .base_ram_data( base_ram_data), .base_ram_addr(base_ram_addr),
+        .base_ram_be_n(base_ram_be_n), .base_ram_ce_n(base_ram_ce_n), .base_ram_oe_n(base_ram_oe_n), .base_ram_we_n(base_ram_we_n), 
+        .ext_ram_data(ext_ram_data), .ext_ram_addr(ext_ram_addr), .ext_ram_be_n(ext_ram_be_n), .ext_ram_ce_n(ext_ram_ce_n), 
+        .ext_ram_oe_n(ext_ram_oe_n), .ext_ram_we_n(ext_ram_we_n), .Op( stals? 6'b000000: MEM_Instruction[31:26] ), .stall(Stall),
+        .uart_rdn(uart_rdn), .uart_wrn(uart_wrn), .uart_dataready(uart_dataready), .uart_tbre(uart_tbre), .uart_tsre(uart_tsre));
+
+/*
+    ram ram( .clk(clk), .rst(reset), .inst_ce(ce), .inst_addr(PC), .inst(IF_Instruction), .mem_ce( MEM_MemRead | MEM_MemWrite ), .mem_we(MEM_MemWrite),
+        .mem_addr(MEM_ALU_out), .mem_sel(sel), .mem_data_i(MEM_Data2), .mem_data_o(MEM_ReadData), .base_ram_data(base_ram_data), .base_ram_addr(base_ram_addr),
         .base_ram_be_n(base_ram_be_n), .base_ram_ce_n(base_ram_ce_n), .base_ram_oe_n(base_ram_oe_n), .base_ram_we_n(base_ram_we_n), 
         .ext_ram_data(ext_ram_data), .ext_ram_addr(ext_ram_addr), .ext_ram_be_n(ext_ram_be_n), .ext_ram_ce_n(ext_ram_ce_n), 
         .ext_ram_oe_n(ext_ram_oe_n), .ext_ram_we_n(ext_ram_we_n), .Op(MEM_Instruction[31:26]), .stall(Stall),
-        .uart_rdn(uart_rdn), .uart_wrn(uart_wrn), .uart_dataready(uart_dataready), .uart_tbre(uart_tbre), .uart_tsre(uart_tsre));
+        .uart_rdn(uart_rdn), .uart_wrn(uart_wrn), .uart_dataready(uart_dataready), .uart_tbre(uart_tbre), .uart_tsre(uart_tsre));*/
 
 /*直连串口接收发送演示，从直连串口收到的数据再发送出去
 wire [7:0] ext_uart_rx;

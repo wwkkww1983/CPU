@@ -1,7 +1,6 @@
 Vivado Simulator 2018.3
 Time resolution is 1 ps
 WARNING: Insufficient data from the input file for $fread
-BaseRAM Init Size(words):           8
+BaseRAM Init Size(words):        2105
 WARNING: Insufficient data from the input file for $fread
 ExtRAM Init Size(words):           4
-$finish called at time : 200 us : File "/home/ericsam413/Desktop/dev1/thinpad_top.srcs/sim_1/new/tb.sv" Line 59

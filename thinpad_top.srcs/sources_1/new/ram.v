@@ -58,7 +58,7 @@ module ram(
     reg write_flag;
     reg base_ext_sel = 1'b1; // true is base, false is ext
     //reg inst_mem_sel; // true is inst, false is mem
-    wire[31:0] read_from_ram_data;
+    wire [31:0] read_from_ram_data;
     
     reg uart_read_or_write; // true for read, false for write
     reg uart_rdn_reg;
@@ -175,6 +175,10 @@ always @ (*) begin
                                     base_ram_be_n_reg <= 4'b0000;
                                     inner_ram_data <= mem_data_i;
                                 end
+                                6'b000000: begin
+                                    base_ram_be_n_reg <= 4'b0000;
+                                    inner_ram_data <= mem_data_i;
+                                end
                             endcase
                             base_ram_oe_n_reg <= 1'b1;
                             base_ram_we_n_reg <= 1'b0;
@@ -206,6 +210,10 @@ always @ (*) begin
                                     end
                                 end
                                 6'b101011: begin
+                                    ext_ram_be_n_reg <= 4'b0000;
+                                    inner_ram_data <= mem_data_i;
+                                end
+                                6'b000000: begin
                                     ext_ram_be_n_reg <= 4'b0000;
                                     inner_ram_data <= mem_data_i;
                                 end
@@ -262,9 +270,9 @@ always @ (*) begin
 always @* begin
         if (rst == 1'b1 || mem_ce == 1'b0) begin
             mem_data_o <= 32'b0;
-        end else if (mem_ce == 1'b0 && mem_addr == 32'hbfd003fc && mem_we == 1'b0) begin // Serial Status
+        end else if (mem_ce == 1'b1 && mem_addr == 32'hbfd003fc && mem_we == 1'b0) begin // Serial Status
             mem_data_o <= {30'b0, uart_dataready, uart_writable};
-        end else if (mem_ce == 1'b0 && mem_addr == 32'hbfd003f8 && mem_we == 1'b0) begin // Serial Data
+        end else if (mem_ce == 1'b1 && mem_addr == 32'hbfd003f8 && mem_we == 1'b0) begin // Serial Data
             mem_data_o <= {24'b0, base_ram_data[7:0]};
         end else if(mem_we == 1'b0) begin // read
             case (Op)
@@ -280,6 +288,9 @@ always @* begin
                     end
                 end
                 6'b100011: begin
+                    mem_data_o <= read_from_ram_data;
+                end
+                6'b101000: begin
                     mem_data_o <= read_from_ram_data;
                 end
                 default: mem_data_o <= 32'h00000000;
