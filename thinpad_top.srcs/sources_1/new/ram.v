@@ -144,10 +144,10 @@ always @ (*) begin
                     if (mem_we && mem_addr == 32'hbfd003f8) begin                  // uart + sb write to SerialData
                         write_flag <= 1'b1;
                         inner_ram_data <= {24'b0, mem_data_i[7:0]};
-                        uart_wrn_reg <= clk;//1'b0;
+                        uart_wrn_reg <= 1'b0;
                     end else begin                                                  // uart + lb (read)
                         if (mem_addr == 32'hbfd003f8) begin                         // read from SerialData
-                            uart_rdn_reg <= clk;//1'b0;
+                            uart_rdn_reg <= 1'b0;
                         end
                     end
                 end else begin

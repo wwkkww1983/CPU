@@ -2,8 +2,8 @@
 # Vivado v2018.3 (64-bit)
 # SW Build 2405991 on Thu Dec  6 23:36:41 MST 2018
 # IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
-# Start of session at: Sun Dec  1 16:57:22 2019
-# Process ID: 24922
+# Start of session at: Sun Dec  1 21:13:14 2019
+# Process ID: 18886
 # Current directory: /home/ericsam413/Desktop/dev1/thinpad_top.runs/impl_1
 # Command line: vivado -log thinpad_top.vdi -applog -product Vivado -messageDb vivado.pb -mode batch -source thinpad_top.tcl -notrace
 # Log file: /home/ericsam413/Desktop/dev1/thinpad_top.runs/impl_1/thinpad_top.vdi

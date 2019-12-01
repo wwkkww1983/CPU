@@ -165,7 +165,7 @@ wire [3:0] ID_ALUOp, EX_ALUOp;
 wire [31:0] PC_next;//
 wire [31:0] IF_PC;
 reg [31:0] PC = 32'h80000000;//PC这个是下一条指令地址?
-wire Stall;
+wire Stall, Stall1, Stall2;
 
 reg [3:0] count = 0;
 reg clk = 0;
@@ -182,7 +182,8 @@ always @(posedge clk_11M0592)
     end
 
 
-assign IF_PC = Stall? PC: PC_next;//如果是stall就是PC,是PC_NEXT
+assign IF_PC = (Stall == 0)? PC_next: 
+            (ID_PCSrc == 3'b010)? PC_next: PC;//如果是stall就是PC,是PC_NEXT
 
 reg ce = 0;
 
@@ -208,14 +209,17 @@ assign IF_PC_4[31] = PC[31];
 wire [31:0] IF_Instruction, ID_Instruction, EX_Instruction ,MEM_Instruction;
 wire LastFlush;
 reg stals = 0;
+reg stall2 = 0;
 
     assign Flush_IF = (ID_PCSrc == 3'b010) | (ID_PCSrc == 3'b011) ;// j类和r
     assign Flush_IF_and_ID = Branch & ( EX_PCSrc == 3'b001 ) & (~LastFlush);// 刷新清零,下一条读进来的指令刷新清零
 
-    assign Stall = (EX_MemRead &
+    assign Stall2 = (MEM_MemRead | MEM_MemWrite);
+    assign Stall1 = (EX_MemRead &
         ((EX_Instruction[20:16] == ID_Instruction[25:21]) |
-        (EX_Instruction[20:16] == ID_Instruction[20:16]))) | (MEM_MemRead | MEM_MemWrite) | (ID_MemRead & EX_MemWrite) |(ID_MemWrite & EX_MemWrite) | (stals)
-        ;// 数据冲突需要stall一个周期
+        (EX_Instruction[20:16] == ID_Instruction[20:16]))) | (ID_MemRead & EX_MemWrite) |(ID_MemWrite & EX_MemWrite) | (stals);
+
+    assign Stall = Stall1 | Stall2 ;// 数据冲突需要stall一个周期
 
     IF_ID IF_ID(.reset(reset), .clk(clk), .Flush( Flush_IF || Flush_IF_and_ID), .Stall(Stall),
          .IF_PC(IF_PC), .IF_PC_plus_4(IF_PC_4), .IF_Instruction(IF_Instruction), .ID_Instruction(ID_Instruction), .ID_PC_plus_4(ID_PC_4));
@@ -265,6 +269,11 @@ reg stals = 0;
     ALU alu(.in1(ALU_in1), .in2(ALU_in2), .ALUCtl(ALUToken), .Sign(Signed), .OpCode(EX_Instruction[31:26]), .out(EX_ALU_out), .Branch(Branch));
 
     wire [31:0] Branch_target;
+    wire last_stall2;
+    assign last_stall2 = stall2;
+    wire [31:0] Last_PC_next, Last_Jump, jtarget;
+    reg [31:0] Last_PC;
+    assign Last_PC_next = Last_PC;
 	assign Branch_target = Branch? EX_PC_4 + {EX_LU_out[29:0], 2'b00}: EX_PC_4;// EX 阶段
 
     assign PC_next = (EX_PCSrc == 3'b001 & Branch)? Branch_target:
@@ -277,7 +286,7 @@ reg stals = 0;
     assign EX_Registerw = 
         (EX_RegDst == 2'b00)? EX_Instruction[15:11]:
         (EX_RegDst == 2'b01)? EX_Instruction[20:16]:
-        (EX_RegDst == 2'b10)? 5'd31:
+        (EX_RegDst == 2'b10)? 5'd31://如果是 的话，那么
         (EX_RegDst == 2'b11)? 5'd26: 5'd26;//要得到写的内容!
     EX_MEM EX_MEM(reset, clk, EX_Instruction, EX_MemRead, EX_MemWrite, EX_RegWrite, EX_MemtoReg, EX_Registerw, EX_ALU_out, EX_Data2, EX_PC_4,MovNoWrite_EX, 
         MEM_MemRead, MEM_MemWrite, MEM_Instruction, MEM_RegWrite, MEM_MemtoReg, MEM_Registerw, MEM_ALU_out, MEM_Data2, MEM_PC_4, MovNoWrite_MEM);    
@@ -290,9 +299,9 @@ reg stals = 0;
     MEM_WB MEM_WB(reset, clk, MEM_RegWrite, MEM_MemtoReg, MEM_Registerw, MEM_ALU_out, MEM_ReadData, MEM_PC_4, MovNoWrite_MEM,
         WB_RegWrite, WB_MemtoReg, WB_Registerw, WB_ALU_out, WB_ReadData, WB_PC_4, MovNoWrite_WB);
 
-    assign ID_Data3 = (WB_MemtoReg == 2'b00)? WB_ALU_out: (WB_MemtoReg == 2'b01)? WB_ReadData: {1'b0, WB_PC_4[30:0]};//注意循环内存!
+    assign ID_Data3 = (WB_MemtoReg == 2'b00)? WB_ALU_out: (WB_MemtoReg == 2'b01)? WB_ReadData: {WB_PC_4[31:0]};//注意循环内存!
     assign EX_Data3 = (EX_MemtoReg == 2'b00)? EX_ALU_out: {1'b0, EX_PC_4[30:0]};
-    assign MEM_Data3 = (MEM_MemtoReg == 2'b00)? MEM_ALU_out: (MEM_MemtoReg == 2'b01)? MEM_ReadData: {1'b0, MEM_PC_4[30:0]};
+    assign MEM_Data3 = (MEM_MemtoReg == 2'b00)? MEM_ALU_out: (MEM_MemtoReg == 2'b01)? MEM_ReadData: {MEM_PC_4[31:0]};
 
     wire [1:0] ForwardA, ForwardB;//按照ppt上的算法处理冒险
 
@@ -328,14 +337,17 @@ wire [31:0] MEM_DataS,  mem_addr;
 reg [31:0] Last_ReadData, Last_ALU_out, Last_Data2;
 
 always @(posedge clk) begin
-      Last_ReadData <= MEM_ReadData;
-      Last_ALU_out <= MEM_ALU_out;
-      Last_Data2 <= MEM_Data2;
-      if(MEM_Instruction[31:26] == 6'b101000 & MEM_MemWrite ) begin
-           stals = 1;
-      end else begin
-           stals = 0;
-      end
+    
+    stall2 <= Stall2;
+    Last_PC <= PC_next;
+    Last_ReadData <= MEM_ReadData;
+    Last_ALU_out <= MEM_ALU_out;
+    Last_Data2 <= MEM_Data2;
+    if(MEM_Instruction[31:26] == 6'b101000 & MEM_MemWrite ) begin
+        stals = 1;
+    end else begin
+        stals = 0;
+    end
 end
 
 wire mem_ce, mem_we;

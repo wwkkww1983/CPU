@@ -44,7 +44,7 @@ module Control(
     assign RegWrite = (Exception)?1:
             ( OpCode == 6'h04 | OpCode == 6'h07 |
             OpCode == 6'h05 | OpCode == 6'h02 |
-            OpCode == 6'h03 | OpCode == 6'h2b | OpCode == 6'h28 |
+            OpCode == 6'h2b | OpCode == 6'h28 |
             (OpCode == 6'h00 & Function == 6'h08))? 0:1;//要写进寄存器
 
     assign RegDst[1:0] = 

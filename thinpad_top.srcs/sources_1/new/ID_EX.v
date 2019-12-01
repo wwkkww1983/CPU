@@ -39,7 +39,11 @@ module ID_EX(reset, clk, Stall, Flush_IF_and_ID, LastFlush,
             LastFlush <= Flush_IF_and_ID;
             EX_MemRead <= 0;//不读
             EX_MemWrite <= 0;//不写
-            EX_RegWrite <= 0;//RegWrite这个阶段也不写
+            if(ID_Instruction[31:26] != 6'h03) begin
+                EX_RegWrite <= 0;//RegWrite这个阶段也不写
+            end else begin
+                EX_RegWrite <= 1;
+            end
             MovNoWrite_EX <= MovNoWrite_ID;
             EX_MemtoReg <= ID_MemtoReg;//ID_MemtoReg
             EX_RegDst <= ID_RegDst;

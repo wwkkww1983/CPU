@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <GenRun Id="pll_example_synth_1" LaunchPart="xc7a100tfgg676-2L" LaunchTime="1574512211">
-  <File Type="RDS-DCP" Name="pll_example.dcp"/>
   <File Type="PA-TCL" Name="pll_example.tcl"/>
+  <File Type="RDS-DCP" Name="pll_example.dcp"/>
   <File Type="REPORTS-TCL" Name="pll_example_reports.tcl"/>
   <File Type="RDS-RDS" Name="pll_example.vds"/>
   <FileSet Name="sources" Type="BlockSrcs" RelSrcDir="$PSRCDIR/pll_example">
