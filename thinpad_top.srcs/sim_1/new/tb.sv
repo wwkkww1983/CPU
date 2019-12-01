@@ -44,8 +44,8 @@ wire uart_dataready;     //串口数据准备好
 wire uart_tbre;          //发送数据标志
 wire uart_tsre;          //数据发送完毕标志
 //Windows需要注意路径分隔符的转义，例如"D:\\foo\\bar.bin"
-parameter BASE_RAM_INIT_FILE = "/home/ericsam413/Desktop/dev1/gendata/kernel.bin"; //BaseRAM初始化文件，请修改为实际的绝对路径
-parameter EXT_RAM_INIT_FILE = "/home/ericsam413/Desktop/dev1/txt2bin/data.bin";    //ExtRAM初始化文件，请修改为实际的绝对路径
+parameter BASE_RAM_INIT_FILE = "F:\\cod\\CPU\\gendata\\test.bin"; //BaseRAM初始化文件，请修改为实际的绝对路径
+parameter EXT_RAM_INIT_FILE = "F:\\cod\\CPU\\txt2bin\\dat.bin";    //ExtRAM初始化文件，请修改为实际的绝对路径
 parameter FLASH_INIT_FILE = "/tmp/kernel.elf";    //Flash初始化文件，请修改为实际的绝对路径
 
 assign rxd = 1'b1; //idle state
