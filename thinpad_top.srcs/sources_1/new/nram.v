@@ -133,31 +133,49 @@ end
 wire [31:0] write_data;
 wire ext_sel;
 wire [31:0] addr;
+wire [3:0] sel;
+wire [31:0] chose_data;
+
+assign sel[0] = Op == 6'b101000 ? (addr[1:0] == 2'd0 ? 0 : 1) : 0;
+assign sel[1] = Op == 6'b101000 ? (addr[1:0] == 2'd1 ? 0 : 1) : 0;
+assign sel[2] = Op == 6'b101000 ? (addr[1:0] == 2'd2 ? 0 : 1) : 0;
+assign sel[3] = Op == 6'b101000 ? (addr[1:0] == 2'd3 ? 0 : 1) : 0;
+
+assign chose_data = addr[1:0] == 2'd0 ? {32{addr[7:0]}} : 
+                    (addr[1:0] == 2'd1 ? {32{addr[7:0], 8'b0}} :
+                    (addr[1:0] == 2'd2 ? {32{addr[7:0], 16'b0}} : {32{addr[7:0], 24'b0}})); 
+
 
 assign ext_sel = mem_ce ? mem_addr[22] : inst_addr[22];
-assign write_data = mem_data_i;
+assign write_data = Op==6'b101000 ? chose_data : mem_data_i;
 
 assign addr = mem_ce ? mem_addr : inst_addr;
 
 assign base_ram_ce_n = is_uart || ext_sel;
 assign base_ram_oe_n = is_uart || write;
 assign base_ram_we_n = is_uart || ~write;
-assign base_ram_be_n = 0;
+assign base_ram_be_n = is_uart ? 0 : sel;
 assign base_ram_addr = addr[21:2];
 assign base_ram_data = ~write ? 32'bz : write_data;
 
 assign ext_ram_ce_n = is_uart || ~ext_sel;
 assign ext_ram_oe_n = is_uart || write;
 assign ext_ram_we_n = is_uart || ~write;
-assign ext_ram_be_n = 0;
+assign ext_ram_be_n = is_uart ? 0 : sel;
 assign ext_ram_addr = addr[21:2];
 assign ext_ram_data = ~write ? 32'bz : write_data;
 
-wire [31:0] data;
+wire [31:0] data, data2;
 
 assign data = addr == 32'hbfd003fc ? uart_status : 
                 (addr == addr == 32'hbfd003f8 ? uart_data : 
                 (~ext_sel ? base_ram_data : ext_ram_data));
+
+assign data2 = ~(Op == 6'b100000) ? data : 
+                (addr[1:0] == 0 ? {32{data[7:0]}} :
+                (addr[1:0] == 1 ? {32{data[15:8]}} :
+                (addr[1:0] == 2 ? {32{data[23:16]}} : {32{data[31:24]}})));
+
 assign inst = inst_ce ? data : 32'b0;
-assign mem_data_o = mem_ce && ~mem_we ? data : 32'b0;
+assign mem_data_o = mem_ce && ~mem_we ? data2 : 32'b0;
 endmodule
