@@ -74,7 +74,8 @@ module Control(
 
     assign ALUOp[2:0] = ( OpCode == 6'h00)?3'b100:
         (OpCode == 6'h04 | OpCode == 6'h05 | OpCode == 6'h06 | OpCode == 6'h07)? 3'b001:
-        (OpCode == 6'h0c)? 3'b010:(OpCode == 6'h0d)? 3'b011: 3'b000;// 010是and,011是xor,001是sub100是
+        (OpCode == 6'h0c)? 3'b010:(OpCode == 6'h0d)? 3'b011:(OpCode == 6'h0e )? 3'b101: 3'b000;// 010是and,011是or,001是sub100是
+    
     
     assign ALUOp[3] = OpCode[0];
 

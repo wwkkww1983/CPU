@@ -1,13 +1,13 @@
 #-----------------------------------------------------------
 # Vivado v2018.3 (64-bit)
-# SW Build 2405991 on Thu Dec  6 23:36:41 MST 2018
+# SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
 # IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
-# Start of session at: Sun Dec  1 21:10:15 2019
-# Process ID: 17227
-# Current directory: /home/ericsam413/Desktop/dev1/thinpad_top.runs/synth_1
-# Command line: vivado -log thinpad_top.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source thinpad_top.tcl
-# Log file: /home/ericsam413/Desktop/dev1/thinpad_top.runs/synth_1/thinpad_top.vds
-# Journal file: /home/ericsam413/Desktop/dev1/thinpad_top.runs/synth_1/vivado.jou
+# Start of session at: Mon Dec  2 15:10:31 2019
+# Process ID: 1280
+# Current directory: F:/cod/CPU/thinpad_top.runs/synth_1
+# Command line: vivado.exe -log thinpad_top.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source thinpad_top.tcl
+# Log file: F:/cod/CPU/thinpad_top.runs/synth_1/thinpad_top.vds
+# Journal file: F:/cod/CPU/thinpad_top.runs/synth_1\vivado.jou
 #-----------------------------------------------------------
 source thinpad_top.tcl -notrace
 Command: synth_design -top thinpad_top -part xc7a100tfgg676-2L
@@ -15,22 +15,22 @@ Starting synth_design
 Attempting to get a license for feature 'Synthesis' and/or device 'xc7a100t'
 INFO: [Common 17-349] Got license for feature 'Synthesis' and/or device 'xc7a100t'
 INFO: Launching helper process for spawning children vivado processes
-INFO: Helper process launched with PID 17291 
+INFO: Helper process launched with PID 12816 
 ---------------------------------------------------------------------------------
-Starting RTL Elaboration : Time (s): cpu = 00:00:02 ; elapsed = 00:00:03 . Memory (MB): peak = 1381.695 ; gain = 0.000 ; free physical = 1372 ; free virtual = 7990
+Starting RTL Elaboration : Time (s): cpu = 00:00:03 ; elapsed = 00:00:04 . Memory (MB): peak = 340.715 ; gain = 65.945
 ---------------------------------------------------------------------------------
-INFO: [Synth 8-6157] synthesizing module 'thinpad_top' [/home/ericsam413/Desktop/dev1/thinpad_top.srcs/sources_1/new/thinpad_top.v:2]
-INFO: [Synth 8-6157] synthesizing module 'SEG7_LUT' [/home/ericsam413/Desktop/dev1/thinpad_top.srcs/sources_1/new/SEG7_LUT.v:1]
-INFO: [Synth 8-6155] done synthesizing module 'SEG7_LUT' (1#1) [/home/ericsam413/Desktop/dev1/thinpad_top.srcs/sources_1/new/SEG7_LUT.v:1]
-INFO: [Synth 8-6157] synthesizing module 'IF_ID' [/home/ericsam413/Desktop/dev1/thinpad_top.srcs/sources_1/new/IF_ID.v:1]
-INFO: [Synth 8-6155] done synthesizing module 'IF_ID' (2#1) [/home/ericsam413/Desktop/dev1/thinpad_top.srcs/sources_1/new/IF_ID.v:1]
-INFO: [Synth 8-6157] synthesizing module 'Control' [/home/ericsam413/Desktop/dev1/thinpad_top.srcs/sources_1/new/Control.v:1]
-INFO: [Synth 8-6155] done synthesizing module 'Control' (3#1) [/home/ericsam413/Desktop/dev1/thinpad_top.srcs/sources_1/new/Control.v:1]
-INFO: [Synth 8-6157] synthesizing module 'RegisterFile' [/home/ericsam413/Desktop/dev1/thinpad_top.srcs/sources_1/new/RegisterFile.v:1]
-INFO: [Synth 8-6155] done synthesizing module 'RegisterFile' (4#1) [/home/ericsam413/Desktop/dev1/thinpad_top.srcs/sources_1/new/RegisterFile.v:1]
-INFO: [Synth 8-6157] synthesizing module 'ID_EX' [/home/ericsam413/Desktop/dev1/thinpad_top.srcs/sources_1/new/ID_EX.v:1]
-INFO: [Synth 8-6155] done synthesizing module 'ID_EX' (5#1) [/home/ericsam413/Desktop/dev1/thinpad_top.srcs/sources_1/new/ID_EX.v:1]
-INFO: [Synth 8-6157] synthesizing module 'ALUControl' [/home/ericsam413/Desktop/dev1/thinpad_top.srcs/sources_1/new/ALUControl.v:1]
+INFO: [Synth 8-6157] synthesizing module 'thinpad_top' [F:/cod/CPU/thinpad_top.srcs/sources_1/new/thinpad_top.v:2]
+INFO: [Synth 8-6157] synthesizing module 'SEG7_LUT' [F:/cod/CPU/thinpad_top.srcs/sources_1/new/SEG7_LUT.v:1]
+INFO: [Synth 8-6155] done synthesizing module 'SEG7_LUT' (1#1) [F:/cod/CPU/thinpad_top.srcs/sources_1/new/SEG7_LUT.v:1]
+INFO: [Synth 8-6157] synthesizing module 'IF_ID' [F:/cod/CPU/thinpad_top.srcs/sources_1/new/IF_ID.v:1]
+INFO: [Synth 8-6155] done synthesizing module 'IF_ID' (2#1) [F:/cod/CPU/thinpad_top.srcs/sources_1/new/IF_ID.v:1]
+INFO: [Synth 8-6157] synthesizing module 'Control' [F:/cod/CPU/thinpad_top.srcs/sources_1/new/Control.v:1]
+INFO: [Synth 8-6155] done synthesizing module 'Control' (3#1) [F:/cod/CPU/thinpad_top.srcs/sources_1/new/Control.v:1]
+INFO: [Synth 8-6157] synthesizing module 'RegisterFile' [F:/cod/CPU/thinpad_top.srcs/sources_1/new/RegisterFile.v:1]
+INFO: [Synth 8-6155] done synthesizing module 'RegisterFile' (4#1) [F:/cod/CPU/thinpad_top.srcs/sources_1/new/RegisterFile.v:1]
+INFO: [Synth 8-6157] synthesizing module 'ID_EX' [F:/cod/CPU/thinpad_top.srcs/sources_1/new/ID_EX.v:1]
+INFO: [Synth 8-6155] done synthesizing module 'ID_EX' (5#1) [F:/cod/CPU/thinpad_top.srcs/sources_1/new/ID_EX.v:1]
+INFO: [Synth 8-6157] synthesizing module 'ALUControl' [F:/cod/CPU/thinpad_top.srcs/sources_1/new/ALUControl.v:1]
 	Parameter aluAND bound to: 5'b00000 
 	Parameter aluOR bound to: 5'b00001 
 	Parameter aluADD bound to: 5'b00010 
@@ -40,51 +40,53 @@ INFO: [Synth 8-6157] synthesizing module 'ALUControl' [/home/ericsam413/Desktop/
 	Parameter aluSRL bound to: 5'b11000 
 	Parameter aluSRA bound to: 5'b11001 
 	Parameter aluMOV bound to: 5'b11010 
-WARNING: [Synth 8-151] case item 6'b000110 is unreachable [/home/ericsam413/Desktop/dev1/thinpad_top.srcs/sources_1/new/ALUControl.v:21]
-INFO: [Synth 8-6155] done synthesizing module 'ALUControl' (6#1) [/home/ericsam413/Desktop/dev1/thinpad_top.srcs/sources_1/new/ALUControl.v:1]
-INFO: [Synth 8-6157] synthesizing module 'ALU' [/home/ericsam413/Desktop/dev1/thinpad_top.srcs/sources_1/new/ALU.v:1]
-INFO: [Synth 8-6155] done synthesizing module 'ALU' (7#1) [/home/ericsam413/Desktop/dev1/thinpad_top.srcs/sources_1/new/ALU.v:1]
-INFO: [Synth 8-6157] synthesizing module 'EX_MEM' [/home/ericsam413/Desktop/dev1/thinpad_top.srcs/sources_1/new/EX_MEM.v:1]
-INFO: [Synth 8-6155] done synthesizing module 'EX_MEM' (8#1) [/home/ericsam413/Desktop/dev1/thinpad_top.srcs/sources_1/new/EX_MEM.v:1]
-INFO: [Synth 8-6157] synthesizing module 'MEM_WB' [/home/ericsam413/Desktop/dev1/thinpad_top.srcs/sources_1/new/MEM_WB.v:1]
-INFO: [Synth 8-6155] done synthesizing module 'MEM_WB' (9#1) [/home/ericsam413/Desktop/dev1/thinpad_top.srcs/sources_1/new/MEM_WB.v:1]
-INFO: [Synth 8-6157] synthesizing module 'ram' [/home/ericsam413/Desktop/dev1/thinpad_top.srcs/sources_1/new/ram.v:1]
-INFO: [Synth 8-155] case statement is not full and has no default [/home/ericsam413/Desktop/dev1/thinpad_top.srcs/sources_1/new/ram.v:158]
-INFO: [Synth 8-155] case statement is not full and has no default [/home/ericsam413/Desktop/dev1/thinpad_top.srcs/sources_1/new/ram.v:196]
-WARNING: [Synth 8-6090] variable 'write_flag' is written by both blocking and non-blocking assignments, entire logic could be removed [/home/ericsam413/Desktop/dev1/thinpad_top.srcs/sources_1/new/ram.v:235]
-INFO: [Synth 8-6155] done synthesizing module 'ram' (10#1) [/home/ericsam413/Desktop/dev1/thinpad_top.srcs/sources_1/new/ram.v:1]
-WARNING: [Synth 8-6014] Unused sequential element stall2_reg was removed.  [/home/ericsam413/Desktop/dev1/thinpad_top.srcs/sources_1/new/thinpad_top.v:273]
-WARNING: [Synth 8-6014] Unused sequential element Last_PC_reg was removed.  [/home/ericsam413/Desktop/dev1/thinpad_top.srcs/sources_1/new/thinpad_top.v:276]
-WARNING: [Synth 8-3936] Found unconnected internal register 'Last_Data2_reg' and it is trimmed from '32' to '8' bits. [/home/ericsam413/Desktop/dev1/thinpad_top.srcs/sources_1/new/thinpad_top.v:345]
-WARNING: [Synth 8-3848] Net led_bits in module/entity thinpad_top does not have driver. [/home/ericsam413/Desktop/dev1/thinpad_top.srcs/sources_1/new/thinpad_top.v:136]
-WARNING: [Synth 8-3848] Net txd in module/entity thinpad_top does not have driver. [/home/ericsam413/Desktop/dev1/thinpad_top.srcs/sources_1/new/thinpad_top.v:39]
-WARNING: [Synth 8-3848] Net flash_a in module/entity thinpad_top does not have driver. [/home/ericsam413/Desktop/dev1/thinpad_top.srcs/sources_1/new/thinpad_top.v:43]
-WARNING: [Synth 8-3848] Net flash_rp_n in module/entity thinpad_top does not have driver. [/home/ericsam413/Desktop/dev1/thinpad_top.srcs/sources_1/new/thinpad_top.v:45]
-WARNING: [Synth 8-3848] Net flash_vpen in module/entity thinpad_top does not have driver. [/home/ericsam413/Desktop/dev1/thinpad_top.srcs/sources_1/new/thinpad_top.v:46]
-WARNING: [Synth 8-3848] Net flash_ce_n in module/entity thinpad_top does not have driver. [/home/ericsam413/Desktop/dev1/thinpad_top.srcs/sources_1/new/thinpad_top.v:47]
-WARNING: [Synth 8-3848] Net flash_oe_n in module/entity thinpad_top does not have driver. [/home/ericsam413/Desktop/dev1/thinpad_top.srcs/sources_1/new/thinpad_top.v:48]
-WARNING: [Synth 8-3848] Net flash_we_n in module/entity thinpad_top does not have driver. [/home/ericsam413/Desktop/dev1/thinpad_top.srcs/sources_1/new/thinpad_top.v:49]
-WARNING: [Synth 8-3848] Net flash_byte_n in module/entity thinpad_top does not have driver. [/home/ericsam413/Desktop/dev1/thinpad_top.srcs/sources_1/new/thinpad_top.v:50]
-WARNING: [Synth 8-3848] Net sl811_a0 in module/entity thinpad_top does not have driver. [/home/ericsam413/Desktop/dev1/thinpad_top.srcs/sources_1/new/thinpad_top.v:53]
-WARNING: [Synth 8-3848] Net sl811_wr_n in module/entity thinpad_top does not have driver. [/home/ericsam413/Desktop/dev1/thinpad_top.srcs/sources_1/new/thinpad_top.v:55]
-WARNING: [Synth 8-3848] Net sl811_rd_n in module/entity thinpad_top does not have driver. [/home/ericsam413/Desktop/dev1/thinpad_top.srcs/sources_1/new/thinpad_top.v:56]
-WARNING: [Synth 8-3848] Net sl811_cs_n in module/entity thinpad_top does not have driver. [/home/ericsam413/Desktop/dev1/thinpad_top.srcs/sources_1/new/thinpad_top.v:57]
-WARNING: [Synth 8-3848] Net sl811_rst_n in module/entity thinpad_top does not have driver. [/home/ericsam413/Desktop/dev1/thinpad_top.srcs/sources_1/new/thinpad_top.v:58]
-WARNING: [Synth 8-3848] Net sl811_dack_n in module/entity thinpad_top does not have driver. [/home/ericsam413/Desktop/dev1/thinpad_top.srcs/sources_1/new/thinpad_top.v:59]
-WARNING: [Synth 8-3848] Net dm9k_cmd in module/entity thinpad_top does not have driver. [/home/ericsam413/Desktop/dev1/thinpad_top.srcs/sources_1/new/thinpad_top.v:64]
-WARNING: [Synth 8-3848] Net dm9k_iow_n in module/entity thinpad_top does not have driver. [/home/ericsam413/Desktop/dev1/thinpad_top.srcs/sources_1/new/thinpad_top.v:66]
-WARNING: [Synth 8-3848] Net dm9k_ior_n in module/entity thinpad_top does not have driver. [/home/ericsam413/Desktop/dev1/thinpad_top.srcs/sources_1/new/thinpad_top.v:67]
-WARNING: [Synth 8-3848] Net dm9k_cs_n in module/entity thinpad_top does not have driver. [/home/ericsam413/Desktop/dev1/thinpad_top.srcs/sources_1/new/thinpad_top.v:68]
-WARNING: [Synth 8-3848] Net dm9k_pwrst_n in module/entity thinpad_top does not have driver. [/home/ericsam413/Desktop/dev1/thinpad_top.srcs/sources_1/new/thinpad_top.v:69]
-WARNING: [Synth 8-3848] Net video_red in module/entity thinpad_top does not have driver. [/home/ericsam413/Desktop/dev1/thinpad_top.srcs/sources_1/new/thinpad_top.v:73]
-WARNING: [Synth 8-3848] Net video_green in module/entity thinpad_top does not have driver. [/home/ericsam413/Desktop/dev1/thinpad_top.srcs/sources_1/new/thinpad_top.v:74]
-WARNING: [Synth 8-3848] Net video_blue in module/entity thinpad_top does not have driver. [/home/ericsam413/Desktop/dev1/thinpad_top.srcs/sources_1/new/thinpad_top.v:75]
-WARNING: [Synth 8-3848] Net video_hsync in module/entity thinpad_top does not have driver. [/home/ericsam413/Desktop/dev1/thinpad_top.srcs/sources_1/new/thinpad_top.v:76]
-WARNING: [Synth 8-3848] Net video_vsync in module/entity thinpad_top does not have driver. [/home/ericsam413/Desktop/dev1/thinpad_top.srcs/sources_1/new/thinpad_top.v:77]
-WARNING: [Synth 8-3848] Net video_clk in module/entity thinpad_top does not have driver. [/home/ericsam413/Desktop/dev1/thinpad_top.srcs/sources_1/new/thinpad_top.v:78]
-WARNING: [Synth 8-3848] Net video_de in module/entity thinpad_top does not have driver. [/home/ericsam413/Desktop/dev1/thinpad_top.srcs/sources_1/new/thinpad_top.v:79]
-WARNING: [Synth 8-3848] Net number in module/entity thinpad_top does not have driver. [/home/ericsam413/Desktop/dev1/thinpad_top.srcs/sources_1/new/thinpad_top.v:132]
-INFO: [Synth 8-6155] done synthesizing module 'thinpad_top' (11#1) [/home/ericsam413/Desktop/dev1/thinpad_top.srcs/sources_1/new/thinpad_top.v:2]
+WARNING: [Synth 8-151] case item 6'b000110 is unreachable [F:/cod/CPU/thinpad_top.srcs/sources_1/new/ALUControl.v:21]
+INFO: [Synth 8-6155] done synthesizing module 'ALUControl' (6#1) [F:/cod/CPU/thinpad_top.srcs/sources_1/new/ALUControl.v:1]
+INFO: [Synth 8-6157] synthesizing module 'ALU' [F:/cod/CPU/thinpad_top.srcs/sources_1/new/ALU.v:1]
+INFO: [Synth 8-6155] done synthesizing module 'ALU' (7#1) [F:/cod/CPU/thinpad_top.srcs/sources_1/new/ALU.v:1]
+INFO: [Synth 8-6157] synthesizing module 'EX_MEM' [F:/cod/CPU/thinpad_top.srcs/sources_1/new/EX_MEM.v:1]
+INFO: [Synth 8-6155] done synthesizing module 'EX_MEM' (8#1) [F:/cod/CPU/thinpad_top.srcs/sources_1/new/EX_MEM.v:1]
+INFO: [Synth 8-6157] synthesizing module 'MEM_WB' [F:/cod/CPU/thinpad_top.srcs/sources_1/new/MEM_WB.v:1]
+INFO: [Synth 8-6155] done synthesizing module 'MEM_WB' (9#1) [F:/cod/CPU/thinpad_top.srcs/sources_1/new/MEM_WB.v:1]
+INFO: [Synth 8-6157] synthesizing module 'ram' [F:/cod/CPU/thinpad_top.srcs/sources_1/new/nram.v:1]
+INFO: [Synth 8-155] case statement is not full and has no default [F:/cod/CPU/thinpad_top.srcs/sources_1/new/nram.v:63]
+INFO: [Synth 8-155] case statement is not full and has no default [F:/cod/CPU/thinpad_top.srcs/sources_1/new/nram.v:78]
+INFO: [Synth 8-155] case statement is not full and has no default [F:/cod/CPU/thinpad_top.srcs/sources_1/new/nram.v:105]
+WARNING: [Synth 8-5788] Register uart_status_reg in module ram is has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [F:/cod/CPU/thinpad_top.srcs/sources_1/new/nram.v:72]
+WARNING: [Synth 8-5788] Register uart_data_reg in module ram is has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [F:/cod/CPU/thinpad_top.srcs/sources_1/new/nram.v:122]
+WARNING: [Synth 8-6014] Unused sequential element uart_data_reg was removed.  [F:/cod/CPU/thinpad_top.srcs/sources_1/new/nram.v:122]
+INFO: [Synth 8-6155] done synthesizing module 'ram' (10#1) [F:/cod/CPU/thinpad_top.srcs/sources_1/new/nram.v:1]
+WARNING: [Synth 8-6014] Unused sequential element clk2_reg was removed.  [F:/cod/CPU/thinpad_top.srcs/sources_1/new/thinpad_top.v:371]
+WARNING: [Synth 8-3848] Net led_bits in module/entity thinpad_top does not have driver. [F:/cod/CPU/thinpad_top.srcs/sources_1/new/thinpad_top.v:136]
+WARNING: [Synth 8-3848] Net txd in module/entity thinpad_top does not have driver. [F:/cod/CPU/thinpad_top.srcs/sources_1/new/thinpad_top.v:39]
+WARNING: [Synth 8-3848] Net flash_a in module/entity thinpad_top does not have driver. [F:/cod/CPU/thinpad_top.srcs/sources_1/new/thinpad_top.v:43]
+WARNING: [Synth 8-3848] Net flash_rp_n in module/entity thinpad_top does not have driver. [F:/cod/CPU/thinpad_top.srcs/sources_1/new/thinpad_top.v:45]
+WARNING: [Synth 8-3848] Net flash_vpen in module/entity thinpad_top does not have driver. [F:/cod/CPU/thinpad_top.srcs/sources_1/new/thinpad_top.v:46]
+WARNING: [Synth 8-3848] Net flash_ce_n in module/entity thinpad_top does not have driver. [F:/cod/CPU/thinpad_top.srcs/sources_1/new/thinpad_top.v:47]
+WARNING: [Synth 8-3848] Net flash_oe_n in module/entity thinpad_top does not have driver. [F:/cod/CPU/thinpad_top.srcs/sources_1/new/thinpad_top.v:48]
+WARNING: [Synth 8-3848] Net flash_we_n in module/entity thinpad_top does not have driver. [F:/cod/CPU/thinpad_top.srcs/sources_1/new/thinpad_top.v:49]
+WARNING: [Synth 8-3848] Net flash_byte_n in module/entity thinpad_top does not have driver. [F:/cod/CPU/thinpad_top.srcs/sources_1/new/thinpad_top.v:50]
+WARNING: [Synth 8-3848] Net sl811_a0 in module/entity thinpad_top does not have driver. [F:/cod/CPU/thinpad_top.srcs/sources_1/new/thinpad_top.v:53]
+WARNING: [Synth 8-3848] Net sl811_wr_n in module/entity thinpad_top does not have driver. [F:/cod/CPU/thinpad_top.srcs/sources_1/new/thinpad_top.v:55]
+WARNING: [Synth 8-3848] Net sl811_rd_n in module/entity thinpad_top does not have driver. [F:/cod/CPU/thinpad_top.srcs/sources_1/new/thinpad_top.v:56]
+WARNING: [Synth 8-3848] Net sl811_cs_n in module/entity thinpad_top does not have driver. [F:/cod/CPU/thinpad_top.srcs/sources_1/new/thinpad_top.v:57]
+WARNING: [Synth 8-3848] Net sl811_rst_n in module/entity thinpad_top does not have driver. [F:/cod/CPU/thinpad_top.srcs/sources_1/new/thinpad_top.v:58]
+WARNING: [Synth 8-3848] Net sl811_dack_n in module/entity thinpad_top does not have driver. [F:/cod/CPU/thinpad_top.srcs/sources_1/new/thinpad_top.v:59]
+WARNING: [Synth 8-3848] Net dm9k_cmd in module/entity thinpad_top does not have driver. [F:/cod/CPU/thinpad_top.srcs/sources_1/new/thinpad_top.v:64]
+WARNING: [Synth 8-3848] Net dm9k_iow_n in module/entity thinpad_top does not have driver. [F:/cod/CPU/thinpad_top.srcs/sources_1/new/thinpad_top.v:66]
+WARNING: [Synth 8-3848] Net dm9k_ior_n in module/entity thinpad_top does not have driver. [F:/cod/CPU/thinpad_top.srcs/sources_1/new/thinpad_top.v:67]
+WARNING: [Synth 8-3848] Net dm9k_cs_n in module/entity thinpad_top does not have driver. [F:/cod/CPU/thinpad_top.srcs/sources_1/new/thinpad_top.v:68]
+WARNING: [Synth 8-3848] Net dm9k_pwrst_n in module/entity thinpad_top does not have driver. [F:/cod/CPU/thinpad_top.srcs/sources_1/new/thinpad_top.v:69]
+WARNING: [Synth 8-3848] Net video_red in module/entity thinpad_top does not have driver. [F:/cod/CPU/thinpad_top.srcs/sources_1/new/thinpad_top.v:73]
+WARNING: [Synth 8-3848] Net video_green in module/entity thinpad_top does not have driver. [F:/cod/CPU/thinpad_top.srcs/sources_1/new/thinpad_top.v:74]
+WARNING: [Synth 8-3848] Net video_blue in module/entity thinpad_top does not have driver. [F:/cod/CPU/thinpad_top.srcs/sources_1/new/thinpad_top.v:75]
+WARNING: [Synth 8-3848] Net video_hsync in module/entity thinpad_top does not have driver. [F:/cod/CPU/thinpad_top.srcs/sources_1/new/thinpad_top.v:76]
+WARNING: [Synth 8-3848] Net video_vsync in module/entity thinpad_top does not have driver. [F:/cod/CPU/thinpad_top.srcs/sources_1/new/thinpad_top.v:77]
+WARNING: [Synth 8-3848] Net video_clk in module/entity thinpad_top does not have driver. [F:/cod/CPU/thinpad_top.srcs/sources_1/new/thinpad_top.v:78]
+WARNING: [Synth 8-3848] Net video_de in module/entity thinpad_top does not have driver. [F:/cod/CPU/thinpad_top.srcs/sources_1/new/thinpad_top.v:79]
+WARNING: [Synth 8-3848] Net number in module/entity thinpad_top does not have driver. [F:/cod/CPU/thinpad_top.srcs/sources_1/new/thinpad_top.v:132]
+INFO: [Synth 8-6155] done synthesizing module 'thinpad_top' (11#1) [F:/cod/CPU/thinpad_top.srcs/sources_1/new/thinpad_top.v:2]
+WARNING: [Synth 8-3331] design ram has unconnected port stall
 WARNING: [Synth 8-3331] design Control has unconnected port Instruction[25]
 WARNING: [Synth 8-3331] design Control has unconnected port Instruction[24]
 WARNING: [Synth 8-3331] design Control has unconnected port Instruction[23]
@@ -184,10 +186,9 @@ WARNING: [Synth 8-3331] design thinpad_top has unconnected port flash_d[4]
 WARNING: [Synth 8-3331] design thinpad_top has unconnected port flash_d[3]
 WARNING: [Synth 8-3331] design thinpad_top has unconnected port flash_d[2]
 WARNING: [Synth 8-3331] design thinpad_top has unconnected port flash_d[1]
-WARNING: [Synth 8-3331] design thinpad_top has unconnected port flash_d[0]
 INFO: [Common 17-14] Message 'Synth 8-3331' appears 100 times and further instances of the messages will be disabled. Use the Tcl command set_msg_config to change the current settings.
 ---------------------------------------------------------------------------------
-Finished RTL Elaboration : Time (s): cpu = 00:00:02 ; elapsed = 00:00:04 . Memory (MB): peak = 1400.066 ; gain = 18.371 ; free physical = 1374 ; free virtual = 7994
+Finished RTL Elaboration : Time (s): cpu = 00:00:04 ; elapsed = 00:00:05 . Memory (MB): peak = 396.250 ; gain = 121.480
 ---------------------------------------------------------------------------------
 
 Report Check Netlist: 
@@ -196,65 +197,65 @@ Report Check Netlist:
 +------+------------------+-------+---------+-------+------------------+
 |1     |multi_driven_nets |      0|        0|Passed |Multi driven nets |
 +------+------------------+-------+---------+-------+------------------+
-WARNING: [Synth 8-3295] tying undriven pin segL:iDIG[3] to constant 0 [/home/ericsam413/Desktop/dev1/thinpad_top.srcs/sources_1/new/thinpad_top.v:133]
-WARNING: [Synth 8-3295] tying undriven pin segL:iDIG[2] to constant 0 [/home/ericsam413/Desktop/dev1/thinpad_top.srcs/sources_1/new/thinpad_top.v:133]
-WARNING: [Synth 8-3295] tying undriven pin segL:iDIG[1] to constant 0 [/home/ericsam413/Desktop/dev1/thinpad_top.srcs/sources_1/new/thinpad_top.v:133]
-WARNING: [Synth 8-3295] tying undriven pin segL:iDIG[0] to constant 0 [/home/ericsam413/Desktop/dev1/thinpad_top.srcs/sources_1/new/thinpad_top.v:133]
-WARNING: [Synth 8-3295] tying undriven pin segH:iDIG[3] to constant 0 [/home/ericsam413/Desktop/dev1/thinpad_top.srcs/sources_1/new/thinpad_top.v:134]
-WARNING: [Synth 8-3295] tying undriven pin segH:iDIG[2] to constant 0 [/home/ericsam413/Desktop/dev1/thinpad_top.srcs/sources_1/new/thinpad_top.v:134]
-WARNING: [Synth 8-3295] tying undriven pin segH:iDIG[1] to constant 0 [/home/ericsam413/Desktop/dev1/thinpad_top.srcs/sources_1/new/thinpad_top.v:134]
-WARNING: [Synth 8-3295] tying undriven pin segH:iDIG[0] to constant 0 [/home/ericsam413/Desktop/dev1/thinpad_top.srcs/sources_1/new/thinpad_top.v:134]
+WARNING: [Synth 8-3295] tying undriven pin segL:iDIG[3] to constant 0 [F:/cod/CPU/thinpad_top.srcs/sources_1/new/thinpad_top.v:133]
+WARNING: [Synth 8-3295] tying undriven pin segL:iDIG[2] to constant 0 [F:/cod/CPU/thinpad_top.srcs/sources_1/new/thinpad_top.v:133]
+WARNING: [Synth 8-3295] tying undriven pin segL:iDIG[1] to constant 0 [F:/cod/CPU/thinpad_top.srcs/sources_1/new/thinpad_top.v:133]
+WARNING: [Synth 8-3295] tying undriven pin segL:iDIG[0] to constant 0 [F:/cod/CPU/thinpad_top.srcs/sources_1/new/thinpad_top.v:133]
+WARNING: [Synth 8-3295] tying undriven pin segH:iDIG[3] to constant 0 [F:/cod/CPU/thinpad_top.srcs/sources_1/new/thinpad_top.v:134]
+WARNING: [Synth 8-3295] tying undriven pin segH:iDIG[2] to constant 0 [F:/cod/CPU/thinpad_top.srcs/sources_1/new/thinpad_top.v:134]
+WARNING: [Synth 8-3295] tying undriven pin segH:iDIG[1] to constant 0 [F:/cod/CPU/thinpad_top.srcs/sources_1/new/thinpad_top.v:134]
+WARNING: [Synth 8-3295] tying undriven pin segH:iDIG[0] to constant 0 [F:/cod/CPU/thinpad_top.srcs/sources_1/new/thinpad_top.v:134]
 ---------------------------------------------------------------------------------
 Start Handling Custom Attributes
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Handling Custom Attributes : Time (s): cpu = 00:00:03 ; elapsed = 00:00:04 . Memory (MB): peak = 1400.066 ; gain = 18.371 ; free physical = 1375 ; free virtual = 7995
+Finished Handling Custom Attributes : Time (s): cpu = 00:00:04 ; elapsed = 00:00:06 . Memory (MB): peak = 396.250 ; gain = 121.480
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished RTL Optimization Phase 1 : Time (s): cpu = 00:00:03 ; elapsed = 00:00:04 . Memory (MB): peak = 1400.066 ; gain = 18.371 ; free physical = 1375 ; free virtual = 7995
+Finished RTL Optimization Phase 1 : Time (s): cpu = 00:00:04 ; elapsed = 00:00:06 . Memory (MB): peak = 396.250 ; gain = 121.480
 ---------------------------------------------------------------------------------
 INFO: [Device 21-403] Loading part xc7a100tfgg676-2L
 INFO: [Project 1-570] Preparing netlist for logic optimization
 
 Processing XDC Constraints
 Initializing timing engine
-Parsing XDC File [/home/ericsam413/Desktop/dev1/thinpad_top.srcs/constrs_1/new/thinpad_top.xdc]
-WARNING: [Vivado 12-507] No nets matched 'clk_11M0592_IBUF'. [/home/ericsam413/Desktop/dev1/thinpad_top.srcs/constrs_1/new/thinpad_top.xdc:4]
-CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/ericsam413/Desktop/dev1/thinpad_top.srcs/constrs_1/new/thinpad_top.xdc:4]
+Parsing XDC File [F:/cod/CPU/thinpad_top.srcs/constrs_1/new/thinpad_top.xdc]
+WARNING: [Vivado 12-507] No nets matched 'clk_11M0592_IBUF'. [F:/cod/CPU/thinpad_top.srcs/constrs_1/new/thinpad_top.xdc:4]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [F:/cod/CPU/thinpad_top.srcs/constrs_1/new/thinpad_top.xdc:4]
 Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
-WARNING: [Vivado 12-507] No nets matched 'clock_btn_IBUF'. [/home/ericsam413/Desktop/dev1/thinpad_top.srcs/constrs_1/new/thinpad_top.xdc:18]
-CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/ericsam413/Desktop/dev1/thinpad_top.srcs/constrs_1/new/thinpad_top.xdc:18]
+WARNING: [Vivado 12-507] No nets matched 'clock_btn_IBUF'. [F:/cod/CPU/thinpad_top.srcs/constrs_1/new/thinpad_top.xdc:18]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [F:/cod/CPU/thinpad_top.srcs/constrs_1/new/thinpad_top.xdc:18]
 Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
-WARNING: [Vivado 12-507] No nets matched 'reset_btn_IBUF'. [/home/ericsam413/Desktop/dev1/thinpad_top.srcs/constrs_1/new/thinpad_top.xdc:19]
-CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/ericsam413/Desktop/dev1/thinpad_top.srcs/constrs_1/new/thinpad_top.xdc:19]
+WARNING: [Vivado 12-507] No nets matched 'reset_btn_IBUF'. [F:/cod/CPU/thinpad_top.srcs/constrs_1/new/thinpad_top.xdc:19]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [F:/cod/CPU/thinpad_top.srcs/constrs_1/new/thinpad_top.xdc:19]
 Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
-Finished Parsing XDC File [/home/ericsam413/Desktop/dev1/thinpad_top.srcs/constrs_1/new/thinpad_top.xdc]
-INFO: [Project 1-236] Implementation specific constraints were found while reading constraint file [/home/ericsam413/Desktop/dev1/thinpad_top.srcs/constrs_1/new/thinpad_top.xdc]. These constraints will be ignored for synthesis but will be used in implementation. Impacted constraints are listed in the file [.Xil/thinpad_top_propImpl.xdc].
+Finished Parsing XDC File [F:/cod/CPU/thinpad_top.srcs/constrs_1/new/thinpad_top.xdc]
+INFO: [Project 1-236] Implementation specific constraints were found while reading constraint file [F:/cod/CPU/thinpad_top.srcs/constrs_1/new/thinpad_top.xdc]. These constraints will be ignored for synthesis but will be used in implementation. Impacted constraints are listed in the file [.Xil/thinpad_top_propImpl.xdc].
 Resolution: To avoid this warning, move constraints listed in [.Xil/thinpad_top_propImpl.xdc] to another XDC file and exclude this new file from synthesis with the used_in_synthesis property (File Properties dialog in GUI) and re-run elaboration/synthesis.
-Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 1749.949 ; gain = 0.000 ; free physical = 1074 ; free virtual = 7726
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 762.871 ; gain = 0.000
 Completed Processing XDC Constraints
 
-Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 1749.949 ; gain = 0.000 ; free physical = 1072 ; free virtual = 7725
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.001 . Memory (MB): peak = 762.871 ; gain = 0.000
 INFO: [Project 1-111] Unisim Transformation Summary:
 No Unisim elements were transformed.
 
-Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 1749.949 ; gain = 0.000 ; free physical = 1072 ; free virtual = 7725
-Constraint Validation Runtime : Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 1749.949 ; gain = 0.000 ; free physical = 1072 ; free virtual = 7725
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.001 . Memory (MB): peak = 762.871 ; gain = 0.000
+Constraint Validation Runtime : Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.034 . Memory (MB): peak = 762.871 ; gain = 0.000
 ---------------------------------------------------------------------------------
-Finished Constraint Validation : Time (s): cpu = 00:00:08 ; elapsed = 00:00:12 . Memory (MB): peak = 1749.949 ; gain = 368.254 ; free physical = 1153 ; free virtual = 7807
+Finished Constraint Validation : Time (s): cpu = 00:00:14 ; elapsed = 00:00:18 . Memory (MB): peak = 762.871 ; gain = 488.102
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Loading Part and Timing Information
 ---------------------------------------------------------------------------------
 Loading part: xc7a100tfgg676-2L
 ---------------------------------------------------------------------------------
-Finished Loading Part and Timing Information : Time (s): cpu = 00:00:08 ; elapsed = 00:00:12 . Memory (MB): peak = 1749.949 ; gain = 368.254 ; free physical = 1153 ; free virtual = 7807
+Finished Loading Part and Timing Information : Time (s): cpu = 00:00:14 ; elapsed = 00:00:18 . Memory (MB): peak = 762.871 ; gain = 488.102
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Applying 'set_property' XDC Constraints
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished applying 'set_property' XDC Constraints : Time (s): cpu = 00:00:08 ; elapsed = 00:00:12 . Memory (MB): peak = 1749.949 ; gain = 368.254 ; free physical = 1155 ; free virtual = 7809
+Finished applying 'set_property' XDC Constraints : Time (s): cpu = 00:00:14 ; elapsed = 00:00:18 . Memory (MB): peak = 762.871 ; gain = 488.102
 ---------------------------------------------------------------------------------
 INFO: [Synth 8-5546] ROM "RegDst2" won't be mapped to RAM because it is too sparse
 INFO: [Synth 8-5546] ROM "LuOp" won't be mapped to RAM because it is too sparse
@@ -293,8 +294,31 @@ INFO: [Synth 8-5546] ROM "RF_data_reg[3]" won't be mapped to RAM because it is t
 INFO: [Synth 8-5546] ROM "RF_data_reg[2]" won't be mapped to RAM because it is too sparse
 INFO: [Synth 8-5546] ROM "RF_data_reg[1]" won't be mapped to RAM because it is too sparse
 INFO: [Synth 8-5587] ROM size for "aluFunct" is below threshold of ROM address width. It will be mapped to LUTs
+INFO: [Synth 8-802] inferred FSM for state register 'write_status_reg' in module 'ram'
+INFO: [Synth 8-5544] ROM "sel1" won't be mapped to Block RAM because address size (2) smaller than threshold (5)
+INFO: [Synth 8-5544] ROM "sel1" won't be mapped to Block RAM because address size (2) smaller than threshold (5)
+INFO: [Synth 8-5544] ROM "sel1" won't be mapped to Block RAM because address size (2) smaller than threshold (5)
+INFO: [Synth 8-5544] ROM "sel1" won't be mapped to Block RAM because address size (2) smaller than threshold (5)
+INFO: [Synth 8-5545] ROM "read_status" won't be mapped to RAM because address size (32) is larger than maximum supported(25)
+INFO: [Synth 8-5545] ROM "read_status" won't be mapped to RAM because address size (32) is larger than maximum supported(25)
+INFO: [Synth 8-5545] ROM "ok" won't be mapped to RAM because address size (32) is larger than maximum supported(25)
+INFO: [Synth 8-5545] ROM "ok" won't be mapped to RAM because address size (32) is larger than maximum supported(25)
+INFO: [Synth 8-5545] ROM "uart_rdn" won't be mapped to RAM because address size (32) is larger than maximum supported(25)
+INFO: [Synth 8-5545] ROM "uart_status" won't be mapped to RAM because address size (32) is larger than maximum supported(25)
+INFO: [Synth 8-5545] ROM "ok" won't be mapped to RAM because address size (32) is larger than maximum supported(25)
+INFO: [Synth 8-5545] ROM "uart_wrn" won't be mapped to RAM because address size (32) is larger than maximum supported(25)
+INFO: [Synth 8-5544] ROM "write_status" won't be mapped to Block RAM because address size (1) smaller than threshold (5)
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+                 iSTATE2 |                               00 | 00000000000000000000000000000001
+                  iSTATE |                               01 | 00000000000000000000000000000010
+                 iSTATE0 |                               10 | 00000000000000000000000000000011
+                 iSTATE1 |                               11 | 00000000000000000000000000000100
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3354] encoded FSM with state register 'write_status_reg' using encoding 'sequential' in module 'ram'
 ---------------------------------------------------------------------------------
-Finished RTL Optimization Phase 2 : Time (s): cpu = 00:00:09 ; elapsed = 00:00:13 . Memory (MB): peak = 1749.949 ; gain = 368.254 ; free physical = 1144 ; free virtual = 7798
+Finished RTL Optimization Phase 2 : Time (s): cpu = 00:00:15 ; elapsed = 00:00:20 . Memory (MB): peak = 762.871 ; gain = 488.102
 ---------------------------------------------------------------------------------
 INFO: [Synth 8-223] decloning instance 'segL' (SEG7_LUT) to 'segH'
 
@@ -315,7 +339,7 @@ Detailed RTL Component Info :
 	   2 Input     32 Bit         XORs := 1     
 	   2 Input      1 Bit         XORs := 1     
 +---Registers : 
-	               32 Bit    Registers := 48    
+	               32 Bit    Registers := 46    
 	                8 Bit    Registers := 1     
 	                5 Bit    Registers := 2     
 	                4 Bit    Registers := 1     
@@ -323,23 +347,21 @@ Detailed RTL Component Info :
 	                2 Bit    Registers := 4     
 	                1 Bit    Registers := 17    
 +---Muxes : 
-	   2 Input     32 Bit        Muxes := 31    
-	   4 Input     32 Bit        Muxes := 8     
+	   2 Input     32 Bit        Muxes := 30    
+	   4 Input     32 Bit        Muxes := 5     
 	   3 Input     32 Bit        Muxes := 1     
 	   5 Input     32 Bit        Muxes := 1     
-	   2 Input     20 Bit        Muxes := 1     
 	   2 Input     16 Bit        Muxes := 1     
-	   2 Input      6 Bit        Muxes := 1     
-	  18 Input      5 Bit        Muxes := 1     
+	  19 Input      5 Bit        Muxes := 1     
 	   4 Input      5 Bit        Muxes := 1     
-	   4 Input      4 Bit        Muxes := 2     
-	   2 Input      4 Bit        Muxes := 8     
-	   5 Input      3 Bit        Muxes := 1     
-	   2 Input      3 Bit        Muxes := 1     
-	   4 Input      2 Bit        Muxes := 3     
-	   2 Input      2 Bit        Muxes := 5     
-	   2 Input      1 Bit        Muxes := 80    
-	   4 Input      1 Bit        Muxes := 1     
+	   5 Input      3 Bit        Muxes := 2     
+	   2 Input      3 Bit        Muxes := 2     
+	   4 Input      2 Bit        Muxes := 2     
+	   2 Input      2 Bit        Muxes := 6     
+	   2 Input      1 Bit        Muxes := 65    
+	   4 Input      1 Bit        Muxes := 8     
+	   3 Input      1 Bit        Muxes := 10    
+	   5 Input      1 Bit        Muxes := 1     
 ---------------------------------------------------------------------------------
 Finished RTL Component Statistics 
 ---------------------------------------------------------------------------------
@@ -353,18 +375,15 @@ Detailed RTL Component Info :
 	   2 Input     32 Bit       Adders := 1     
 	   2 Input     31 Bit       Adders := 1     
 +---Registers : 
-	               32 Bit    Registers := 3     
-	                8 Bit    Registers := 1     
-	                1 Bit    Registers := 4     
+	               32 Bit    Registers := 1     
+	                1 Bit    Registers := 1     
 +---Muxes : 
-	   2 Input     32 Bit        Muxes := 18    
-	   4 Input     32 Bit        Muxes := 3     
+	   2 Input     32 Bit        Muxes := 16    
+	   4 Input     32 Bit        Muxes := 2     
 	   5 Input     32 Bit        Muxes := 1     
 	   2 Input     16 Bit        Muxes := 1     
-	   2 Input      6 Bit        Muxes := 1     
 	   4 Input      5 Bit        Muxes := 1     
 	   2 Input      2 Bit        Muxes := 4     
-	   2 Input      1 Bit        Muxes := 3     
 Module IF_ID 
 Detailed RTL Component Info : 
 +---Registers : 
@@ -375,9 +394,9 @@ Detailed RTL Component Info :
 Module Control 
 Detailed RTL Component Info : 
 +---Muxes : 
-	   5 Input      3 Bit        Muxes := 1     
+	   5 Input      3 Bit        Muxes := 2     
 	   2 Input      3 Bit        Muxes := 1     
-	   4 Input      2 Bit        Muxes := 2     
+	   4 Input      2 Bit        Muxes := 1     
 	   2 Input      2 Bit        Muxes := 1     
 	   2 Input      1 Bit        Muxes := 3     
 Module RegisterFile 
@@ -400,7 +419,7 @@ Detailed RTL Component Info :
 Module ALUControl 
 Detailed RTL Component Info : 
 +---Muxes : 
-	  18 Input      5 Bit        Muxes := 1     
+	  19 Input      5 Bit        Muxes := 1     
 	   2 Input      1 Bit        Muxes := 1     
 Module ALU 
 Detailed RTL Component Info : 
@@ -429,15 +448,20 @@ Detailed RTL Component Info :
 	                1 Bit    Registers := 2     
 Module ram 
 Detailed RTL Component Info : 
++---Registers : 
+	                8 Bit    Registers := 1     
+	                1 Bit    Registers := 3     
 +---Muxes : 
-	   2 Input     32 Bit        Muxes := 9     
-	   4 Input     32 Bit        Muxes := 5     
+	   2 Input     32 Bit        Muxes := 10    
+	   4 Input     32 Bit        Muxes := 3     
 	   3 Input     32 Bit        Muxes := 1     
-	   2 Input     20 Bit        Muxes := 1     
-	   4 Input      4 Bit        Muxes := 2     
-	   2 Input      4 Bit        Muxes := 8     
+	   2 Input      3 Bit        Muxes := 1     
 	   4 Input      2 Bit        Muxes := 1     
-	   2 Input      1 Bit        Muxes := 37    
+	   2 Input      2 Bit        Muxes := 1     
+	   2 Input      1 Bit        Muxes := 25    
+	   3 Input      1 Bit        Muxes := 10    
+	   4 Input      1 Bit        Muxes := 7     
+	   5 Input      1 Bit        Muxes := 1     
 ---------------------------------------------------------------------------------
 Finished RTL Hierarchical Component Statistics
 ---------------------------------------------------------------------------------
@@ -454,9 +478,46 @@ Finished Part Resource Summary
 Start Cross Boundary and Area Optimization
 ---------------------------------------------------------------------------------
 Warning: Parallel synthesis criteria is not met 
-INFO: [Synth 8-3886] merging instance 'ID_EX/EX_Instruction_reg[26]' (FDC) to 'ID_EX/EX_ALUOp_reg[3]'
+INFO: [Synth 8-3886] merging instance 'ram/uart_status_reg[6]' (FDE_1) to 'ram/uart_status_reg[7]'
+INFO: [Synth 8-3886] merging instance 'ram/uart_status_reg[7]' (FDE_1) to 'ram/uart_status_reg[5]'
+INFO: [Synth 8-3886] merging instance 'ram/uart_status_reg[2]' (FDE_1) to 'ram/uart_status_reg[5]'
+INFO: [Synth 8-3886] merging instance 'ram/uart_status_reg[3]' (FDE_1) to 'ram/uart_status_reg[5]'
+INFO: [Synth 8-3886] merging instance 'ram/uart_status_reg[4]' (FDE_1) to 'ram/uart_status_reg[5]'
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (ram/\uart_status_reg[5] )
+INFO: [Synth 8-3886] merging instance 'ID_EX/EX_ALUOp_reg[3]' (FDC) to 'ID_EX/EX_Instruction_reg[26]'
+INFO: [Synth 8-3886] merging instance 'ram/read_status_reg[31]' (FDCE_1) to 'ram/read_status_reg[30]'
+INFO: [Synth 8-3886] merging instance 'ram/read_status_reg[30]' (FDCE_1) to 'ram/read_status_reg[29]'
+INFO: [Synth 8-3886] merging instance 'ram/read_status_reg[29]' (FDCE_1) to 'ram/read_status_reg[28]'
+INFO: [Synth 8-3886] merging instance 'ram/read_status_reg[28]' (FDCE_1) to 'ram/read_status_reg[27]'
+INFO: [Synth 8-3886] merging instance 'ram/read_status_reg[27]' (FDCE_1) to 'ram/read_status_reg[26]'
+INFO: [Synth 8-3886] merging instance 'ram/read_status_reg[26]' (FDCE_1) to 'ram/read_status_reg[25]'
+INFO: [Synth 8-3886] merging instance 'ram/read_status_reg[25]' (FDCE_1) to 'ram/read_status_reg[24]'
+INFO: [Synth 8-3886] merging instance 'ram/read_status_reg[24]' (FDCE_1) to 'ram/read_status_reg[23]'
+INFO: [Synth 8-3886] merging instance 'ram/read_status_reg[23]' (FDCE_1) to 'ram/read_status_reg[22]'
+INFO: [Synth 8-3886] merging instance 'ram/read_status_reg[22]' (FDCE_1) to 'ram/read_status_reg[21]'
+INFO: [Synth 8-3886] merging instance 'ram/read_status_reg[21]' (FDCE_1) to 'ram/read_status_reg[20]'
+INFO: [Synth 8-3886] merging instance 'ram/read_status_reg[20]' (FDCE_1) to 'ram/read_status_reg[19]'
+INFO: [Synth 8-3886] merging instance 'ram/read_status_reg[19]' (FDCE_1) to 'ram/read_status_reg[18]'
+INFO: [Synth 8-3886] merging instance 'ram/read_status_reg[18]' (FDCE_1) to 'ram/read_status_reg[17]'
+INFO: [Synth 8-3886] merging instance 'ram/read_status_reg[17]' (FDCE_1) to 'ram/read_status_reg[16]'
+INFO: [Synth 8-3886] merging instance 'ram/read_status_reg[16]' (FDCE_1) to 'ram/read_status_reg[15]'
+INFO: [Synth 8-3886] merging instance 'ram/read_status_reg[15]' (FDCE_1) to 'ram/read_status_reg[14]'
+INFO: [Synth 8-3886] merging instance 'ram/read_status_reg[14]' (FDCE_1) to 'ram/read_status_reg[13]'
+INFO: [Synth 8-3886] merging instance 'ram/read_status_reg[13]' (FDCE_1) to 'ram/read_status_reg[12]'
+INFO: [Synth 8-3886] merging instance 'ram/read_status_reg[12]' (FDCE_1) to 'ram/read_status_reg[11]'
+INFO: [Synth 8-3886] merging instance 'ram/read_status_reg[11]' (FDCE_1) to 'ram/read_status_reg[10]'
+INFO: [Synth 8-3886] merging instance 'ram/read_status_reg[10]' (FDCE_1) to 'ram/read_status_reg[9]'
+INFO: [Synth 8-3886] merging instance 'ram/read_status_reg[9]' (FDCE_1) to 'ram/read_status_reg[8]'
+INFO: [Synth 8-3886] merging instance 'ram/read_status_reg[8]' (FDCE_1) to 'ram/read_status_reg[7]'
+INFO: [Synth 8-3886] merging instance 'ram/read_status_reg[7]' (FDCE_1) to 'ram/read_status_reg[6]'
+INFO: [Synth 8-3886] merging instance 'ram/read_status_reg[6]' (FDCE_1) to 'ram/read_status_reg[5]'
+INFO: [Synth 8-3886] merging instance 'ram/read_status_reg[5]' (FDCE_1) to 'ram/read_status_reg[4]'
+INFO: [Synth 8-3886] merging instance 'ram/read_status_reg[4]' (FDCE_1) to 'ram/read_status_reg[3]'
+INFO: [Synth 8-3886] merging instance 'ram/read_status_reg[3]' (FDCE_1) to 'ram/read_status_reg[2]'
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (ram/\read_status_reg[2] )
+INFO: [Synth 8-3886] merging instance 'ID_EX/EX_MemtoReg_reg[1]' (FDC) to 'ID_EX/EX_RegDst_reg[1]'
 ---------------------------------------------------------------------------------
-Finished Cross Boundary and Area Optimization : Time (s): cpu = 00:00:45 ; elapsed = 00:00:49 . Memory (MB): peak = 1749.949 ; gain = 368.254 ; free physical = 1111 ; free virtual = 7770
+Finished Cross Boundary and Area Optimization : Time (s): cpu = 00:00:57 ; elapsed = 00:01:02 . Memory (MB): peak = 762.871 ; gain = 488.102
 ---------------------------------------------------------------------------------
 
 Report RTL Partitions: 
@@ -468,13 +529,13 @@ Report RTL Partitions:
 Start Applying XDC Timing Constraints
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Applying XDC Timing Constraints : Time (s): cpu = 00:00:50 ; elapsed = 00:00:54 . Memory (MB): peak = 1749.949 ; gain = 368.254 ; free physical = 989 ; free virtual = 7652
+Finished Applying XDC Timing Constraints : Time (s): cpu = 00:01:06 ; elapsed = 00:01:12 . Memory (MB): peak = 762.871 ; gain = 488.102
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Timing Optimization
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Timing Optimization : Time (s): cpu = 00:00:51 ; elapsed = 00:00:56 . Memory (MB): peak = 1749.949 ; gain = 368.254 ; free physical = 958 ; free virtual = 7621
+Finished Timing Optimization : Time (s): cpu = 00:01:08 ; elapsed = 00:01:13 . Memory (MB): peak = 762.871 ; gain = 488.102
 ---------------------------------------------------------------------------------
 
 Report RTL Partitions: 
@@ -486,7 +547,7 @@ Report RTL Partitions:
 Start Technology Mapping
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Technology Mapping : Time (s): cpu = 00:00:54 ; elapsed = 00:00:59 . Memory (MB): peak = 1800.965 ; gain = 419.270 ; free physical = 959 ; free virtual = 7622
+Finished Technology Mapping : Time (s): cpu = 00:01:10 ; elapsed = 00:01:16 . Memory (MB): peak = 853.637 ; gain = 578.867
 ---------------------------------------------------------------------------------
 
 Report RTL Partitions: 
@@ -510,7 +571,7 @@ Start Final Netlist Cleanup
 Finished Final Netlist Cleanup
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished IO Insertion : Time (s): cpu = 00:00:55 ; elapsed = 00:01:00 . Memory (MB): peak = 1800.965 ; gain = 419.270 ; free physical = 950 ; free virtual = 7613
+Finished IO Insertion : Time (s): cpu = 00:01:12 ; elapsed = 00:01:17 . Memory (MB): peak = 853.637 ; gain = 578.867
 ---------------------------------------------------------------------------------
 
 Report Check Netlist: 
@@ -523,7 +584,7 @@ Report Check Netlist:
 Start Renaming Generated Instances
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Renaming Generated Instances : Time (s): cpu = 00:00:55 ; elapsed = 00:01:00 . Memory (MB): peak = 1800.965 ; gain = 419.270 ; free physical = 950 ; free virtual = 7613
+Finished Renaming Generated Instances : Time (s): cpu = 00:01:12 ; elapsed = 00:01:17 . Memory (MB): peak = 853.637 ; gain = 578.867
 ---------------------------------------------------------------------------------
 
 Report RTL Partitions: 
@@ -535,25 +596,25 @@ Report RTL Partitions:
 Start Rebuilding User Hierarchy
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Rebuilding User Hierarchy : Time (s): cpu = 00:00:56 ; elapsed = 00:01:00 . Memory (MB): peak = 1800.965 ; gain = 419.270 ; free physical = 946 ; free virtual = 7610
+Finished Rebuilding User Hierarchy : Time (s): cpu = 00:01:12 ; elapsed = 00:01:17 . Memory (MB): peak = 853.637 ; gain = 578.867
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Renaming Generated Ports
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Renaming Generated Ports : Time (s): cpu = 00:00:56 ; elapsed = 00:01:00 . Memory (MB): peak = 1800.965 ; gain = 419.270 ; free physical = 946 ; free virtual = 7610
+Finished Renaming Generated Ports : Time (s): cpu = 00:01:12 ; elapsed = 00:01:18 . Memory (MB): peak = 853.637 ; gain = 578.867
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Handling Custom Attributes
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Handling Custom Attributes : Time (s): cpu = 00:00:56 ; elapsed = 00:01:01 . Memory (MB): peak = 1800.965 ; gain = 419.270 ; free physical = 944 ; free virtual = 7608
+Finished Handling Custom Attributes : Time (s): cpu = 00:01:12 ; elapsed = 00:01:18 . Memory (MB): peak = 853.637 ; gain = 578.867
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Renaming Generated Nets
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Renaming Generated Nets : Time (s): cpu = 00:00:56 ; elapsed = 00:01:01 . Memory (MB): peak = 1800.965 ; gain = 419.270 ; free physical = 944 ; free virtual = 7607
+Finished Renaming Generated Nets : Time (s): cpu = 00:01:12 ; elapsed = 00:01:18 . Memory (MB): peak = 853.637 ; gain = 578.867
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Writing Synthesis Report
@@ -571,17 +632,17 @@ Report Cell Usage:
 +------+-------+------+
 |1     |BUFG   |     2|
 |2     |CARRY4 |    40|
-|3     |LUT1   |    13|
-|4     |LUT2   |   209|
-|5     |LUT3   |   162|
-|6     |LUT4   |   198|
-|7     |LUT5   |   456|
-|8     |LUT6   |  1276|
-|9     |MUXF7  |   128|
-|10    |MUXF8  |    64|
-|11    |FDCE   |  1479|
-|12    |FDPE   |     5|
-|13    |FDRE   |    74|
+|3     |LUT1   |     4|
+|4     |LUT2   |   173|
+|5     |LUT3   |   145|
+|6     |LUT4   |   214|
+|7     |LUT5   |   394|
+|8     |LUT6   |  1270|
+|9     |MUXF7  |   139|
+|10    |MUXF8  |    58|
+|11    |FDCE   |  1476|
+|12    |FDPE   |    10|
+|13    |FDRE   |     3|
 |14    |IBUF   |     5|
 |15    |IOBUF  |    64|
 |16    |OBUF   |    72|
@@ -592,36 +653,37 @@ Report Instance Areas:
 +------+-----------+-------------+------+
 |      |Instance   |Module       |Cells |
 +------+-----------+-------------+------+
-|1     |top        |             |  4316|
-|2     |  EX_MEM   |EX_MEM       |   586|
-|3     |  ID_EX    |ID_EX        |  1109|
-|4     |  IF_ID    |IF_ID        |   223|
-|5     |  MEM_WB   |MEM_WB       |   309|
-|6     |  register |RegisterFile |  1760|
+|1     |top        |             |  4138|
+|2     |  EX_MEM   |EX_MEM       |   450|
+|3     |  ID_EX    |ID_EX        |  1172|
+|4     |  IF_ID    |IF_ID        |   229|
+|5     |  MEM_WB   |MEM_WB       |   263|
+|6     |  ram      |ram          |    10|
+|7     |  register |RegisterFile |  1768|
 +------+-----------+-------------+------+
 ---------------------------------------------------------------------------------
-Finished Writing Synthesis Report : Time (s): cpu = 00:00:56 ; elapsed = 00:01:01 . Memory (MB): peak = 1800.965 ; gain = 419.270 ; free physical = 944 ; free virtual = 7607
+Finished Writing Synthesis Report : Time (s): cpu = 00:01:12 ; elapsed = 00:01:18 . Memory (MB): peak = 853.637 ; gain = 578.867
 ---------------------------------------------------------------------------------
-Synthesis finished with 0 errors, 0 critical warnings and 158 warnings.
-Synthesis Optimization Runtime : Time (s): cpu = 00:00:52 ; elapsed = 00:00:55 . Memory (MB): peak = 1800.965 ; gain = 69.387 ; free physical = 996 ; free virtual = 7659
-Synthesis Optimization Complete : Time (s): cpu = 00:00:56 ; elapsed = 00:01:01 . Memory (MB): peak = 1800.973 ; gain = 419.270 ; free physical = 996 ; free virtual = 7659
+Synthesis finished with 0 errors, 0 critical warnings and 159 warnings.
+Synthesis Optimization Runtime : Time (s): cpu = 00:01:01 ; elapsed = 00:01:08 . Memory (MB): peak = 853.637 ; gain = 212.246
+Synthesis Optimization Complete : Time (s): cpu = 00:01:12 ; elapsed = 00:01:18 . Memory (MB): peak = 853.637 ; gain = 578.867
 INFO: [Project 1-571] Translating synthesized netlist
-INFO: [Netlist 29-17] Analyzing 296 Unisim elements for replacement
-INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
+INFO: [Netlist 29-17] Analyzing 301 Unisim elements for replacement
+INFO: [Netlist 29-28] Unisim Transformation completed in 1 CPU seconds
 INFO: [Project 1-570] Preparing netlist for logic optimization
 INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
-Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 1800.973 ; gain = 0.000 ; free physical = 933 ; free virtual = 7597
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.002 . Memory (MB): peak = 853.637 ; gain = 0.000
 INFO: [Project 1-111] Unisim Transformation Summary:
   A total of 64 instances were transformed.
   IOBUF => IOBUF (IBUF, OBUFT): 64 instances
 
 INFO: [Common 17-83] Releasing license: Synthesis
-76 Infos, 144 Warnings, 3 Critical Warnings and 0 Errors encountered.
+129 Infos, 144 Warnings, 3 Critical Warnings and 0 Errors encountered.
 synth_design completed successfully
-synth_design: Time (s): cpu = 00:00:58 ; elapsed = 00:01:02 . Memory (MB): peak = 1800.973 ; gain = 419.406 ; free physical = 999 ; free virtual = 7663
-Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 1800.973 ; gain = 0.000 ; free physical = 999 ; free virtual = 7663
+synth_design: Time (s): cpu = 00:01:15 ; elapsed = 00:01:22 . Memory (MB): peak = 853.637 ; gain = 578.867
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.001 . Memory (MB): peak = 853.637 ; gain = 0.000
 WARNING: [Constraints 18-5210] No constraints selected for write.
 Resolution: This message can indicate that there are no constraints for the design, or it can indicate that the used_in flags are set such that the constraints are ignored. This later case is used when running synth_design to not write synthesis constraints to the resulting checkpoint. Instead, project constraints are read when the synthesized design is opened.
-INFO: [Common 17-1381] The checkpoint '/home/ericsam413/Desktop/dev1/thinpad_top.runs/synth_1/thinpad_top.dcp' has been generated.
+INFO: [Common 17-1381] The checkpoint 'F:/cod/CPU/thinpad_top.runs/synth_1/thinpad_top.dcp' has been generated.
 INFO: [runtcl-4] Executing : report_utilization -file thinpad_top_utilization_synth.rpt -pb thinpad_top_utilization_synth.pb
-INFO: [Common 17-206] Exiting Vivado at Sun Dec  1 21:11:25 2019...
+INFO: [Common 17-206] Exiting Vivado at Mon Dec  2 15:12:02 2019...

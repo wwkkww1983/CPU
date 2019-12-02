@@ -1,8 +1,8 @@
 Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
 ---------------------------------------------------------------------------------------------------------------------------
-| Tool Version : Vivado v.2018.3 (lin64) Build 2405991 Thu Dec  6 23:36:41 MST 2018
-| Date         : Sun Dec  1 21:12:37 2019
-| Host         : ericsam413-PC running 64-bit Deepin 15.11
+| Tool Version : Vivado v.2018.3 (win64) Build 2405991 Thu Dec  6 23:38:27 MST 2018
+| Date         : Mon Dec  2 15:14:11 2019
+| Host         : DESKTOP-DUGUKAP running 64-bit major release  (build 9200)
 | Command      : report_drc -file thinpad_top_drc_routed.rpt -pb thinpad_top_drc_routed.pb -rpx thinpad_top_drc_routed.rpx
 | Design       : thinpad_top
 | Device       : xc7a100tfgg676-2L

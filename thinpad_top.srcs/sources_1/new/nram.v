@@ -13,10 +13,10 @@ module ram(
     input wire[31:0]           mem_addr,//memory的addr
     // input wire[3:0]            mem_sel, //
     input wire[31:0]           mem_data_i, // write
-    output reg[31:0]           mem_data_o, // read
+    output wire[31:0]           mem_data_o, // read
 
     // devices
-    inout wire[31:0]           base_ram_data, //baseram的一些
+    inout wire[31:0]           base_ram_data, //baseram的一�?
     output wire[19:0]          base_ram_addr, 
     output wire[3:0]           base_ram_be_n, 
     output wire                base_ram_ce_n,

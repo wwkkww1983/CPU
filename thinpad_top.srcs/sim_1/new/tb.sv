@@ -56,7 +56,7 @@ initial begin
 end
 
 initial begin
-    #200000000 $finish;
+    #2000000000 $finish;
 end
 
 initial begin 
