@@ -141,9 +141,9 @@ assign sel[1] = Op == 6'b101000 ? (addr[1:0] == 2'd1 ? 0 : 1) : 0;
 assign sel[2] = Op == 6'b101000 ? (addr[1:0] == 2'd2 ? 0 : 1) : 0;
 assign sel[3] = Op == 6'b101000 ? (addr[1:0] == 2'd3 ? 0 : 1) : 0;
 
-assign chose_data = addr[1:0] == 2'd0 ? {32{addr[7:0]}} : 
-                    (addr[1:0] == 2'd1 ? {32{addr[7:0], 8'b0}} :
-                    (addr[1:0] == 2'd2 ? {32{addr[7:0], 16'b0}} : {32{addr[7:0], 24'b0}})); 
+assign chose_data = addr[1:0] == 2'd0 ? {32{mem_data_i[7:0]}} : 
+                    (addr[1:0] == 2'd1 ? {32{mem_data_i[7:0], 8'b0}} :
+                    (addr[1:0] == 2'd2 ? {32{mem_data_i[7:0], 16'b0}} : {32{mem_data_i[7:0], 24'b0}})); 
 
 
 assign ext_sel = mem_ce ? mem_addr[22] : inst_addr[22];

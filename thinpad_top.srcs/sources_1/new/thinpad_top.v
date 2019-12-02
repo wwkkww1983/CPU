@@ -217,7 +217,7 @@ reg stall2 = 0;
     assign Stall2 = (MEM_MemRead | MEM_MemWrite);
     assign Stall1 = (EX_MemRead &
         ((EX_Instruction[20:16] == ID_Instruction[25:21]) |
-        (EX_Instruction[20:16] == ID_Instruction[20:16]))) | (ID_MemRead & EX_MemWrite) |(ID_MemWrite & EX_MemWrite) | (stals);
+        (EX_Instruction[20:16] == ID_Instruction[20:16]))) | (ID_MemRead & EX_MemWrite) |(ID_MemWrite & EX_MemWrite);
 
     assign Stall = Stall1 | Stall2 ;// 数据冲突需要stall一个周期
 
@@ -343,20 +343,21 @@ always @(posedge clk) begin
     Last_ReadData <= MEM_ReadData;
     Last_ALU_out <= MEM_ALU_out;
     Last_Data2 <= MEM_Data2;
-    if(MEM_Instruction[31:26] == 6'b101000 & MEM_MemWrite ) begin
+    stals = 0;
+    /*if(MEM_Instruction[31:26] == 6'b101000 & MEM_MemWrite ) begin
         stals = 1;
     end else begin
         stals = 0;
-    end
+    end*/
 end
 
 wire mem_ce, mem_we;
 
-assign mem_ce = stals? 1: MEM_MemRead | MEM_MemWrite;
+assign mem_ce = /*stals? 1:*/ MEM_MemRead | MEM_MemWrite;
 
-assign mem_we = stals? 1: (MEM_Instruction[31:26] == 6'b101000)? 0: MEM_MemWrite;
+assign mem_we = /*stals? 1: (MEM_Instruction[31:26] == 6'b101000)? 0: */MEM_MemWrite;
 
-assign mem_addr = (stals == 0)? MEM_ALU_out : Last_ALU_out;//上一轮是否已经stals了
+assign mem_addr = /*(stals == 0)?*/ MEM_ALU_out ;/*: Last_ALU_out;*///上一轮是否已经stals了
 
 reg clk2;
 reg clk3;
@@ -378,17 +379,17 @@ always @(posedge clk2 or negedge clk2 ) begin
     end
 end
 assign MEM_DataS = 
-       (stals == 0)? MEM_Data2:
-       (mem_addr[1:0] == 2'b00)?{Last_ReadData[31:8],Last_Data2[7:0]}:
+      /* (stals == 0)?*/ MEM_Data2;
+      /* (mem_addr[1:0] == 2'b00)?{Last_ReadData[31:8],Last_Data2[7:0]}:
        (mem_addr[1:0] == 2'b01)?{Last_ReadData[31:15],Last_Data2[7:0],Last_ReadData[7:0]}:
        (mem_addr[1:0] == 2'b10)?{Last_ReadData[31:24],Last_Data2[7:0],Last_ReadData[15:0]}:
-       {MEM_Data2[7:0],Last_ReadData[23:0]};//把sb放在这里处理
+       {MEM_Data2[7:0],Last_ReadData[23:0]};//把sb放在这里处理*/
 
     ram ram( .clk(clk3), .rst(reset), .inst_ce(ce), .inst_addr(PC), .inst( IF_Instruction ), .mem_ce( mem_ce ), .mem_we( mem_we ),
         .mem_addr(mem_addr), .mem_data_i(MEM_DataS), .mem_data_o( MEM_ReadData ), .base_ram_data( base_ram_data), .base_ram_addr(base_ram_addr),
         .base_ram_be_n(base_ram_be_n), .base_ram_ce_n(base_ram_ce_n), .base_ram_oe_n(base_ram_oe_n), .base_ram_we_n(base_ram_we_n), 
         .ext_ram_data(ext_ram_data), .ext_ram_addr(ext_ram_addr), .ext_ram_be_n(ext_ram_be_n), .ext_ram_ce_n(ext_ram_ce_n), 
-        .ext_ram_oe_n(ext_ram_oe_n), .ext_ram_we_n(ext_ram_we_n), .Op( stals? 6'b000000: MEM_Instruction[31:26] ), .stall(Stall),
+        .ext_ram_oe_n(ext_ram_oe_n), .ext_ram_we_n(ext_ram_we_n), .Op( /*stals? 6'b000000:*/ MEM_Instruction[31:26] ), .stall(Stall),
         .uart_rdn(uart_rdn), .uart_wrn(uart_wrn), .uart_dataready(uart_dataready), .uart_tbre(uart_tbre), .uart_tsre(uart_tsre));
 
 /*
