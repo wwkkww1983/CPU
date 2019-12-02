@@ -173,9 +173,9 @@ assign data = addr == 32'hbfd003fc ? uart_status :
                 (~ext_sel ? base_ram_data : ext_ram_data));
 
 assign data2 = ~(Op == 6'b100000) ? data : 
-                (addr[1:0] == 0 ? {32{data[7:0]}} :
-                (addr[1:0] == 1 ? {32{data[15:8]}} :
-                (addr[1:0] == 2 ? {32{data[23:16]}} : {32{data[31:24]}})));
+                (addr[1:0] == 0 ? {{24{data[7]}}, {data[7:0]}} :
+                (addr[1:0] == 1 ? {{24{data[15]}}, {data[15:8]}} :
+                (addr[1:0] == 2 ? {{24{data[23]}}, {data[23:16]}} : {{24{data[31]}}, {data[31:24]}})));
 
 assign inst = inst_ce ? data : 32'b0;
 assign mem_data_o = mem_ce && ~mem_we ? data2 : 32'b0;

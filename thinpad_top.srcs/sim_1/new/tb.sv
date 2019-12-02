@@ -75,7 +75,7 @@ initial begin
     // 模拟PC通过串口发送字符
    cpld.pc_send_byte(8'h32);
     #10000;
-    cpld.pc_send_byte(8'h33);
+    cpld.pc_send_byte(8'h52);
 end
 
 // 待测试用户设计
