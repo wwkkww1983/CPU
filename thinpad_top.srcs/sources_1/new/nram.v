@@ -16,7 +16,7 @@ module ram(
     output wire[31:0]           mem_data_o, // read
 
     // devices
-    inout wire[31:0]           base_ram_data, //baseram的一�?
+    inout wire[31:0]           base_ram_data, //baseram的一�?
     output wire[19:0]          base_ram_addr, 
     output wire[3:0]           base_ram_be_n, 
     output wire                base_ram_ce_n,
@@ -169,7 +169,7 @@ assign ext_ram_data = ~write ? 32'bz : write_data;
 wire [31:0] data, data2;
 
 assign data = addr == 32'hbfd003fc ? uart_status : 
-                (addr == addr == 32'hbfd003f8 ? uart_data : 
+                (addr == 32'hbfd003f8 ? uart_data : 
                 (~ext_sel ? base_ram_data : ext_ram_data));
 
 assign data2 = ~(Op == 6'b100000) ? data : 

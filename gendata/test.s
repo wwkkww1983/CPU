@@ -1,9 +1,9 @@
-lui $1, 0x8010
-lui $2, 0x1234
-ori $2, $2, 0x5678
-sw $2, 0($1)
-lb $4, 0x1($1)
-lw $3, 0($1)
-ori $5, 0x9a
-sb $5, 0x1($1)
-lw $3, 0($1)
+	.org 0x0
+.global _start
+   .set noat
+_start:
+   ori $1,$0,0x1100        # $1 = $0 | 0x1100 = 0x1100
+   ori $2,$0,0x0020        # $2 = $0 | 0x0020 = 0x0020
+   ori $3,$0,0xff00        # $3 = $0 | 0xff00 = 0xff00
+   ori $4,$0,0xffff        # $4 = $0 | 0xffff = 0xffff
+
