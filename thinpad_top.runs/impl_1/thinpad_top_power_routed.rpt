@@ -1,7 +1,7 @@
 Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
 -------------------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version     : Vivado v.2018.3 (win64) Build 2405991 Thu Dec  6 23:38:27 MST 2018
-| Date             : Mon Dec  2 16:51:20 2019
+| Date             : Mon Dec  2 20:30:36 2019
 | Host             : DESKTOP-DUGUKAP running 64-bit major release  (build 9200)
 | Command          : report_power -file thinpad_top_power_routed.rpt -pb thinpad_top_power_summary_routed.pb -rpx thinpad_top_power_routed.rpx
 | Design           : thinpad_top
@@ -53,14 +53,14 @@ Table of Contents
 | On-Chip        | Power (W) | Used     | Available | Utilization (%) |
 +----------------+-----------+----------+-----------+-----------------+
 | Clocks         |    <0.001 |        4 |       --- |             --- |
-| Slice Logic    |    <0.001 |     3910 |       --- |             --- |
-|   LUT as Logic |    <0.001 |     1969 |     63400 |            3.11 |
+| Slice Logic    |    <0.001 |     3912 |       --- |             --- |
+|   LUT as Logic |    <0.001 |     1971 |     63400 |            3.11 |
 |   CARRY4       |    <0.001 |       40 |     15850 |            0.25 |
 |   Register     |    <0.001 |     1497 |    126800 |            1.18 |
 |   BUFG         |    <0.001 |        1 |        32 |            3.13 |
 |   F7/F8 Muxes  |    <0.001 |      194 |     63400 |            0.31 |
 |   Others       |     0.000 |        8 |       --- |             --- |
-| Signals        |    <0.001 |     3378 |       --- |             --- |
+| Signals        |    <0.001 |     3375 |       --- |             --- |
 | I/O            |     0.008 |      210 |       300 |           70.00 |
 | Static Power   |     0.097 |          |           |                 |
 | Total          |     0.106 |          |           |                 |

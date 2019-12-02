@@ -67,7 +67,7 @@ module Control(
             OpCode == 6'h23 | OpCode == 6'h0d | OpCode == 6'h28 | OpCode == 6'h0f |
             OpCode == 6'h2b | OpCode == 6'h0e )?1:0;
             
-    assign ExtOp = ( OpCode == 6'h0c | OpCode == 6'h0d |OpCode == 6'h0e | OpCode == 6'h04 | 
+    assign ExtOp = (OpCode == 6'h09 | OpCode == 6'h0c | OpCode == 6'h0d |OpCode == 6'h0e | OpCode == 6'h04 | 
         OpCode == 6'h07 | OpCode == 6'h05)?0: 1;//是否0扩展unsigned
 
     assign LuOp = ( OpCode == 6'h0f )? 1: 0;
