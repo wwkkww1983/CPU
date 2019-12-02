@@ -36,14 +36,17 @@ module ALUControl(ALUOp, Funct, ALUCtl, Sign);
 			default: aluFunct <= aluADD;
 		endcase
 	
+
+
 	always @(*)
 		case (ALUOp[2:0])
 			3'b000: ALUCtl <= aluADD;//add是最后的
 			3'b001: ALUCtl <= aluSUB;//所有b相关的指令都作为sub
-			3'b010: ALUCtl <= aluOR;//后5位没东西
-			3'b011: ALUCtl <= aluXOR;//异或
+			3'b010: ALUCtl <= aluAND;//后5位没东西
+			3'b011: ALUCtl <= aluOR;//异或
 			3'b100: ALUCtl <= aluFunct;//Alu操作100是上面的Function来判断
+            3'b101: ALUCtl <= aluXOR;
 			default: ALUCtl <= aluADD;
 		endcase
-
+		
 endmodule
