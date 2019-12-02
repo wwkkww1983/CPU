@@ -53,6 +53,7 @@ always @(negedge clk, posedge rst) begin
         read_status <= 1;
         write_status <= 1;
         uart_wrn <= 1;
+        ok <= 1;
         uart_rdn <= 1;
     end else begin
         if (mem_addr == 32'hbfd003fc) begin
@@ -95,7 +96,7 @@ always @(negedge clk, posedge rst) begin
                             ok <= 1;
                             write_status <= 1;
                         end else begin
-                            ok <= 1;
+                            ok <= 0;
                             write_status <= 4;
                         end
                     end

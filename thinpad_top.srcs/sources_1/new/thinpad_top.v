@@ -165,7 +165,7 @@ wire [3:0] ID_ALUOp, EX_ALUOp;
 wire [31:0] PC_next;//
 wire [31:0] IF_PC;
 reg [31:0] PC = 32'h80000000;//PC这个是下一条指令地址?
-wire Stall, Stall1, Stall2;
+wire Stall, Stall1, Stall2, Stall3;
 
 reg [3:0] count = 0;
 reg clk = 0;
@@ -186,6 +186,16 @@ assign IF_PC = (Stall == 0)? PC_next:
             (ID_PCSrc == 3'b010)? PC_next: PC;//如果是stall就是PC,是PC_NEXT
 
 reg ce = 0;
+reg last_ok;
+
+always @(posedge clk or reset) begin
+    if (reset) begin
+        last_ok <= 1;
+    end else begin
+        last_ok <= ok;
+    end
+end
+
 
 always @(*) begin
     if(reset) begin
@@ -208,6 +218,7 @@ assign IF_PC_4[30:0] = PC[30:0] +3'd4;
 assign IF_PC_4[31] = PC[31];
 wire [31:0] IF_Instruction, ID_Instruction, EX_Instruction ,MEM_Instruction;
 wire LastFlush;
+wire ok;
 reg stals = 0;
 reg stall2 = 0;
 
@@ -215,11 +226,12 @@ reg stall2 = 0;
     assign Flush_IF_and_ID = Branch & ( EX_PCSrc == 3'b001 ) & (~LastFlush);// 刷新清零,下一条读进来的指令刷新清零
 
     assign Stall2 = (MEM_MemRead | MEM_MemWrite);
+    assign Stall3 = ~ok;
     assign Stall1 = (EX_MemRead &
         ((EX_Instruction[20:16] == ID_Instruction[25:21]) |
         (EX_Instruction[20:16] == ID_Instruction[20:16]))) | (ID_MemRead & EX_MemWrite) |(ID_MemWrite & EX_MemWrite);
 
-    assign Stall = Stall1 | Stall2 ;// 数据冲突需要stall一个周期
+    assign Stall = Stall1 | Stall2 | Stall3;// 数据冲突需要stall一个周期
 
     IF_ID IF_ID(.reset(reset), .clk(clk), .Flush( Flush_IF || Flush_IF_and_ID), .Stall(Stall),
          .IF_PC(IF_PC), .IF_PC_plus_4(IF_PC_4), .IF_Instruction(IF_Instruction), .ID_Instruction(ID_Instruction), .ID_PC_plus_4(ID_PC_4));
@@ -288,7 +300,7 @@ reg stall2 = 0;
         (EX_RegDst == 2'b01)? EX_Instruction[20:16]:
         (EX_RegDst == 2'b10)? 5'd31://如果是 的话，那么
         (EX_RegDst == 2'b11)? 5'd26: 5'd26;//要得到写的内容!
-    EX_MEM EX_MEM(reset, clk, EX_Instruction, EX_MemRead, EX_MemWrite, EX_RegWrite, EX_MemtoReg, EX_Registerw, EX_ALU_out, EX_Data2, EX_PC_4,MovNoWrite_EX, 
+    EX_MEM EX_MEM(reset, clk, Stall3, EX_Instruction, EX_MemRead, EX_MemWrite, EX_RegWrite, EX_MemtoReg, EX_Registerw, EX_ALU_out, EX_Data2, EX_PC_4,MovNoWrite_EX, 
         MEM_MemRead, MEM_MemWrite, MEM_Instruction, MEM_RegWrite, MEM_MemtoReg, MEM_Registerw, MEM_ALU_out, MEM_Data2, MEM_PC_4, MovNoWrite_MEM);    
     
     wire [31:0] MEM_ReadData, WB_ReadData;
@@ -336,20 +348,20 @@ wire [31:0] MEM_DataS,  mem_addr;
 
 reg [31:0] Last_ReadData, Last_ALU_out, Last_Data2;
 
-always @(posedge clk) begin
+// always @(posedge clk) begin
     
-    stall2 <= Stall2;
-    Last_PC <= PC_next;
-    Last_ReadData <= MEM_ReadData;
-    Last_ALU_out <= MEM_ALU_out;
-    Last_Data2 <= MEM_Data2;
-    stals = 0;
-    /*if(MEM_Instruction[31:26] == 6'b101000 & MEM_MemWrite ) begin
-        stals = 1;
-    end else begin
-        stals = 0;
-    end*/
-end
+//     stall2 <= Stall2;
+//     Last_PC <= PC_next;
+//     Last_ReadData <= MEM_ReadData;
+//     Last_ALU_out <= MEM_ALU_out;
+//     Last_Data2 <= MEM_Data2;
+//     stals = 0;
+//     /*if(MEM_Instruction[31:26] == 6'b101000 & MEM_MemWrite ) begin
+//         stals = 1;
+//     end else begin
+//         stals = 0;
+//     end*/
+// end
 
 wire mem_ce, mem_we;
 
@@ -385,77 +397,13 @@ assign MEM_DataS =
        (mem_addr[1:0] == 2'b10)?{Last_ReadData[31:24],Last_Data2[7:0],Last_ReadData[15:0]}:
        {MEM_Data2[7:0],Last_ReadData[23:0]};//把sb放在这里处理*/
 
-    ram ram( .clk(clk3), .rst(reset), .inst_ce(ce), .inst_addr(PC), .inst( IF_Instruction ), .mem_ce( mem_ce ), .mem_we( mem_we ),
+    ram ram( .clk(clk), .rst(reset), .inst_ce(ce && ~Stall), .inst_addr(PC), .inst( IF_Instruction ), .mem_ce( mem_ce ), .mem_we( mem_we ),
         .mem_addr(mem_addr), .mem_data_i(MEM_DataS), .mem_data_o( MEM_ReadData ), .base_ram_data( base_ram_data), .base_ram_addr(base_ram_addr),
         .base_ram_be_n(base_ram_be_n), .base_ram_ce_n(base_ram_ce_n), .base_ram_oe_n(base_ram_oe_n), .base_ram_we_n(base_ram_we_n), 
         .ext_ram_data(ext_ram_data), .ext_ram_addr(ext_ram_addr), .ext_ram_be_n(ext_ram_be_n), .ext_ram_ce_n(ext_ram_ce_n), 
         .ext_ram_oe_n(ext_ram_oe_n), .ext_ram_we_n(ext_ram_we_n), .Op( /*stals? 6'b000000:*/ MEM_Instruction[31:26] ), .stall(Stall),
-        .uart_rdn(uart_rdn), .uart_wrn(uart_wrn), .uart_dataready(uart_dataready), .uart_tbre(uart_tbre), .uart_tsre(uart_tsre));
+        .uart_rdn(uart_rdn), .uart_wrn(uart_wrn), .uart_dataready(uart_dataready), .uart_tbre(uart_tbre), .uart_tsre(uart_tsre), .ok(ok));
 
-/*
-    ram ram( .clk(clk), .rst(reset), .inst_ce(ce), .inst_addr(PC), .inst(IF_Instruction), .mem_ce( MEM_MemRead | MEM_MemWrite ), .mem_we(MEM_MemWrite),
-        .mem_addr(MEM_ALU_out), .mem_sel(sel), .mem_data_i(MEM_Data2), .mem_data_o(MEM_ReadData), .base_ram_data(base_ram_data), .base_ram_addr(base_ram_addr),
-        .base_ram_be_n(base_ram_be_n), .base_ram_ce_n(base_ram_ce_n), .base_ram_oe_n(base_ram_oe_n), .base_ram_we_n(base_ram_we_n), 
-        .ext_ram_data(ext_ram_data), .ext_ram_addr(ext_ram_addr), .ext_ram_be_n(ext_ram_be_n), .ext_ram_ce_n(ext_ram_ce_n), 
-        .ext_ram_oe_n(ext_ram_oe_n), .ext_ram_we_n(ext_ram_we_n), .Op(MEM_Instruction[31:26]), .stall(Stall),
-        .uart_rdn(uart_rdn), .uart_wrn(uart_wrn), .uart_dataready(uart_dataready), .uart_tbre(uart_tbre), .uart_tsre(uart_tsre));*/
 
-/*直连串口接收发送演示，从直连串口收到的数据再发送出去
-wire [7:0] ext_uart_rx;
-reg  [7:0] ext_uart_buffer, ext_uart_tx;
-wire ext_uart_ready, ext_uart_clear, ext_uart_busy;
-reg ext_uart_start, ext_uart_avai;
-
-async_receiver #(.ClkFrequency(50000000),.Baud(9600)) //接收模块，9600无检验位
-    ext_uart_r(
-        .clk(clk_50M),                       //外部时钟信号
-        .RxD(rxd),                           //外部串行信号输入
-        .RxD_data_ready(ext_uart_ready),  //数据接收到标志
-        .RxD_clear(ext_uart_clear),       //清除接收标志
-        .RxD_data(ext_uart_rx)             //接收到的一字节数据
-    );
-
-assign ext_uart_clear = ext_uart_ready; //收到数据的同时，清除标志，因为数据已取到ext_uart_buffer中
-always @(posedge clk_50M) begin //接收到缓冲区ext_uart_buffer
-    if(ext_uart_ready)begin
-        ext_uart_buffer <= ext_uart_rx;
-        ext_uart_avai <= 1;
-    end else if(!ext_uart_busy && ext_uart_avai)begin 
-        ext_uart_avai <= 0;
-    end
-end
-always @(posedge clk_50M) begin //将缓冲区ext_uart_buffer发送出去
-    if(!ext_uart_busy && ext_uart_avai)begin 
-        ext_uart_tx <= ext_uart_buffer;
-        ext_uart_start <= 1;
-    end else begin 
-        ext_uart_start <= 0;
-    end
-end
-
-async_transmitter #(.ClkFrequency(50000000),.Baud(9600)) //发送模块，9600无检验位
-    ext_uart_t(
-        .clk(clk_50M),                  //外部时钟信号
-        .TxD(txd),                      //串行信号输出
-        .TxD_busy(ext_uart_busy),       //发送器忙状态指示
-        .TxD_start(ext_uart_start),    //开始发送信号
-        .TxD_data(ext_uart_tx)        //待发送的数据
-    );
-
-//图像输出演示，分辨率800x600@75Hz，像素时钟为50MHz
-wire [11:0] hdata;
-assign video_red = hdata < 266 ? 3'b111 : 0; //红色竖条,是红色的read
-assign video_green = hdata < 532 && hdata >= 266 ? 3'b111 : 0; //绿色竖条
-assign video_blue = hdata >= 532 ? 2'b11 : 0; //蓝色竖条
-assign video_clk = clk_50M;
-vga #(12, 800, 856, 976, 1040, 600, 637, 643, 666, 1, 1) vga800x600at75 (
-    .clk(clk_50M), 
-    .hdata(hdata), //横坐标
-    .vdata(),      //纵坐标
-    .hsync(video_hsync),
-    .vsync(video_vsync),
-    .data_enable(video_de)
-);*/
-/* =========== Demo code end =========== */
 
 endmodule
